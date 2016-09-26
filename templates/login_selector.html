@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Login</title>
+
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+        <script type="text/javascript">
+            var access_token;
+
+            function login_github(){
+                document.cookie = "Sonata-Email=bernardomrferreira@ua.pt";
+                console.log("Login");
+                $.ajax({
+                    type: "POST",
+                    url: "/login",
+                    data: {"platform": "github"},
+                    dataType: "html",
+                    success: function(data, textStatus, request) {
+                        console.log("sucess")
+
+                        var url = request.getResponseHeader('location');
+                        console.log(url);
+
+                        console.log(request);
+
+                        window.location.href = url;
+
+
+                    }
+                });
+            }
+
+            function signup_github(){
+                console.log("Signup");
+                $.ajax({
+                    type: "POST",
+                    url: "/signup",
+                    data: {"platform": "github"},
+                    dataType: "html",
+                    success: function(data, textStatus, request) {
+                        console.log("sucess")
+
+                        var url = request.getResponseHeader('location');
+                        console.log(url);
+
+                        console.log(request);
+
+                        window.location.href = url;
+
+
+                    }
+                });
+            }
+
+
+            function request(){
+                console.log("Request");
+                $.ajax({
+                    url: "/authorize",
+                    type: "POST",
+                    beforeSend: function(xhr){xhr.setRequestHeader('AccessToken', access_token);},
+                    success: function() { alert('Success!' + authHeader); }
+                });
+            }
+
+        </script>
+    </head>
+
+    <body>
+    <button onclick="signup_github()">Signup</button>
+
+        <button onclick="login_github()">Login</button>
+
+        <button onclick="request()">Authorized request</button>
+    </body>
+
+
+
+</html>
