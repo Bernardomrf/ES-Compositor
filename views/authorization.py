@@ -24,6 +24,6 @@ log = logging.getLogger()
 
 @authorization.route("/", methods = ['GET'])
 def home():
-    return render_template('dashboard.html')
+    return render_template('index.html')
 
 
