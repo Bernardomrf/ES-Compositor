@@ -22,8 +22,28 @@ logging.basicConfig(stream=sys.stderr)
 logging.getLogger().setLevel(logging.DEBUG)
 log = logging.getLogger()
 
+"""
 @authorization.route("/", methods = ['GET'])
 def home():
     return render_template('index.html')
+"""
 
+@authorization.route("/login", methods = ['POST'])
+def login():
+    pass
 
+@authorization.route("/login_callback", methods = ['GET'])
+def login_callback():
+    pass
+
+@authorization.route("/signup", methods = ['POST'])
+def signup():
+    pass
+
+@authorization.route("/signup_callback", methods = ['GET'])
+def signup_callback():
+    pass
+
+@authorization.route("/addService", methods = ['POST'])
+def add_service():
+    pass
