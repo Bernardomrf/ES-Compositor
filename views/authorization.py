@@ -27,8 +27,8 @@ log = logging.getLogger()
 def home():
     return render_template('index.html')
 """
-@authorization.route("/signup", methods = ['POST'])
-def signup():
+@authorization.route("/signin", methods = ['POST'])
+def signin():
     url = AUTH_SERVICE_SIGNUP
 
     response = redirect(url, code=302)
@@ -37,21 +37,15 @@ def signup():
 
     return response
 
-@authorization.route("/signup_callback", methods = ['GET'])
-def signup_callback():
-    pass
+@authorization.route("/signin_callback", methods = ['GET'])
+def signin_callback():
 
-@authorization.route("/login", methods = ['POST'])
-def login():
-    pass
+    access_token = request.headers.get('Access-Token')
 
-@authorization.route("/login_callback", methods = ['GET'])
-def login_callback():
-    pass
+    resp = make_response(render_template('index.html'))
+    resp.set_cookie('Access-Token', access_token)
 
-@authorization.route("/addService", methods = ['POST'])
-def add_service():
-    pass
+    return resp
 
-def logged_in():
+def valid_token():
     pass
