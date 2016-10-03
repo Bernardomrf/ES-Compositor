@@ -27,6 +27,19 @@ log = logging.getLogger()
 def home():
     return render_template('index.html')
 """
+@authorization.route("/signup", methods = ['POST'])
+def signup():
+    url = AUTH_SERVICE_SIGNUP
+
+    response = redirect(url, code=302)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['callback_url'] = AUTH_CALLBACK_URL
+
+    return response
+
+@authorization.route("/signup_callback", methods = ['GET'])
+def signup_callback():
+    pass
 
 @authorization.route("/login", methods = ['POST'])
 def login():
@@ -36,14 +49,9 @@ def login():
 def login_callback():
     pass
 
-@authorization.route("/signup", methods = ['POST'])
-def signup():
-    pass
-
-@authorization.route("/signup_callback", methods = ['GET'])
-def signup_callback():
-    pass
-
 @authorization.route("/addService", methods = ['POST'])
 def add_service():
+    pass
+
+def logged_in():
     pass
