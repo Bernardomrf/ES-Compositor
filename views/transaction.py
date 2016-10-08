@@ -27,7 +27,7 @@ def home():
 
 @transaction.route("/new", methods = ['POST'])
 def new_transaction():
-    token = request.cookies.get('access_token')
+    token = request.cookies.get('Access-Token')
     price = request.form['price']
     seller_email = request.form['seller_email']
     description = request.form['description']
@@ -38,8 +38,8 @@ def new_transaction():
         return "Not logged in", 400
 
     # ---get user id---
-    headers = {"access-token": token}
-    response = requests.get(IAM_USER, headers=headers))
+    headers = {"Access-Token": token}
+    response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
         return "Invalid Access Token", 400
@@ -48,8 +48,8 @@ def new_transaction():
     user_id = info['uuid']
 
     # ---get seller id---
-    headers = {"access-token": token}
-    response = requests.get(IAM_USER + "?email=" + seller_email, headers=headers))
+    headers = {"Access-Token": token}
+    response = requests.get(IAM_USER + "?email=" + seller_email, headers=headers)
 
     if response.status_code != 200:
         return "Email not found", 400
@@ -58,7 +58,7 @@ def new_transaction():
 
     # ---create object---
     data = {'name': description, 'url': url }
-    response = requests.post(NEW_OBJECT, data=data))
+    response = requests.post(NEW_OBJECT, data=data)
 
     if response.status_code != 200:
         return "Error creating object", 400
@@ -72,7 +72,7 @@ def new_transaction():
             'price': price,
             'state': "AWAITING_CONFIRMATION"}
 
-    response = requests.post(NEW_TRANSACTION, data=data))
+    response = requests.post(NEW_TRANSACTION, data=data)
 
     if response.status_code != 200:
         return "Error creating transaction", 400
@@ -87,7 +87,7 @@ def new_transaction():
 @transaction.route("/confirm", methods = ['POST'])
 def confirm_transaction():
 
-    token = request.cookies.get('access_token')
+    token = request.cookies.get('Access-Token')
     transaction_id = request.headers.get('transaction_id')
 
     if valid_user(token) == False
@@ -100,7 +100,7 @@ def confirm_transaction():
 @transaction.route("/pay", methods = ['POST'])
 def payed_transaction():
 
-    token = request.cookies.get('access_token')
+    token = request.cookies.get('Access-Token')
     transaction_id = request.headers.get('transaction_id')
 
     if valid_user(token) == False
@@ -113,7 +113,7 @@ def payed_transaction():
 @transaction.route("/transit", methods = ['POST'])
 def in_transit_transaction():
 
-    token = request.cookies.get('access_token')
+    token = request.cookies.get('Access-Token')
     transaction_id = request.headers.get('transaction_id')
 
     if valid_user(token) == False
@@ -126,7 +126,7 @@ def in_transit_transaction():
 @transaction.route("/success", methods = ['POST'])
 def successfull_transaction():
 
-    token = request.cookies.get('access_token')
+    token = request.cookies.get('Access-Token')
     transaction_id = request.headers.get('transaction_id')
 
     if valid_user(token) == False
@@ -136,12 +136,25 @@ def successfull_transaction():
 
 
 
+@transaction.route("/refund", methods = ['POST'])
+def refund_transaction():
+
+    token = request.cookies.get('Access-Token')
+    transaction_id = request.headers.get('transaction_id')
+
+    if valid_user(token) == False
+        return "Not logged in", 400
+
+    return change_state('REFUND', transaction_id)
+
+
+
 def change_state(state, transaction_id):
 
     # ---change transaction state---
     data = {'transaction_id': transaction_id,
             'state': state}
-    response = requests.post(UPDATE_TRANSACTION, data=data))
+    response = requests.post(UPDATE_TRANSACTION, data=data)
 
     if response.status_code != 200:
         return "Error changing transaction state", 400
@@ -153,27 +166,37 @@ def change_state(state, transaction_id):
 
 
 
-@transaction.route("/refund", methods = ['POST'])
-def refund_transaction():
+@transaction.route("/list", methods = ['GET'])
+def list_transactions():
+    token = request.cookies.get('Access-Token')
 
-    token = request.cookies.get('access_token')
-    transaction_id = request.headers.get('transaction_id')
-
+    # ---validate user---
     if valid_user(token) == False
         return "Not logged in", 400
 
-    return change_state('REFUND', transaction_id)
+    # ---get user id---
+    headers = {"Access-Token": token}
+    response = requests.get(IAM_USER, headers=headers)
 
+    if response.status_code != 200:
+        return "Invalid Access Token", 400
 
+    info = response.json()
+    user_id = info['uuid']
 
-@transaction.route("/list", methods = ['GET'])
-def list_transactions():
-    pass
+    # ---get transaction list---
+    response = requests.get(TRANSACTIONS_LIST + "?identifier=" + user_id + "/")
+
+    if response.status_code != 200:
+        return "Error retrieving transactions list", 400
+
+    return response.json()
+
 
 def valid_user(token):
 
     # ---validate user---
-    headers = {"access-token": token}
+    headers = {"Access-Token": token}
     response = requests.get(IAM_VALIDATE, headers=headers))
 
     if response.status_code != 200:

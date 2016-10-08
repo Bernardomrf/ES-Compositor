@@ -22,40 +22,37 @@ logging.basicConfig(stream=sys.stderr)
 logging.getLogger().setLevel(logging.DEBUG)
 log = logging.getLogger()
 
-"""
-@authorization.route("/", methods = ['GET'])
-def home():
-    return render_template('index.html')
-"""
 @authorization.route("/signup", methods = ['GET'])
 def signup():
     url = AUTH_SERVICE_SIGNUP
 
     response = redirect(url, code=302)
     response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['referer'] = AUTH_CALLBACK_URL
-
-    return response
-
-@authorization.route("/login", methods = ['GET'])
-def signup():
-    url = AUTH_SERVICE_LOGIN
-
-    response = redirect(url, code=302)
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['referer'] = AUTH_CALLBACK_URL
+    response.headers['Referer'] = AUTH_CALLBACK_URL
 
     return response
 
 @authorization.route("/signin_callback", methods = ['GET'])
 def signin_callback():
 
-    access_token = request.headers.get('access-token')
+    token = request.headers.get('Access-Token')
 
     resp = make_response(render_template('index.html'))
-    resp.set_cookie('access-token', access_token)
+    resp.set_cookie('Access-Token', token)
 
     return resp
 
-def valid_token():
-    pass
+@authorization.route("/logout", methods = ['GET'])
+def logout():
+    url = IAM_LOGOUT
+    token = request.cookies.get('Access-Token')
+
+    response.set_cookie('Access-Token', '', expires=0)
+
+    headers = {"Access-Token": token}
+    response = requests.get(url, headers=headers)
+
+    if response.status_code != 200:
+        return "Invalid Access Token", 400
+
+    return render_template('login.html')
