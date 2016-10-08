@@ -24,7 +24,7 @@ log = logging.getLogger()
 
 @authorization.route("/signup", methods = ['GET'])
 def signup():
-    url = AUTH_SERVICE_SIGNUP
+    url = IAM_SIGNUP
 
     response = redirect(url, code=302)
     response.headers['Access-Control-Allow-Origin'] = '*'
@@ -32,8 +32,8 @@ def signup():
 
     return response
 
-@authorization.route("/signin_callback", methods = ['GET'])
-def signin_callback():
+@authorization.route("/signup_callback", methods = ['GET'])
+def signup_callback():
 
     token = request.headers.get('Access-Token')
 

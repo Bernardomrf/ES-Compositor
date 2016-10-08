@@ -58,7 +58,7 @@ def new_transaction():
 
     # ---create object---
     data = {'name': description, 'url': url }
-    response = requests.post(NEW_OBJECT, data=data)
+    response = requests.post(TRANSACTIONS_NEW_OBJECT, data=data)
 
     if response.status_code != 200:
         return "Error creating object", 400
@@ -72,7 +72,7 @@ def new_transaction():
             'price': price,
             'state': "AWAITING_CONFIRMATION"}
 
-    response = requests.post(NEW_TRANSACTION, data=data)
+    response = requests.post(TRANSACTIONS_NEW, data=data)
 
     if response.status_code != 200:
         return "Error creating transaction", 400

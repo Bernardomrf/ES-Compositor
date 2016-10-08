@@ -20,7 +20,7 @@ logging.getLogger().setLevel(logging.DEBUG)
 log = logging.getLogger()
 
 @payment.route("/pay", methods = ['GET'])
-def signup():
+def pay():
 
     # ---validate user---
     if valid_user(token) == False
@@ -30,7 +30,7 @@ def signup():
 
     response = redirect(url, code=302)
     response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Referer'] = AUTH_CALLBACK_URL
+    response.headers['Referer'] = TRANSACTIONS_URL
 
     return response
 
