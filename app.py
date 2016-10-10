@@ -7,10 +7,9 @@ from flask_restful import reqparse, abort, Api, Resource
 from views.transaction import transaction
 from views.authorization import authorization
 from views.dashboard import dashboard
-from view.payment import payment
-from view.gateway import gateway
+from views.payment import payment
+from views.gateway import gateway
 
-# set the project root directory as the static folder, you can set others.
 app = Flask(__name__, static_url_path='/static')
 
 

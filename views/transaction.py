@@ -34,7 +34,7 @@ def new_transaction():
     url = request.form['url']
 
     # ---validate user---
-    if valid_user(token) == False
+    if valid_user(token) == False:
         return "Not logged in", 400
 
     # ---get user id---
@@ -90,7 +90,7 @@ def confirm_transaction():
     token = request.cookies.get('Access-Token')
     transaction_id = request.headers.get('transaction_id')
 
-    if valid_user(token) == False
+    if valid_user(token) == False:
         return "Not logged in", 400
 
     return change_state('WAITING_PAYMENT', transaction_id)
@@ -103,7 +103,7 @@ def payed_transaction():
     token = request.cookies.get('Access-Token')
     transaction_id = request.headers.get('transaction_id')
 
-    if valid_user(token) == False
+    if valid_user(token) == False:
         return "Not logged in", 400
 
     return change_state('PAYED', transaction_id)
@@ -116,7 +116,7 @@ def in_transit_transaction():
     token = request.cookies.get('Access-Token')
     transaction_id = request.headers.get('transaction_id')
 
-    if valid_user(token) == False
+    if valid_user(token) == False:
         return "Not logged in", 400
 
     return change_state('IN_TRANSIT', transaction_id)
@@ -129,7 +129,7 @@ def successfull_transaction():
     token = request.cookies.get('Access-Token')
     transaction_id = request.headers.get('transaction_id')
 
-    if valid_user(token) == False
+    if valid_user(token) == False:
         return "Not logged in", 400
 
     return change_state('SUCCESS', transaction_id)
@@ -142,7 +142,7 @@ def refund_transaction():
     token = request.cookies.get('Access-Token')
     transaction_id = request.headers.get('transaction_id')
 
-    if valid_user(token) == False
+    if valid_user(token) == False:
         return "Not logged in", 400
 
     return change_state('REFUND', transaction_id)
@@ -171,7 +171,7 @@ def list_transactions():
     token = request.cookies.get('Access-Token')
 
     # ---validate user---
-    if valid_user(token) == False
+    if valid_user(token) == False:
         return "Not logged in", 400
 
     # ---get user id---
@@ -197,7 +197,7 @@ def valid_user(token):
 
     # ---validate user---
     headers = {"Access-Token": token}
-    response = requests.get(IAM_VALIDATE, headers=headers))
+    response = requests.get(IAM_VALIDATE, headers=headers)
 
     if response.status_code != 200:
         return False

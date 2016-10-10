@@ -26,11 +26,11 @@ log = logging.getLogger()
 def home():
     token = request.cookies.get('Access-Token')
 
-    if token == None
+    if token == None:
         return "Not logged in", 400
 
     # ---validate user---
-    if valid_user(token) == False
+    if valid_user(token) == False:
         return "Not logged in", 400
 
     return render_template('index.html')
@@ -39,7 +39,7 @@ def valid_user(token):
 
     # ---validate user---
     headers = {"Access-Token": token}
-    response = requests.get(IAM_VALIDATE, headers=headers))
+    response = requests.get(IAM_VALIDATE, headers=headers)
 
     if response.status_code != 200:
         return False

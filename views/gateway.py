@@ -22,6 +22,6 @@ logging.basicConfig(stream=sys.stderr)
 logging.getLogger().setLevel(logging.DEBUG)
 log = logging.getLogger()
 
-@dashboard.route("/", methods = ['GET'])
+@gateway.route("/", methods = ['GET'])
 def home():
     return render_template('login_page.html')
