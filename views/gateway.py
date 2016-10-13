@@ -24,4 +24,4 @@ log = logging.getLogger()
 
 @gateway.route("/", methods = ['GET'])
 def home():
-    return render_template('login_page.html')
+    return render_template('login.html')

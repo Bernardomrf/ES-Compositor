@@ -10,7 +10,7 @@ REDIS_PORT=6379
 
 IAM_USER = "http://.../user"
 IAM_VALIDATE = "http://.../validate"
-IAM_SIGNUP = "http://.../signup"
+IAM_SIGNUP = "http://.../login"
 IAM_LOGOUT = "http://.../logout"
 
 PAY_SERVICE_INTERFACE = "http://.../payments_interface"#/payments_interface

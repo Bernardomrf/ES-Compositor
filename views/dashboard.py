@@ -24,14 +24,15 @@ log = logging.getLogger()
 
 @dashboard.route("/", methods = ['GET'])
 def home():
-    token = request.cookies.get('Access-Token')
+    """token = request.cookies.get('Access-Token')
 
     if token == None:
         return "Not logged in", 400
 
     # ---validate user---
     if valid_user(token) == False:
-        return "Not logged in", 400
+        return "Not logged in", 400"""
+    #Commented for testing
 
     return render_template('index.html')
 
