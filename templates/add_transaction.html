@@ -64,7 +64,7 @@
 	</div><!--/.sidebar-->
 	<!-- END SIDEBAR -->
 
-	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
@@ -76,22 +76,29 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-body">
+						<form action="/transaction/new" method="POST">
+							<fieldset>
 						<div class="col-md-6">
 
-								<div class="form-group">
-									<label>Seller</label>
-									<input type="text" placeholder="E-MAIL@" class="form-control">
-								</div>
+									<div class="form-group">
+										<label>Seller</label>
+										<input type="text" name="seller_email" placeholder="E-MAIL@" class="form-control">
+									</div>
 
-								<div class="form-group">
-									<label>URL</label>
-									<input type="text" placeholder="URL" class="form-control">
-								</div>
+									<div class="form-group">
+										<label>URL</label>
+										<input type="text" name="url" placeholder="URL" class="form-control">
+									</div>
 
-								<div class="form-group">
-									<label>Price</label>
-									<input type="text"  placeholder="€€€" class="form-control">
-								</div>
+									<div class="form-group">
+										<label>Price</label>
+										<input type="text" name="price" placeholder="€€€" class="form-control">
+									</div>
+
+									<div class="form-group">
+										<label>Description</label>
+										<input type="text" name="description" placeholder="Description" class="form-control">
+									</div>
 
 							</div>
 							<div class="col-md-6">
@@ -108,16 +115,17 @@
 										<option value="COMPLETED">Completed</option>
 									</select>
 								</div>
-								
-								<button type="submit" id="save_state" class="btn btn-primary">Create transaction</button>
 
+								<button type="submit" id="save_state" class="btn btn-primary">Create transaction</button>
+								<input type="submit" id="save_state" class="btn btn-primary" value="Create transaction">
 							</div>
+							</fieldset>
 						</form>
 					</div>
 				</div>
 			</div><!-- /.col-->
 		</div><!-- /.row -->
-		
+
 	</div><!--/.main-->
 
 	<script src="../static/js/jquery-1.11.1.min.js"></script>
@@ -129,9 +137,9 @@
 	<script src="../static/js/bootstrap-datepicker.js"></script>
 	<script>
 		!function ($) {
-			$(document).on("click","ul.nav li.parent > a > span.icon", function(){		  
-				$(this).find('em:first').toggleClass("glyphicon-minus");	  
-			}); 
+			$(document).on("click","ul.nav li.parent > a > span.icon", function(){
+				$(this).find('em:first').toggleClass("glyphicon-minus");
+			});
 			$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
 		}(window.jQuery);
 

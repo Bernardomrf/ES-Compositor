@@ -4,6 +4,7 @@ import os
 import requests
 import logging
 import json
+import uuid
 from datetime import datetime, timedelta
 from flask_restful import reqparse, abort, Api, Resource
 from flask import request
@@ -40,32 +41,38 @@ def new_transaction():
     # ---get user id---
     headers = {"Access-Token": token}
     response = requests.get(IAM_USER, headers=headers)
-
+    log.debug(response.text)
     if response.status_code != 200:
         return "Invalid Access Token", 400
 
-    info = response.json()
-    user_id = info['uuid']
+    user_id = response.json()['data']['uid']
+    log.debug(user_id)
 
     # ---get seller id---
-    headers = {"Access-Token": token}
+    #headers = {"Access-Token": token} FALAR COM O BRUNO
+    headers = {}
     response = requests.get(IAM_USER + "?email=" + seller_email, headers=headers)
-
+    log.debug(response.text)
     if response.status_code != 200:
         return "Email not found", 400
 
-    seller_id = response.data['uuid']
-
+    seller_id = response.json()['data']['uid']
+    log.debug(seller_id)
     # ---create object---
-    data = {'name': description, 'url': url }
+    data = {'name': description,
+            'url': url,
+            'identifier' : user_id
+            }
     response = requests.post(TRANSACTIONS_NEW_OBJECT, data=data)
 
-    if response.status_code != 200:
+    if response.status_code == 400:
         return "Error creating object", 400
 
-    object_uuid = response.data["id"]
+    info = response.json()
+    object_uuid = info["id"]
 
     # ---create transaction---
+
     data = {'to_uuid': seller_id,
             'from_uuid': user_id,
             'object_uuid': object_uuid,
@@ -74,9 +81,12 @@ def new_transaction():
 
     response = requests.post(TRANSACTIONS_NEW, data=data)
 
-    if response.status_code != 200:
+    if response.status_code != 201:
         return "Error creating transaction", 400
 
+    info = response.json()
+    transaction_uuid = info["id"]#Apagar
+    log.debug(info)
     response = redirect(TRANSACTIONS_URL, code=302)
     response.headers['Access-Control-Allow-Origin'] = '*'
 
@@ -168,6 +178,7 @@ def change_state(state, transaction_id):
 
 @transaction.route("/list", methods = ['GET'])
 def list_transactions():
+
     token = request.cookies.get('Access-Token')
 
     # ---validate user---
@@ -181,23 +192,48 @@ def list_transactions():
     if response.status_code != 200:
         return "Invalid Access Token", 400
 
-    info = response.json()
-    user_id = info['uuid']
+    user_id = response.json()['data']['uid']
 
     # ---get transaction list---
-    response = requests.get(TRANSACTIONS_LIST + "?identifier=" + user_id + "/")
+    response = requests.get(TRANSACTIONS_LIST + user_id + "/")
+
+    info = response.json()
 
     if response.status_code != 200:
         return "Error retrieving transactions list", 400
 
-    return response.json()
+    response = []
+
+    for trans in info['from_uuid']:
+        response.append({'state': trans['state'],
+                        'from' : trans['from_uuid'],
+                        'to' : trans['to_uuid'],
+                        'price' : trans['price'],
+                        'url' : trans['object']['url'],
+                        'actions': '<a href=\'/change_state?id='+trans['id']+'\'>Change state</a>'
+                        })
+    for trans in info['to_uuid']:
+        response.append({'state': trans['state'],
+                        'from' : trans['from_uuid'],
+                        'to' : trans['to_uuid'],
+                        'price' : trans['price'],
+                        'url' : trans['object']['url'],
+                        'actions': '<a href=\'/change_state?id='+trans['id']+'\'>Change state</a>'
+                        })
+    # now song is a dictionary
+    #for attribute, value in song.iteritems():
+    #for object_entry in trans:
+        #for attribute, value in transaction:
+        #print attribute, value # example usage
+
+    return jsonify(response)
 
 
 def valid_user(token):
 
     # ---validate user---
     headers = {"Access-Token": token}
-    response = requests.get(IAM_VALIDATE, headers=headers)
+    response = requests.post(IAM_VALIDATE, headers=headers)
 
     if response.status_code != 200:
         return False

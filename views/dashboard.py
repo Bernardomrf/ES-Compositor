@@ -24,14 +24,14 @@ log = logging.getLogger()
 
 @dashboard.route("/", methods = ['GET'])
 def home():
-    """token = request.cookies.get('Access-Token')
-
+    token = request.cookies.get('Access-Token')
+    log.debug(token)
     if token == None:
-        return "Not logged in", 400
+        return "No token", 400
 
     # ---validate user---
     if valid_user(token) == False:
-        return "Not logged in", 400"""
+        return "Not logged in", 400
     #Commented for testing
 
     return render_template('index.html')
@@ -40,7 +40,9 @@ def valid_user(token):
 
     # ---validate user---
     headers = {"Access-Token": token}
-    response = requests.get(IAM_VALIDATE, headers=headers)
+    response = requests.post(IAM_VALIDATE, headers=headers)
+    log.debug(token)
+    log.debug(response.text)
 
     if response.status_code != 200:
         return False

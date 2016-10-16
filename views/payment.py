@@ -38,7 +38,7 @@ def valid_user(token):
 
     # ---validate user---
     headers = {"Access-Token": token}
-    response = requests.get(IAM_VALIDATE, headers=headers)
+    response = requests.post(IAM_VALIDATE, headers=headers)
 
     if response.status_code != 200:
         return False

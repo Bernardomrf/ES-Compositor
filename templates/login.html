@@ -8,6 +8,9 @@
 <link href="static/css/bootstrap.min.css" rel="stylesheet">
 <link href="static/css/datepicker3.css" rel="stylesheet">
 <link href="static/css/styles.css" rel="stylesheet">
+<link href="static/css/font-awesome.css" rel="stylesheet">
+<link href="static/css/bootstrap-social.css" rel="stylesheet">
+
 
 <!--[if lt IE 9]>
 <script src="../static/js/html5shiv.js"></script>
@@ -21,11 +24,19 @@
 	<div class="row">
 		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
 			<div class="login-panel panel panel-default">
-				<div class="panel-heading">Log in</div>
+				<div class="panel-heading">
+					Transafe
+				</div>
 				<div class="panel-body">
 					<form role="form">
 						<fieldset>
 							<div class="form-group">
+								<a class="btn btn-block btn-social btn-twitter" href="/authorize/signup">
+							    <span class="fa fa-sign-in"></span> Sign in with Google or Facebook
+							  </a>
+							</div>
+
+					<!--<div class="form-group">
 								<input class="form-control" placeholder="E-mail" name="email" type="email" autofocus="">
 							</div>
 							<div class="form-group">
@@ -37,6 +48,7 @@
 								</label>
 							</div>
 							<a href="/dashboard" class="btn btn-primary">Login</a>
+						-->
 						</fieldset>
 					</form>
 				</div>
@@ -53,6 +65,41 @@
 	<script src="static/js/easypiechart.js"></script>
 	<script src="static/js/easypiechart-data.js"></script>
 	<script src="static/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript">
+
+			function login(){
+					console.log("Login");
+					$.ajax({
+							type: "GET",
+							url: "signup",
+							headers: {"referrer": "http://localhost:5001/dashboard",
+												"Access-Control-Allow-Origin" : "*"},
+							async: false,
+							dataType: "html",
+							success: function(data, textStatus, request) {
+									//var url = request.getResponseHeader('location');
+									console.log(data);
+
+									//window.location.href = url;
+
+
+
+																	},
+							error: function(err) {
+									alert(err+" did happen, please retry");
+							}
+					});
+
+					/*var xhttp = new XMLHttpRequest();
+					xhttp.open("GET", "http://bsilvr.duckdns.org:5368/login", false);
+					xhttp.setRequestHeader("referrer", "http://localhost:5001/dashboard");
+					xhttp.send();
+*/
+			}
+
+
+
+	</script>
 	<script>
 		!function ($) {
 			$(document).on("click","ul.nav li.parent > a > span.icon", function(){
