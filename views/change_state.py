@@ -21,5 +21,38 @@ log = logging.getLogger()
 
 @change_state.route("/", methods = ['GET'])
 def home():
-    return render_template('change_state.html')
 
+    transaction_id = request.args.get('id')
+    state = request.args.get('state')
+
+    token = request.cookies.get('Access-Token')
+
+    if token == None:
+        return "No token", 400
+
+    # ---validate user---
+    if valid_user(token) == False:
+        return "Not logged in", 400
+
+    data = {'transaction_id': transaction_id,
+            'state': state}
+    response = requests.post(TRANSACTIONS_UPDATE, data=data)
+
+    if response.status_code != 200:
+        return "Error changing transaction state", 400
+
+    response = redirect(TRANSACTIONS_URL, code=302)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+
+    return response
+
+def valid_user(token):
+
+    # ---validate user---
+    headers = {"Access-Token": token}
+    response = requests.post(IAM_VALIDATE, headers=headers)
+
+    if response.status_code != 200:
+        return False
+
+    return True

@@ -22,7 +22,25 @@ log = logging.getLogger()
 
 @transaction.route("/", methods = ['GET'])
 def home():
-    return render_template('transaction.html')
+    token = request.cookies.get('Access-Token')
+
+    if token == None:
+        return "No token", 400
+
+    # ---validate user---
+    if valid_user(token) == False:
+        return "Not logged in", 400
+
+    # ---get user mail---
+    headers = {"Access-Token": token}
+    response = requests.get(IAM_USER, headers=headers)
+
+    if response.status_code != 200:
+        return "Invalid Access Token", 400
+
+    user = response.json()['data']['email']
+
+    return render_template('transaction.html', user=user)
 
 
 
@@ -41,23 +59,23 @@ def new_transaction():
     # ---get user id---
     headers = {"Access-Token": token}
     response = requests.get(IAM_USER, headers=headers)
-    log.debug(response.text)
+
     if response.status_code != 200:
         return "Invalid Access Token", 400
 
     user_id = response.json()['data']['uid']
-    log.debug(user_id)
 
     # ---get seller id---
     #headers = {"Access-Token": token} FALAR COM O BRUNO
     headers = {}
     response = requests.get(IAM_USER + "?email=" + seller_email, headers=headers)
-    log.debug(response.text)
+
     if response.status_code != 200:
         return "Email not found", 400
 
-    seller_id = response.json()['data']['uid']
-    log.debug(seller_id)
+    seller_id = json.loads(response.text)['data']['uid']
+    # response.json()['data']['uid']
+
     # ---create object---
     data = {'name': description,
             'url': url,
@@ -84,101 +102,15 @@ def new_transaction():
     if response.status_code != 201:
         return "Error creating transaction", 400
 
-    info = response.json()
-    transaction_uuid = info["id"]#Apagar
-    log.debug(info)
     response = redirect(TRANSACTIONS_URL, code=302)
     response.headers['Access-Control-Allow-Origin'] = '*'
 
     return response
-
-
-
-@transaction.route("/confirm", methods = ['POST'])
-def confirm_transaction():
-
-    token = request.cookies.get('Access-Token')
-    transaction_id = request.headers.get('transaction_id')
-
-    if valid_user(token) == False:
-        return "Not logged in", 400
-
-    return change_state('WAITING_PAYMENT', transaction_id)
-
-
-
-@transaction.route("/pay", methods = ['POST'])
-def payed_transaction():
-
-    token = request.cookies.get('Access-Token')
-    transaction_id = request.headers.get('transaction_id')
-
-    if valid_user(token) == False:
-        return "Not logged in", 400
-
-    return change_state('PAYED', transaction_id)
-
-
-
-@transaction.route("/transit", methods = ['POST'])
-def in_transit_transaction():
-
-    token = request.cookies.get('Access-Token')
-    transaction_id = request.headers.get('transaction_id')
-
-    if valid_user(token) == False:
-        return "Not logged in", 400
-
-    return change_state('IN_TRANSIT', transaction_id)
-
-
-
-@transaction.route("/success", methods = ['POST'])
-def successfull_transaction():
-
-    token = request.cookies.get('Access-Token')
-    transaction_id = request.headers.get('transaction_id')
-
-    if valid_user(token) == False:
-        return "Not logged in", 400
-
-    return change_state('SUCCESS', transaction_id)
-
-
-
-@transaction.route("/refund", methods = ['POST'])
-def refund_transaction():
-
-    token = request.cookies.get('Access-Token')
-    transaction_id = request.headers.get('transaction_id')
-
-    if valid_user(token) == False:
-        return "Not logged in", 400
-
-    return change_state('REFUND', transaction_id)
-
-
-
-def change_state(state, transaction_id):
-
-    # ---change transaction state---
-    data = {'transaction_id': transaction_id,
-            'state': state}
-    response = requests.post(UPDATE_TRANSACTION, data=data)
-
-    if response.status_code != 200:
-        return "Error changing transaction state", 400
-
-    response = redirect(TRANSACTIONS_URL, code=302)
-    response.headers['Access-Control-Allow-Origin'] = '*'
-
-    return response
-
-
 
 @transaction.route("/list", methods = ['GET'])
 def list_transactions():
 
+    dataType = request.args.get('dataType')
     token = request.cookies.get('Access-Token')
 
     # ---validate user---
@@ -196,38 +128,30 @@ def list_transactions():
 
     # ---get transaction list---
     response = requests.get(TRANSACTIONS_LIST + user_id + "/")
-
     info = response.json()
 
     if response.status_code != 200:
         return "Error retrieving transactions list", 400
 
     response = []
-
-    for trans in info['from_uuid']:
-        response.append({'state': trans['state'],
-                        'from' : trans['from_uuid'],
-                        'to' : trans['to_uuid'],
-                        'price' : trans['price'],
-                        'url' : trans['object']['url'],
-                        'actions': '<a href=\'/change_state?id='+trans['id']+'\'>Change state</a>'
-                        })
-    for trans in info['to_uuid']:
-        response.append({'state': trans['state'],
-                        'from' : trans['from_uuid'],
-                        'to' : trans['to_uuid'],
-                        'price' : trans['price'],
-                        'url' : trans['object']['url'],
-                        'actions': '<a href=\'/change_state?id='+trans['id']+'\'>Change state</a>'
-                        })
-    # now song is a dictionary
-    #for attribute, value in song.iteritems():
-    #for object_entry in trans:
-        #for attribute, value in transaction:
-        #print attribute, value # example usage
+    if dataType == "seller":
+        for trans in info['to_uuid']:
+            response.append({'state': transformState(trans['state']),
+                            'buyer' : str(trans['from_uuid']),
+                            'price' : trans['price'],
+                            'url' : trans['object']['url'],
+                            'actions': action(dataType, trans['state'], trans['id'])
+                            })
+    elif dataType == "buyer":
+        for trans in info['from_uuid']:
+            response.append({'state': transformState(trans['state']),
+                            'seller' : str(trans['to_uuid']),
+                            'price' : trans['price'],
+                            'url' : trans['object']['url'],
+                            'actions': action(dataType  , trans['state'], trans['id'])
+                            })
 
     return jsonify(response)
-
 
 def valid_user(token):
 
@@ -239,3 +163,34 @@ def valid_user(token):
         return False
 
     return True
+
+def transformState(state):
+    if state == "AWAITING_CONFIRMATION":
+        return "<span class=\"badge\">Awaiting Confirmation</span>"
+    elif state == "AWAITING_PAYMENT":
+        return "<span class=\"badge\">Awaiting Payment</span>"
+    elif state == "AWAITING_SHIPPING":
+        return "<span class=\"badge\">Awaiting Shipment</span>"
+    elif state == "SHIPPED":
+        return "<span class=\"badge\">Shiped</span>"
+    elif state == "COMPLETED":
+        return "<span class=\"badge\">Success</span>"
+    elif state == "REFUND":
+        return "<span class=\"badge\">Refund</span>"
+
+def action(dataType, state, id):
+
+    if dataType == "buyer":
+        if state == "AWAITING_PAYMENT":
+            return "<a href=\"/change_state?id="+ id +"&state=AWAITING_SHIPPING\" class=\"btn btn-default\">Pay</a>"
+        elif state == "SHIPPED":
+            return "<a href=\"/change_state?id="+ id +"&state=COMPLETED\" class=\"btn btn-default\">Received</a>"
+        else:
+            return "None"
+    elif dataType == "seller":
+        if state == "AWAITING_CONFIRMATION":
+            return "<a href=\"/change_state?id="+ id +"&state=AWAITING_PAYMENT\" class=\"btn btn-default\">Confirm</a>"
+        elif state == "AWAITING_SHIPPING":
+            return "<a href=\"/change_state?id="+ id +"&state=SHIPPED\" class=\"btn btn-default\">Sended</a>"
+        else:
+            return "None"

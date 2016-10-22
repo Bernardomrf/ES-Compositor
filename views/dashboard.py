@@ -32,9 +32,17 @@ def home():
     # ---validate user---
     if valid_user(token) == False:
         return "Not logged in", 400
-    #Commented for testing
 
-    return render_template('index.html')
+    # ---get user mail---
+    headers = {"Access-Token": token}
+    response = requests.get(IAM_USER, headers=headers)
+    log.debug(response.text)
+    if response.status_code != 200:
+        return "Invalid Access Token", 400
+
+    user = response.json()['data']['email']
+
+    return render_template('index.html', user = user)
 
 def valid_user(token):
 
