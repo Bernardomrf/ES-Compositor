@@ -27,6 +27,7 @@ def signup():
     url = IAM_SIGNUP
 
     response = redirect(url+'?referer='+AUTH_CALLBACK_URL, code=302)
+    response.set_cookie('Access-Token', '', expires=0)
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.referrer = AUTH_CALLBACK_URL
     response.headers['Referer'] = AUTH_CALLBACK_URL
@@ -45,15 +46,9 @@ def signup_callback():
 
 @authorization.route("/logout", methods = ['GET'])
 def logout():
-    url = IAM_LOGOUT
+
     token = request.cookies.get('Access-Token')
 
-    response.set_cookie('Access-Token', '', expires=0)
+    response = redirect(IAM_LOGOUT+ "?" +urllib.urlencode({"redirect_url": LOGIN_PAGE_URL,"access_token": token}), 302)
 
-    headers = {"Access-Token": token}
-    response = requests.get(url, headers=headers)
-    
-    if response.status_code != 200:
-        return "Invalid Access Token", 400
-
-    return render_template('login.html')
+    return response
