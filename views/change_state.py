@@ -41,6 +41,10 @@ def home():
     if response.status_code != 200:
         return "Error changing transaction state", 400
 
+    data = {'phone_number': '+351914316075',
+            'message': state}
+    response = requests.post(NOTIFICATION_EMAIL, data=data)
+
     response = redirect(TRANSACTIONS_URL, code=302)
     response.headers['Access-Control-Allow-Origin'] = '*'
 

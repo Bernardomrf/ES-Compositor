@@ -76,7 +76,12 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">Money</div>
 					<div class="panel-body">
-						<iframe src="{{url}}" width="100%" style="border:none;"></iframe>
+
+						<form target="iframe" action="{{pay_url}}" method="post">
+						      <input type="hidden" name="user_id" value="{{user_id}}">
+									  <input class="btn btn-default" type="submit" value="Add card">
+						</form>
+						<iframe name="iframe" src="{{url}}" width="100%" height="470px" style="border:none;"></iframe>
 
 
 					</div>

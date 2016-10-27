@@ -40,27 +40,9 @@ def home():
     user = response.json()['data']['email']
     user_id = response.json()['data']['uid']
     url = PAY_SERVICE_MYCARDS+user_id
+    pay_url = PAY_SERVICE_CREATE_CARD
 
-    return render_template('money.html', url=url, user = user)
-
-@money.route("/list", methods = ['GET'])
-def list():
-
-    token = request.cookies.get('Access-Token')
-
-    headers = {"Access-Token": token}
-    response = requests.get(IAM_USER, headers=headers)
-    log.debug(response.text)
-    if response.status_code != 200:
-        return "Invalid Access Token", 400
-
-    user = response.json()['data']['email']
-    user_id = response.json()['data']['uid']
-
-    response = requests.get(PAY_SERVICE_MYCARDS+user_id)
-    log.debug(response.text)
-    html = response.text
-    return html
+    return render_template('money.html', url=url, user = user, user_id=user_id, pay_url=pay_url)
 
 def valid_user(token):
 
