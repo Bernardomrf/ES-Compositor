@@ -39,8 +39,10 @@ def home():
         return "Invalid Access Token", 400
 
     user = response.json()['data']['email']
+    name = response.json()['data']['name']    
+    image = response.json()['data']['picture_url']
 
-    return render_template('add_transaction.html', user=user)
+    return render_template('add_transaction.html', user=user, name=name, image=image)
 
 def valid_user(token):
 

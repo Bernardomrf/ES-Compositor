@@ -1,30 +1,27 @@
 
 import sys
 import os
-import urllib
-import uuid
-import logging
 import requests
-import datetime
+import logging
 import json
-import base64
+from datetime import datetime, timedelta
 from flask_restful import reqparse, abort, Api, Resource
-from flask import request, render_template, redirect, make_response
-from flask import jsonify
+from flask import request
+from flask import jsonify, make_response, redirect, render_template, url_for
 from flask import Blueprint
 
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
 from settings import *
 
-dashboard = Blueprint('dashboard', __name__)
+profile = Blueprint('profile', __name__)
 logging.basicConfig(stream=sys.stderr)
 logging.getLogger().setLevel(logging.DEBUG)
-
 log = logging.getLogger()
 
-@dashboard.route("/", methods = ['GET'])
+@profile.route("/", methods = ['GET'])
 def home():
+
     token = request.cookies.get('Access-Token')
     log.debug(token)
     if token == None:
@@ -34,32 +31,22 @@ def home():
     if valid_user(token) == False:
         return "Not logged in", 400
 
-    # ---get user mail---
+    # ---get user info---
     headers = {"Access-Token": token}
     response = requests.get(IAM_USER, headers=headers)
     log.debug(response.text)
     if response.status_code != 200:
         return "Invalid Access Token", 400
 
+
+    email = response.json()['data']['email']
+    uid = response.json()['data']['uid']
     name = response.json()['data']['name']
-    user_id = response.json()['data']['uid']
     image = response.json()['data']['picture_url']
-
-    response = requests.get(TRANSACTIONS_LIST + user_id + "/")
-    info = response.json()
-
-    total_trans = len(info['to_uuid']) + len(info['from_uuid'])
-
-    pending=0
-    for trans in info['to_uuid'] :
-        if(trans['state'] != "COMPLETED"):
-            pending+=1
-    for trans in info['from_uuid']:
-        if(trans['state'] != "COMPLETED"):
-            pending+=1
+    address = response.json()['data']['address']
 
 
-    return render_template('index.html', name = name, total_trans=total_trans, pending=pending, image=image)
+    return render_template('profile.html', name=name, email=email, id=uid, image=image, address=address)
 
 def valid_user(token):
 

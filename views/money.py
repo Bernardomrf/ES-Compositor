@@ -19,6 +19,30 @@ logging.basicConfig(stream=sys.stderr)
 logging.getLogger().setLevel(logging.DEBUG)
 log = logging.getLogger()
 
+
+@money.route("/list", methods = ['GET'])
+def list():
+    token = request.cookies.get('Access-Token')
+
+    # ---validate user---
+    if valid_user(token) == False:
+        return "Not logged in", 400
+
+    # ---get user id---
+    headers = {"Access-Token": token}
+    response = requests.get(IAM_USER, headers=headers)
+
+    if response.status_code != 200:
+        return "Invalid Access Token", 400
+
+    user_id = response.json()['data']['uid']
+    headers = {"Content-Type": "application/json"}
+    response = requests.get(PAY_SERVICE_MYCARDS+user_id, headers=headers)
+
+    
+
+
+
 @money.route("/", methods = ['GET'])
 def home():
 
@@ -39,10 +63,12 @@ def home():
 
     user = response.json()['data']['email']
     user_id = response.json()['data']['uid']
+    name = response.json()['data']['name']
+    image = response.json()['data']['picture_url']
     url = PAY_SERVICE_MYCARDS+user_id
     pay_url = PAY_SERVICE_CREATE_CARD
 
-    return render_template('money.html', url=url, user = user, user_id=user_id, pay_url=pay_url)
+    return render_template('money.html', url=url, user = user, user_id=user_id, pay_url=pay_url, name=name, image=image)
 
 def valid_user(token):
 

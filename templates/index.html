@@ -34,10 +34,9 @@
                 <a class="navbar-brand" href="#"><span>Tran</span>Safe</a>
                 <ul class="user-menu">
                     <li class="dropdown pull-right">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{user}} <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="{{image}}" class="img-circle" alt="picture" style="max-width: 22%; position: absolute; left: -35px;" > {{name}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
-                            <li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>
+                            <li><a href="/profile"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
                             <li><a href="/authorize/logout"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
                         </ul>
                     </li>
@@ -111,7 +110,7 @@
 							<svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg>
 						</div>
 						<div class="col-sm-9 col-lg-7 widget-right">
-							<div class="large">24</div>
+							<div class="large">{{total_trans}}</div>
 							<div class="text-muted">Transactions</div>
 						</div>
 					</div>
@@ -124,7 +123,7 @@
                             <svg class="glyph stroked hourglass"><use xlink:href="#stroked-hourglass"/></svg>
                         </div>
 						<div class="col-sm-9 col-lg-7 widget-right">
-							<div class="large">2</div>
+							<div class="large">{{pending}}</div>
 							<div class="text-muted">Pending</div>
 						</div>
 					</div>

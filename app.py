@@ -11,6 +11,7 @@ from views.payment import payment
 from views.gateway import gateway
 from views.money import money
 from views.rating import rating
+from views.profile import profile
 from views.change_state import change_state
 from views.add_transaction import add_transaction
 
@@ -25,6 +26,7 @@ app.register_blueprint(money, url_prefix='/money')
 app.register_blueprint(rating, url_prefix='/rating')
 app.register_blueprint(change_state, url_prefix='/change_state')
 app.register_blueprint(add_transaction, url_prefix='/add_transaction')
+app.register_blueprint(profile, url_prefix='/profile')
 app.register_blueprint(gateway)
 
 

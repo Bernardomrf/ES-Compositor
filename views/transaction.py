@@ -39,8 +39,10 @@ def home():
         return "Invalid Access Token", 400
 
     user = response.json()['data']['email']
+    name = response.json()['data']['name']
+    image = response.json()['data']['picture_url']
 
-    return render_template('transaction.html', user=user)
+    return render_template('transaction.html', user=user, image=image, name=name)
 
 
 
@@ -136,16 +138,26 @@ def list_transactions():
     response = []
     if dataType == "seller":
         for trans in info['to_uuid']:
+
+            resp = requests.get(IAM_USER + "?id=" + trans['from_uuid'])
+            if resp.status_code != 200:
+                return "ID not found", 400
+
             response.append({'state': transformState(trans['state']),
-                            'buyer' : str(trans['from_uuid']),
+                            'buyer' : json.loads(resp.text)['data']['email'],
                             'price' : trans['price'],
                             'url' : trans['object']['url'],
                             'actions': action(dataType, trans['state'], trans['id'])
                             })
     elif dataType == "buyer":
         for trans in info['from_uuid']:
+
+            resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'])
+            if resp.status_code != 200:
+                return "ID not found", 400
+
             response.append({'state': transformState(trans['state']),
-                            'seller' : str(trans['to_uuid']),
+                            'seller' : json.loads(resp.text)['data']['email'],
                             'price' : trans['price'],
                             'url' : trans['object']['url'],
                             'actions': action(dataType  , trans['state'], trans['id'])

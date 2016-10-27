@@ -25,6 +25,7 @@ log = logging.getLogger()
 @gateway.route("/", methods = ['GET'])
 def home():
     token = request.cookies.get('Access-Token')
+    log.debug(token)
     if valid_user(token) == True:
         response = redirect(DASHBOARD_URL, code=302)
         response.headers['Access-Control-Allow-Origin'] = '*'
