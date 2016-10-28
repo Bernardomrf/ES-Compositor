@@ -19,6 +19,32 @@ logging.basicConfig(stream=sys.stderr)
 logging.getLogger().setLevel(logging.DEBUG)
 log = logging.getLogger()
 
+@money.route("/", methods = ['GET'])
+def home():
+
+    token = request.cookies.get('Access-Token')
+    log.debug(token)
+    if token == None:
+        return "No token", 400
+
+    # ---validate user---
+    if valid_user(token) == False:
+        return "Not logged in", 400
+
+    headers = {"Access-Token": token}
+    response = requests.get(IAM_USER, headers=headers)
+
+    if response.status_code != 200:
+        return "Invalid Access Token", 400
+
+    user = response.json()['data']['email']
+    user_id = response.json()['data']['uid']
+    name = response.json()['data']['name']
+    image = response.json()['data']['picture_url']
+    url = PAY_SERVICE_MYCARDS+user_id
+    pay_url = PAY_SERVICE_CREATE_CARD
+
+    return render_template('money.html', url=url, user = user, user_id=user_id, pay_url=pay_url, name=name, image=image)
 
 @money.route("/list", methods = ['GET'])
 def list():
@@ -36,47 +62,26 @@ def list():
         return "Invalid Access Token", 400
 
     user_id = response.json()['data']['uid']
-    headers = {"Content-Type": "application/json"}
+    headers = {'Accept': 'application/json'}
+
     response = requests.get(PAY_SERVICE_MYCARDS+user_id, headers=headers)
+    info = response.json()
 
-    
+    response = []
+    for card in info:
 
+        response.append({'number': str(card['number']),
+                        'date' : str(card['expire_month']) + '/' + str(card['expire_year'])
+                        })
 
+    return jsonify(response)
 
-@money.route("/", methods = ['GET'])
-def home():
-
-    token = request.cookies.get('Access-Token')
-    log.debug(token)
-    if token == None:
-        return "No token", 400
-
-    # ---validate user---
-    if valid_user(token) == False:
-        return "Not logged in", 400
-
-    headers = {"Access-Token": token}
-    response = requests.get(IAM_USER, headers=headers)
-    log.debug(response.text)
-    if response.status_code != 200:
-        return "Invalid Access Token", 400
-
-    user = response.json()['data']['email']
-    user_id = response.json()['data']['uid']
-    name = response.json()['data']['name']
-    image = response.json()['data']['picture_url']
-    url = PAY_SERVICE_MYCARDS+user_id
-    pay_url = PAY_SERVICE_CREATE_CARD
-
-    return render_template('money.html', url=url, user = user, user_id=user_id, pay_url=pay_url, name=name, image=image)
 
 def valid_user(token):
 
     # ---validate user---
     headers = {"Access-Token": token}
     response = requests.post(IAM_VALIDATE, headers=headers)
-    log.debug(token)
-    log.debug(response.text)
 
     if response.status_code != 200:
         return False

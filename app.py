@@ -14,6 +14,7 @@ from views.rating import rating
 from views.profile import profile
 from views.change_state import change_state
 from views.add_transaction import add_transaction
+from views.pay_gateway import pay_gateway
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -27,6 +28,7 @@ app.register_blueprint(rating, url_prefix='/rating')
 app.register_blueprint(change_state, url_prefix='/change_state')
 app.register_blueprint(add_transaction, url_prefix='/add_transaction')
 app.register_blueprint(profile, url_prefix='/profile')
+app.register_blueprint(pay_gateway, url_prefix='/pay_gateway')
 app.register_blueprint(gateway)
 
 

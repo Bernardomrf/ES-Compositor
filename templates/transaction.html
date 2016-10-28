@@ -109,6 +109,19 @@
 			</div>
 		</div><!--/.row-->
 	</div>
+	<script>
+	function manage(){
+		MyWindow=window.open('/pay_gateway','MyWindow',width=600,height=300);
+
+		MyWindow.onbeforeunload= function(){
+			console.log("sadabs");
+			location.reload();
+		}
+		return false;
+	}
+
+
+	</script>
 
 	<script src="../static/js/jquery-1.11.1.min.js"></script>
 	<script src="../static/js/bootstrap.min.js"></script>
