@@ -4,6 +4,7 @@ import os
 import requests
 import logging
 import json
+import paypalrestsdk
 from datetime import datetime, timedelta
 from flask_restful import reqparse, abort, Api, Resource
 from flask import request
@@ -24,10 +25,47 @@ def home():
 
     return render_template('pay_gateway.html')
 
-@pay_gateway.route("/paypal", methods = ['POST'])
+@pay_gateway.route("/paypal", methods = ['GET'])
 def paypal():
 
-    pass
+    paypalrestsdk.configure({"mode": "sandbox",
+                            "client_id": PAYPAL_CLIENT_ID,
+                            "client_secret": PAYPAL_CLIENT_SECRET})
+
+    payment = paypalrestsdk.Payment({
+    "intent": "sale",
+
+    "payer": {
+        "payment_method": "paypal"
+        },
+
+    "redirect_urls": {
+        "return_url": "http://transafe.rafaelferreira.pt/pay_gateway/callback",
+        "cancel_url": "http://localhost:3000/pay_gateway/cancel"
+        },
+
+    "transactions": [{
+
+        "item_list": {
+            "items": [{
+                "name": "item",
+                "sku": "item",
+                "price": "5.00",
+                "currency": "EUR",
+                "quantity": 1}]},
+
+        "amount": {
+            "total": "5.00",
+            "currency": "EUR"},
+        "description": "This is the payment transaction description."}]})
+
+    if payment.create():
+        for link in payment.links:
+            if link.method == "REDIRECT":
+                redirect_url = str(link.href)
+                return redirect(redirect_url, 302)
+    else:
+        return "ERROR"
 
 @pay_gateway.route("/transafe", methods = ['GET'])
 def transafe():

@@ -27,3 +27,6 @@ LOGIN_PAGE_URL = "http://transafe.rafaelferreira.pt:80/"
 DASHBOARD_URL = "http://transafe.rafaelferreira.pt:80/dashboard"
 
 NOTIFICATION_EMAIL = "http://10.0.11.14:80/api/v1/notification/messenger/"
+
+PAYPAL_CLIENT_ID = "AW3iw3rOWtZt_VrhggnaNYl1_7FJ6lAf04SwAXAFfHmVUAkXX6bz55pSBnemeJ3z-Vytymv1FP7mVWBt"
+PAYPAL_CLIENT_SECRET = "ENqKPCSabqwaDsLKncTGjeXDLlYyIEALMg9yiRdZG8BS7TvqLPINd303YhMvmLCJptEeRRHhUSS0JM6T"
