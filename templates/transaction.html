@@ -110,8 +110,11 @@
 		</div><!--/.row-->
 	</div>
 	<script>
-	function manage(){
-		MyWindow=window.open('/pay_gateway','MyWindow',width=600,height=300);
+	function manage(id){
+
+	console.log(id);
+
+		MyWindow=window.open("/pay_gateway/?id="+id+"",'MyWindow',width=600,height=300);
 
 		MyWindow.onbeforeunload= function(){
 			console.log("sadabs");

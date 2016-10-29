@@ -194,7 +194,7 @@ def action(dataType, state, id):
 
     if dataType == "buyer":
         if state == "AWAITING_PAYMENT":
-            return "<a onClick=\"manage()\" class=\"btn btn-default\">Pay</a>"
+            return "<a onClick=\"manage('"+id+"')\" class=\"btn btn-default\">Pay</a>"
         elif state == "SHIPPED":
             return "<a href=\"/change_state?id="+ id +"&state=COMPLETED\" class=\"btn btn-default\">Received</a>"
         else:

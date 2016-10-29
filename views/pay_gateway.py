@@ -23,10 +23,22 @@ log = logging.getLogger()
 @pay_gateway.route("/", methods = ['GET'])
 def home():
 
-    return render_template('pay_gateway.html')
+    trans_id=request.args.get('id')
+    log.debug(trans_id)
+
+    return render_template('pay_gateway.html', trans_id=trans_id)
 
 @pay_gateway.route("/paypal", methods = ['GET'])
 def paypal():
+    trans_id=request.args.get('id')
+    log.debug(trans_id)
+
+    resp = requests.get(TRANSACTIONS_DETAILS + trans_id)
+    if resp.status_code != 200:
+        return "ID not found", 400
+    #info = resp.json()
+
+    log.debug(resp.text)
 
     paypalrestsdk.configure({"mode": "sandbox",
                             "client_id": PAYPAL_CLIENT_ID,

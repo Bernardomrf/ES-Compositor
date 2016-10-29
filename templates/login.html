@@ -51,41 +51,7 @@
 	<script src="static/js/easypiechart.js"></script>
 	<script src="static/js/easypiechart-data.js"></script>
 	<script src="static/js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript">
-
-			function login(){
-					console.log("Login");
-					$.ajax({
-							type: "GET",
-							url: "signup",
-							headers: {"referrer": "http://localhost:5001/dashboard",
-												"Access-Control-Allow-Origin" : "*"},
-							async: false,
-							dataType: "html",
-							success: function(data, textStatus, request) {
-									//var url = request.getResponseHeader('location');
-									console.log(data);
-
-									//window.location.href = url;
-
-
-
-																	},
-							error: function(err) {
-									alert(err+" did happen, please retry");
-							}
-					});
-
-					/*var xhttp = new XMLHttpRequest();
-					xhttp.open("GET", "http://bsilvr.duckdns.org:5368/login", false);
-					xhttp.setRequestHeader("referrer", "http://localhost:5001/dashboard");
-					xhttp.send();
-*/
-			}
-
-
-
-	</script>
+	
 	<script>
 		!function ($) {
 			$(document).on("click","ul.nav li.parent > a > span.icon", function(){
