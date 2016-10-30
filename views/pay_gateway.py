@@ -33,12 +33,12 @@ def paypal():
     trans_id=request.args.get('id')
     log.debug(trans_id)
 
-    resp = requests.get(TRANSACTIONS_DETAILS + trans_id)
+    resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
     if resp.status_code != 200:
         return "ID not found", 400
-    #info = resp.json()
+    info = resp.json()
 
-    log.debug(resp.text)
+
 
     paypalrestsdk.configure({"mode": "sandbox",
                             "client_id": PAYPAL_CLIENT_ID,
@@ -52,24 +52,24 @@ def paypal():
         },
 
     "redirect_urls": {
-        "return_url": "http://transafe.rafaelferreira.pt/pay_gateway/callback",
-        "cancel_url": "http://localhost:3000/pay_gateway/cancel"
+        "return_url": PAY_GATEWAY_CALLBACK_URL + "/?id="+trans_id,
+        "cancel_url": PAY_GATEWAY_URL + "/?id="+trans_id
         },
 
     "transactions": [{
 
         "item_list": {
             "items": [{
-                "name": "item",
+                "name": info['object']['name'],
                 "sku": "item",
-                "price": "5.00",
+                "price": info['price'],
                 "currency": "EUR",
                 "quantity": 1}]},
 
         "amount": {
-            "total": "5.00",
+            "total": info['price'],
             "currency": "EUR"},
-        "description": "This is the payment transaction description."}]})
+        "description": info['object']['name'] + " " + info['object']['url']}]})
 
     if payment.create():
         for link in payment.links:
@@ -81,14 +81,96 @@ def paypal():
 
 @pay_gateway.route("/transafe", methods = ['GET'])
 def transafe():
-    log.debug("TRANSAFE")
 
-    pass
+    trans_id=request.args.get('id')
+    log.debug(trans_id)
+
+    resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
+    if resp.status_code != 200:
+        return "ID not found", 400
+    info = resp.json()
+
+
+    data = {'user_id1': info['from_uuid'], 'user_id2': info['to_uuid'], 'transaction_id': trans_id, 'amount': info['price'],
+            'description': info['object']['name'], 'callback': PAY_GATEWAY_CALLBACK_URL + "?id="+trans_id}
+    #response = requests.post(PAY_SERVICE_CREATE_PAYMENT, data=data)
+
+    #log.debug(response.text)
+    return redirect(requests.post(PAY_SERVICE_CREATE_PAYMENT, data=data).url, 302)
+
 
 @pay_gateway.route("/callback", methods = ['GET'])
 def callback():
-    # Chance state
-    pass
+    log.debug("confirmado")
+    trans_id=request.args.get('id')
+
+    token = request.cookies.get('Access-Token')
+
+    if token == None:
+        return "No token", 400
+
+    # ---validate user---
+    if valid_user(token) == False:
+        return "Not logged in", 400
+
+    data = {'transaction_id': trans_id,
+            'state': 'AWAITING_SHIPPING'}
+    response = requests.post(TRANSACTIONS_UPDATE, data=data)
+
+    if response.status_code != 200:
+        return "Error changing transaction state", 400
+
+    data = {'email': 'bernardomrf@gmail.com',
+            'message': 'AWAITING_SHIPPING'}
+    response = requests.post(NOTIFICATION_EMAIL, data=data)
+
+    response = redirect(PAY_GATEWAY_CONFIRMED_URL, code=302)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+
+    return response
+
+@pay_gateway.route("/payment_success", methods = ['GET'])
+def payment_success():
+
+    return render_template('pay_completed.html')
+
+@pay_gateway.route("/complete", methods = ['GET'])
+def complete():
+    log.debug("confirmado")
+    trans_id=request.args.get('id')
+
+    token = request.cookies.get('Access-Token')
+
+    if token == None:
+        return "No token", 400
+
+    # ---validate user---
+    if valid_user(token) == False:
+        return "Not logged in", 400
+
+    data = {'transaction_id': trans_id}
+
+    response = requests.post(PAY_SERVICE_COMPLETE_PAYMENT, data=data)
+    log.debug(response.text)
+    if response.status_code != 200:
+        return "Error completing payment", 400
+
+    data = {'transaction_id': trans_id,
+            'state': 'COMPLETED'}
+    response = requests.post(TRANSACTIONS_UPDATE, data=data)
+
+    if response.status_code != 200:
+        return "Error changing transaction state", 400
+
+    data = {'email': 'bernardomrf@gmail.com',
+            'message': 'AWAITING_SHIPPING'}
+    response = requests.post(NOTIFICATION_EMAIL, data=data)
+
+    response = redirect(TRANSACTIONS_URL, code=302)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+
+    return response
+
 
 def valid_user(token):
 
