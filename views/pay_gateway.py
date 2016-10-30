@@ -28,6 +28,12 @@ def home():
 
     return render_template('pay_gateway.html', trans_id=trans_id)
 
+
+@pay_gateway.route("/mb", methods = ['GET'])
+def home():
+    return render_template('pay_multibanco.html')
+
+
 @pay_gateway.route("/paypal", methods = ['GET'])
 def paypal():
     trans_id=request.args.get('id')

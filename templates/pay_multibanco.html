@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TranSafe - Pay Gateway</title>
+<title>TranSafe - Pay Multibanco</title>
 
 <link href="../static/css/bootstrap.min.css" rel="stylesheet">
 <link href="../static/css/datepicker3.css" rel="stylesheet">
@@ -25,36 +25,14 @@
 		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">
-					Select a payment method
+					<span class="pf pf-multibanco" style="font-size: 2.0em;"></span> Multibanco
 				</div>
 				<div class="panel-body">
 					<form role="form">
 						<fieldset>
-							<div class="form-group">
-								<a class="btn btn-block btn-social btn-pinterest" href="/pay_gateway/transafe?id={{trans_id}}">
-							    <span class="fa fa-money"></span> Checkout with TranSafe-Pay
-							  </a>
-                				<a class="btn btn-block btn-social btn-dropbox" href="/pay_gateway/paypal?id={{trans_id}}">
-							    <span class="fa fa-paypal"></span> Checkout with PayPal
-							  </a>
-                				<a class="btn btn-block btn-social btn-microsoft" style="font-size: 1.2em;" href="/pay_gateway/mb?id={{trans_id}}">
-							    <span class="pf pf-multibanco"></span> Checkout with Multibanco
-							  </a>
-							</div>
-
-					<!--<div class="form-group">
-								<input class="form-control" placeholder="E-mail" name="email" type="email" autofocus="">
-							</div>
-							<div class="form-group">
-								<input class="form-control" placeholder="Password" name="password" type="password" value="">
-							</div>
-							<div class="checkbox">
-								<label>
-									<input name="remember" type="checkbox" value="Remember Me">Remember Me
-								</label>
-							</div>
-							<a href="/dashboard" class="btn btn-primary">Login</a>
-						-->
+							Entidade
+							Referência
+							Montante
 						</fieldset>
 					</form>
 				</div>
