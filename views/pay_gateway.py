@@ -10,6 +10,7 @@ from flask_restful import reqparse, abort, Api, Resource
 from flask import request
 from flask import jsonify, make_response, redirect, render_template, url_for
 from flask import Blueprint
+import random
 
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
@@ -40,7 +41,7 @@ def multibanco():
         return "ID not found", 400
     info = resp.json()
 
-    return render_template('pay_multibanco.html', price=info['price'], referencia=str(random(9)))
+    return render_template('pay_multibanco.html', price=info['price'], referencia='{0:09}'.format(random.randint(1, 100000)))
 
 
 @pay_gateway.route("/paypal", methods = ['GET'])
