@@ -31,7 +31,16 @@ def home():
 
 @pay_gateway.route("/mb", methods = ['GET'])
 def multibanco():
-    return render_template('pay_multibanco.html')
+
+    trans_id=request.args.get('id')
+    log.debug(trans_id)
+
+    resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
+    if resp.status_code != 200:
+        return "ID not found", 400
+    info = resp.json()
+
+    return render_template('pay_multibanco.html', price=info['price'], referencia=str(random(9)))
 
 
 @pay_gateway.route("/paypal", methods = ['GET'])
