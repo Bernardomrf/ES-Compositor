@@ -30,7 +30,7 @@ def home():
 
 
 @pay_gateway.route("/mb", methods = ['GET'])
-def home():
+def multibanco():
     return render_template('pay_multibanco.html')
 
 
