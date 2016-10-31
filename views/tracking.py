@@ -24,18 +24,17 @@ def home():
     trans_id = request.args.get('id')
 
     token = request.cookies.get('Access-Token')
-    log.debug(token)
+
     if token == None:
-        return "No token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     # ---validate user---
-    if valid_user(token) == False:
-        return "Not logged in", 400
+    valid_user(token)
 
     # ---get user mail---
     headers = {"Access-Token": token}
     response = requests.get(IAM_USER, headers=headers)
-    log.debug(response.text)
+
     if response.status_code != 200:
         return "Invalid Access Token", 400
 
@@ -51,11 +50,13 @@ def submit():
 
     token = request.cookies.get('Access-Token')
 
+    if token == None:
+        return redirect(LOGIN_PAGE_URL, code=302)
+
     tracking = request.form['tracking']
 
     # ---validate user---
-    if valid_user(token) == False:
-        return "Not logged in", 400
+    valid_user(token)
 
     # ---add track number---
 
@@ -77,10 +78,6 @@ def valid_user(token):
     # ---validate user---
     headers = {"Access-Token": token}
     response = requests.post(IAM_VALIDATE, headers=headers)
-    log.debug(token)
-    log.debug(response.text)
 
     if response.status_code != 200:
-        return False
-
-    return True
+        return redirect(LOGIN_PAGE_URL, code=302)

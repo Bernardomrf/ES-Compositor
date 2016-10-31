@@ -38,7 +38,6 @@ def signup():
 def signup_callback():
 
     token = request.args.get('access_token')
-    log.debug(token)
     response = redirect('/dashboard', code=302)
     response.set_cookie('Access-Token',value=token)
 

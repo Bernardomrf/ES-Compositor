@@ -21,10 +21,13 @@ log = logging.getLogger()
 
 @payment.route("/pay", methods = ['GET'])
 def pay():
+    token = request.cookies.get('Access-Token')
+
+    if token == None:
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     # ---validate user---
-    if valid_user(token) == False:
-        return "Not logged in", 400
+    valid_user(token)
 
     url = PAY_SERVICE_INTERFACE #/payments_interface
 
@@ -41,6 +44,4 @@ def valid_user(token):
     response = requests.post(IAM_VALIDATE, headers=headers)
 
     if response.status_code != 200:
-        return False
-
-    return True
+        return redirect(LOGIN_PAGE_URL, code=302)

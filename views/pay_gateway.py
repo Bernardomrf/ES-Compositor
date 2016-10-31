@@ -25,7 +25,6 @@ log = logging.getLogger()
 def home():
 
     trans_id=request.args.get('id')
-    log.debug(trans_id)
 
     return render_template('pay_gateway.html', trans_id=trans_id)
 
@@ -34,7 +33,6 @@ def home():
 def multibanco():
 
     trans_id=request.args.get('id')
-    log.debug(trans_id)
 
     resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
     if resp.status_code != 200:
@@ -47,7 +45,6 @@ def multibanco():
 @pay_gateway.route("/paypal", methods = ['GET'])
 def paypal():
     trans_id=request.args.get('id')
-    log.debug(trans_id)
 
     resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
     if resp.status_code != 200:
@@ -99,35 +96,29 @@ def paypal():
 def transafe():
 
     trans_id=request.args.get('id')
-    log.debug(trans_id)
 
     resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
     if resp.status_code != 200:
         return "ID not found", 400
     info = resp.json()
 
-
     data = {'user_id1': info['from_uuid'], 'user_id2': info['to_uuid'], 'transaction_id': trans_id, 'amount': info['price'],
             'description': info['object']['name'], 'callback': PAY_GATEWAY_CALLBACK_URL + "?id="+trans_id}
-    #response = requests.post(PAY_SERVICE_CREATE_PAYMENT, data=data)
 
-    #log.debug(response.text)
     return redirect(requests.post(PAY_SERVICE_CREATE_PAYMENT, data=data).url, 302)
 
 
 @pay_gateway.route("/callback", methods = ['GET'])
 def callback():
-    log.debug("confirmado")
     trans_id=request.args.get('id')
 
     token = request.cookies.get('Access-Token')
 
     if token == None:
-        return "No token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     # ---validate user---
-    if valid_user(token) == False:
-        return "Not logged in", 400
+    valid_user(token)
 
     data = {'transaction_id': trans_id,
             'state': 'AWAITING_SHIPPING'}
@@ -152,22 +143,20 @@ def payment_success():
 
 @pay_gateway.route("/complete", methods = ['GET'])
 def complete():
-    log.debug("confirmado")
     trans_id=request.args.get('id')
 
     token = request.cookies.get('Access-Token')
 
     if token == None:
-        return "No token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     # ---validate user---
-    if valid_user(token) == False:
-        return "Not logged in", 400
+    valid_user(token)
 
     data = {'transaction_id': trans_id}
 
     response = requests.post(PAY_SERVICE_COMPLETE_PAYMENT, data=data)
-    log.debug(response.text)
+
     if response.status_code != 200:
         return "Error completing payment", 400
 
@@ -195,6 +184,4 @@ def valid_user(token):
     response = requests.post(IAM_VALIDATE, headers=headers)
 
     if response.status_code != 200:
-        return False
-
-    return True
+        return redirect(LOGIN_PAGE_URL, code=302)

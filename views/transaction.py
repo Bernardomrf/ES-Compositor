@@ -25,11 +25,10 @@ def home():
     token = request.cookies.get('Access-Token')
 
     if token == None:
-        return "No token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     # ---validate user---
-    if valid_user(token) == False:
-        return "Not logged in", 400
+    valid_user(token)
 
     # ---get user mail---
     headers = {"Access-Token": token}
@@ -54,9 +53,11 @@ def new_transaction():
     description = request.form['description']
     url = request.form['url']
 
+    if token == None:
+        return redirect(LOGIN_PAGE_URL, code=302)
+
     # ---validate user---
-    if valid_user(token) == False:
-        return "Not logged in", 400
+    valid_user(token)
 
     # ---get user id---
     headers = {"Access-Token": token}
@@ -115,9 +116,11 @@ def list_transactions():
     dataType = request.args.get('dataType')
     token = request.cookies.get('Access-Token')
 
+    if token == None:
+        return redirect(LOGIN_PAGE_URL, code=302)
+
     # ---validate user---
-    if valid_user(token) == False:
-        return "Not logged in", 400
+    valid_user(token)
 
     # ---get user id---
     headers = {"Access-Token": token}
@@ -142,11 +145,17 @@ def list_transactions():
             resp = requests.get(IAM_USER + "?id=" + trans['from_uuid'])
             if resp.status_code != 200:
                 return "ID not found", 400
-            if trans['tracking_code'] == "":
-                tracking = "No tracking number"
 
-            if trans['state'] == 'SHIPPED' and trans['tracking_code'] == "":
+
+
+            if trans['tracking_code'] == "":
+                tracking = "None"
+
+            elif trans['state'] == 'SHIPPED' and trans['tracking_code'] == "":
                 tracking = "<a href=\"/tracking?id="+ trans['id'] +"\" class=\"btn btn-info\">Add Tracking N.</a>"
+
+            else:
+                tracking = "<a href=\"http://www.17track.net/pt/track?nums="+trans['tracking_code']+"\"><span class=\"badge\">"+trans['tracking_code']+"</span></a><br>"
 
             response.append({'state': transformState(trans['state']),
                             'buyer' : json.loads(resp.text)['data']['email'],
@@ -161,9 +170,11 @@ def list_transactions():
             resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'])
             if resp.status_code != 200:
                 return "ID not found", 400
-            if trans['tracking_code'] == "":
-                tracking = "No tracking number"
 
+            if trans['tracking_code'] == "":
+                tracking = "None"
+            else:
+                tracking = "<a href=\"http://www.17track.net/pt/track?nums="+trans['tracking_code']+"\"><span class=\"badge\">"+trans['tracking_code']+"</span></a><br>"
             response.append({'state': transformState(trans['state']),
                             'seller' : json.loads(resp.text)['data']['email'],
                             'price' : trans['price'],
@@ -181,37 +192,35 @@ def valid_user(token):
     response = requests.post(IAM_VALIDATE, headers=headers)
 
     if response.status_code != 200:
-        return False
-
-    return True
+        return redirect(LOGIN_PAGE_URL, code=302)
 
 def transformState(state):
     if state == "AWAITING_CONFIRMATION":
-        return "<span class=\"badge\">Awaiting Confirmation</span>"
+        return "<span class=\"label label-primary\">Awaiting Confirmation</span>"
     elif state == "AWAITING_PAYMENT":
-        return "<span class=\"badge\">Awaiting Payment</span>"
+        return "<span class=\"label label-primary\">Awaiting Payment</span>"
     elif state == "AWAITING_SHIPPING":
-        return "<span class=\"badge\">Awaiting Shipment</span>"
+        return "<span class=\"label label-primary\">Awaiting Shipment</span>"
     elif state == "SHIPPED":
-        return "<span class=\"badge\">Shiped</span>"
+        return "<span class=\"label label-warning\">Shiped</span>"
     elif state == "COMPLETED":
-        return "<span class=\"badge\">Success</span>"
+        return "<span class=\"label label-success\">Success</span>"
     elif state == "REFUND":
-        return "<span class=\"badge\">Refund</span>"
+        return "<span class=\"label label-danger\">Refund</span>"
 
 def action(dataType, state, id):
 
     if dataType == "buyer":
         if state == "AWAITING_PAYMENT":
-            return "<a onClick=\"pay('"+id+"')\" class=\"btn btn-default\">Pay</a>"
+            return "<a onClick=\"pay('"+id+"')\" class=\"btn btn-success\">Pay</a>"
         elif state == "SHIPPED":
-            return "<a href=\"/pay_gateway/complete?id="+ id +"\" class=\"btn btn-default\">Received</a>"
+            return "<a href=\"/pay_gateway/complete?id="+ id +"\" class=\"btn btn-primary\">Received</a>"
         else:
             return "None"
     elif dataType == "seller":
         if state == "AWAITING_CONFIRMATION":
-            return "<a href=\"/change_state?id="+ id +"&state=AWAITING_PAYMENT\" class=\"btn btn-default\">Confirm</a>"
+            return "<a href=\"/change_state?id="+ id +"&state=AWAITING_PAYMENT\" class=\"btn btn-primary\">Confirm</a>"
         elif state == "AWAITING_SHIPPING":
-            return "<a href=\"/change_state?id="+ id +"&state=SHIPPED\" class=\"btn btn-default\">Sended</a>"
+            return "<a href=\"/change_state?id="+ id +"&state=SHIPPED\" class=\"btn btn-primary\">Sended</a>"
         else:
             return "None"
