@@ -22,6 +22,7 @@ TRANSACTIONS_NEW_OBJECT = "http://10.0.11.12/api/v1/object/new/"
 TRANSACTIONS_UPDATE = "http://10.0.11.12/api/v1/transaction/state/"
 TRANSACTIONS_LIST = "http://10.0.11.12/api/v1/transaction/history/"
 TRANSACTIONS_DETAILS = "http://10.0.11.12/api/v1/transaction/details/"
+TRANSACTIONS_TRACKING = "http://10.0.11.12:80/api/v1/transaction/tracking_code/"
 
 AUTH_CALLBACK_URL = "https://transafe.rafaelferreira.pt/authorize/signup_callback"
 TRANSACTIONS_URL = "https://transafe.rafaelferreira.pt/transaction"

@@ -142,11 +142,17 @@ def list_transactions():
             resp = requests.get(IAM_USER + "?id=" + trans['from_uuid'])
             if resp.status_code != 200:
                 return "ID not found", 400
+            if trans['tracking_code'] == "":
+                tracking = "No tracking number"
+
+            if trans['state'] == 'SHIPPED' and trans['tracking_code'] == "":
+                tracking = "<a href=\"/tracking?id="+ trans['id'] +"\" class=\"btn btn-info\">Add Tracking N.</a>"
 
             response.append({'state': transformState(trans['state']),
                             'buyer' : json.loads(resp.text)['data']['email'],
                             'price' : trans['price'],
                             'url' : trans['object']['url'],
+                            'tracking' : tracking,
                             'actions': action(dataType, trans['state'], trans['id'])
                             })
     elif dataType == "buyer":
@@ -155,11 +161,14 @@ def list_transactions():
             resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'])
             if resp.status_code != 200:
                 return "ID not found", 400
+            if trans['tracking_code'] == "":
+                tracking = "No tracking number"
 
             response.append({'state': transformState(trans['state']),
                             'seller' : json.loads(resp.text)['data']['email'],
                             'price' : trans['price'],
                             'url' : trans['object']['url'],
+                            'tracking' : tracking,
                             'actions': action(dataType  , trans['state'], trans['id'])
                             })
 
