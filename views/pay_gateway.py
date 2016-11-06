@@ -34,7 +34,7 @@ def multibanco():
 
     trans_id=request.args.get('id')
 
-    resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
+    resp = requests.get(TRANSACTIONS_DETAILS.format(trans_id))
     if resp.status_code != 200:
         return "ID not found", 400
     info = resp.json()
@@ -46,7 +46,7 @@ def multibanco():
 def paypal():
     trans_id=request.args.get('id')
 
-    resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
+    resp = requests.get(TRANSACTIONS_DETAILS.format(trans_id))
     if resp.status_code != 200:
         return "ID not found", 400
     info = resp.json()
@@ -97,7 +97,7 @@ def transafe():
 
     trans_id=request.args.get('id')
 
-    resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
+    resp = requests.get(TRANSACTIONS_DETAILS.format(trans_id))
     if resp.status_code != 200:
         return "ID not found", 400
     info = resp.json()
@@ -133,7 +133,7 @@ def callback():
     if response.status_code != 200:
         return "Error changing transaction state", 400
 
-    resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
+    resp = requests.get(TRANSACTIONS_DETAILS.format(trans_id))
     if resp.status_code != 200:
         return "ID not found", 400
     info = resp.json()
@@ -184,7 +184,7 @@ def complete():
     if response.status_code != 200:
         return "Error changing transaction state", 400
 
-    resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
+    resp = requests.get(TRANSACTIONS_DETAILS.format(trans_id))
     if resp.status_code != 200:
         return "ID not found", 400
     info = resp.json()

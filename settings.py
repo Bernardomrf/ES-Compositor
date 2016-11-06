@@ -29,18 +29,19 @@ def transactions_token():
 
     if __TRANSACTIONS_TOKEN__ is None:
         r = requests.post('http://10.0.11.12/api/v1/register/app/', data={'name': __APP_NAME__})
+        # r = requests.post('http://10.0.11.12/api/v1/register/app/', data={'name': "flask"})
         __TRANSACTIONS_TOKEN__ = r.json()["token"]
         return __TRANSACTIONS_TOKEN__
     else:
         return __TRANSACTIONS_TOKEN__
 
-
-TRANSACTIONS_NEW = ("http://10.0.11.12/api/v1/transaction/new/?token=%s" % transactions_token())
-TRANSACTIONS_NEW_OBJECT = ("http://10.0.11.12/api/v1/object/new/?token=%s" % transactions_token())
-TRANSACTIONS_UPDATE = ("http://10.0.11.12/api/v1/transaction/state/?token=%s" % transactions_token())
-TRANSACTIONS_LIST = ("http://10.0.11.12/api/v1/transaction/history/?token=%s" % transactions_token())
-TRANSACTIONS_DETAILS = ("http://10.0.11.12/api/v1/transaction/details/?token=%s" % transactions_token())
-TRANSACTIONS_TRACKING = ("http://10.0.11.12:80/api/v1/transaction/tracking_code/?token=%s" % transactions_token())
+__TRANSACTIONS_BASE__ = "http://10.0.11.12/api/v1/"
+TRANSACTIONS_NEW = (__TRANSACTIONS_BASE__ + "transaction/new/?token=%s" % transactions_token())
+TRANSACTIONS_NEW_OBJECT = (__TRANSACTIONS_BASE__ + "object/new/?token=%s" % transactions_token())
+TRANSACTIONS_UPDATE = (__TRANSACTIONS_BASE__ + "transaction/state/?token=%s" % transactions_token())
+TRANSACTIONS_LIST = (__TRANSACTIONS_BASE__ + "transaction/history/{0}/?token=%s" % transactions_token())
+TRANSACTIONS_DETAILS = (__TRANSACTIONS_BASE__ + "transaction/details/{0}/?token=%s" % transactions_token())
+TRANSACTIONS_TRACKING = (__TRANSACTIONS_BASE__ + "transaction/tracking_code/?token=%s" % transactions_token())
 
 AUTH_CALLBACK_URL = "https://transafe.rafaelferreira.pt/authorize/signup_callback"
 TRANSACTIONS_URL = "https://transafe.rafaelferreira.pt/transaction"

@@ -106,7 +106,7 @@ def new_transaction():
     if response.status_code != 201:
         return "Error creating transaction", 400
 
-    resp = requests.get(TRANSACTIONS_DETAILS + info['id'] + "/")
+    resp = requests.get(TRANSACTIONS_DETAILS.format(info['id']))
     if resp.status_code != 200:
         return "ID not found", 400
     info = resp.json()
@@ -147,7 +147,7 @@ def list_transactions():
     user_id = response.json()['data']['uid']
 
     # ---get transaction list---
-    response = requests.get(TRANSACTIONS_LIST + user_id + "/")
+    response = requests.get(TRANSACTIONS_LIST.format(user_id))
     info = response.json()
 
     if response.status_code != 200:

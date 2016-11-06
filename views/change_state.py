@@ -1,4 +1,3 @@
-
 import sys
 import os
 import requests
@@ -19,9 +18,9 @@ logging.basicConfig(stream=sys.stderr)
 logging.getLogger().setLevel(logging.DEBUG)
 log = logging.getLogger()
 
-@change_state.route("/", methods = ['GET'])
-def home():
 
+@change_state.route("/", methods=['GET'])
+def home():
     transaction_id = request.args.get('id')
     state = request.args.get('state')
 
@@ -33,7 +32,7 @@ def home():
     # ---validate user---
     valid_user(token)
 
-    resp = requests.get(TRANSACTIONS_DETAILS + transaction_id + "/")
+    resp = requests.get(TRANSACTIONS_DETAILS.format(transaction_id))
     if resp.status_code != 200:
         return "ID not found", 400
     info = resp.json()
@@ -54,21 +53,22 @@ def home():
 
     return response
 
-def get_message(state, from_uuid, url):
 
+def get_message(state, from_uuid, url):
     resp = requests.get(IAM_USER + "?id=" + from_uuid)
     if resp.status_code != 200:
         return "ID not found", 400
     from_email = json.loads(resp.text)['data']['email']
 
     if state == 'AWAITING_PAYMENT':
-        return {'email': from_email, 'message': 'The transaction for this item: '+url+' has been confirmed and is waiting for your payment.'}
+        return {'email': from_email,
+                'message': 'The transaction for this item: ' + url + ' has been confirmed and is waiting for your payment.'}
     if state == 'SHIPPED':
-        return {'email': from_email, 'message': 'The item you orded: '+url+' has been sended. Complete the transaction on the platform as soon as the item arrives.'}
+        return {'email': from_email,
+                'message': 'The item you orded: ' + url + ' has been sended. Complete the transaction on the platform as soon as the item arrives.'}
 
 
 def valid_user(token):
-
     # ---validate user---
     headers = {"Access-Token": token}
     response = requests.post(IAM_VALIDATE, headers=headers)

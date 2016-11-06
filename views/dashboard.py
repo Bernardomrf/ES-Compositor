@@ -1,4 +1,3 @@
-
 import sys
 import os
 import urllib
@@ -23,7 +22,8 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 log = logging.getLogger()
 
-@dashboard.route("/", methods = ['GET'])
+
+@dashboard.route("/", methods=['GET'])
 def home():
     token = request.cookies.get('Access-Token')
     if token == None:
@@ -43,24 +43,23 @@ def home():
     user_id = response.json()['data']['uid']
     image = response.json()['data']['picture_url']
 
-    response = requests.get(TRANSACTIONS_LIST + user_id + "/")
+    response = requests.get(TRANSACTIONS_LIST.format(user_id))
     info = response.json()
 
     total_trans = len(info['to_uuid']) + len(info['from_uuid'])
 
-    pending=0
-    for trans in info['to_uuid'] :
-        if(trans['state'] != "COMPLETED"):
-            pending+=1
+    pending = 0
+    for trans in info['to_uuid']:
+        if (trans['state'] != "COMPLETED"):
+            pending += 1
     for trans in info['from_uuid']:
-        if(trans['state'] != "COMPLETED"):
-            pending+=1
+        if (trans['state'] != "COMPLETED"):
+            pending += 1
 
+    return render_template('index.html', name=name, total_trans=total_trans, pending=pending, image=image)
 
-    return render_template('index.html', name = name, total_trans=total_trans, pending=pending, image=image)
 
 def valid_user(token):
-
     # ---validate user---
     headers = {"Access-Token": token}
     response = requests.post(IAM_VALIDATE, headers=headers)
