@@ -106,12 +106,8 @@ def transafe():
             'description': info['object']['name'], 'callback': PAY_GATEWAY_CALLBACK_URL + "?id="+trans_id}
 
     headers={'Access-Token': PAY_SERVICE_TOKEN_ID}
-    response = requests.post(PAY_SERVICE_CREATE_PAYMENT, data=data, headers=headers)
 
-    if response.status_code != 302:
-        return response.text, response.status_code
-    else:
-        return redirect(response.url, 302)
+    return redirect(requests.post(PAY_SERVICE_CREATE_PAYMENT, data=data, headers=headers).url, 302)
 
 
 @pay_gateway.route("/callback", methods = ['GET'])
