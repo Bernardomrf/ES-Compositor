@@ -108,7 +108,7 @@ def transafe():
     response = requests.post(PAY_SERVICE_CREATE_PAYMENT, data=data, headers={'token_ID': PAY_SERVICE_TOKEN_ID})
 
     if response.status_code != 302:
-        return response.message, response.status_code
+        return response.text, response.status_code
     else:
         return redirect(requests.post(PAY_SERVICE_CREATE_PAYMENT, data=data, headers={'token_ID': PAY_SERVICE_TOKEN_ID}).url, 302)
 
