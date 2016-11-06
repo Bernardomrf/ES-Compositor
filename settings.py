@@ -1,9 +1,12 @@
 import os
+import requests
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 ALLOWED_HOSTS="0.0.0.0"
 PORT = 80
+
+__APP_NAME__ = "TranSafe"
 
 HOST = "localhost"
 
@@ -18,12 +21,26 @@ PAY_SERVICE_CREATE_CARD = "https://payments.transafe.rafaelferreira.pt/api/v1/ca
 PAY_SERVICE_CREATE_PAYMENT = "https://payments.transafe.rafaelferreira.pt/api/v1/payments/create/"
 PAY_SERVICE_COMPLETE_PAYMENT = "https://payments.transafe.rafaelferreira.pt/api/v1/payments/complete/"
 
-TRANSACTIONS_NEW = "http://10.0.11.12/api/v1/transaction/new/"
-TRANSACTIONS_NEW_OBJECT = "http://10.0.11.12/api/v1/object/new/"
-TRANSACTIONS_UPDATE = "http://10.0.11.12/api/v1/transaction/state/"
-TRANSACTIONS_LIST = "http://10.0.11.12/api/v1/transaction/history/"
-TRANSACTIONS_DETAILS = "http://10.0.11.12/api/v1/transaction/details/"
-TRANSACTIONS_TRACKING = "http://10.0.11.12:80/api/v1/transaction/tracking_code/"
+__TRANSACTIONS_TOKEN__ = None
+
+
+def transactions_token():
+    global __TRANSACTIONS_TOKEN__
+
+    if __TRANSACTIONS_TOKEN__ is None:
+        r = requests.post('http://10.0.11.12/api/v1/register/app/', data={'name': __APP_NAME__})
+        __TRANSACTIONS_TOKEN__ = r.json()["token"]
+        return __TRANSACTIONS_TOKEN__
+    else:
+        return __TRANSACTIONS_TOKEN__
+
+
+TRANSACTIONS_NEW = ("http://10.0.11.12/api/v1/transaction/new/?token=%s" % transactions_token())
+TRANSACTIONS_NEW_OBJECT = ("http://10.0.11.12/api/v1/object/new/?token=%s" % transactions_token())
+TRANSACTIONS_UPDATE = ("http://10.0.11.12/api/v1/transaction/state/?token=%s" % transactions_token())
+TRANSACTIONS_LIST = ("http://10.0.11.12/api/v1/transaction/history/?token=%s" % transactions_token())
+TRANSACTIONS_DETAILS = ("http://10.0.11.12/api/v1/transaction/details/?token=%s" % transactions_token())
+TRANSACTIONS_TRACKING = ("http://10.0.11.12:80/api/v1/transaction/tracking_code/?token=%s" % transactions_token())
 
 AUTH_CALLBACK_URL = "https://transafe.rafaelferreira.pt/authorize/signup_callback"
 TRANSACTIONS_URL = "https://transafe.rafaelferreira.pt/transaction"
