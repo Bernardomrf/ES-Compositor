@@ -5,9 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TranSafe - Rating</title>
 
-<link href="../../static/css/bootstrap.min.css" rel="stylesheet">
-<link href="../../static/css/datepicker3.css" rel="stylesheet">
-<link href="../../static/css/styles.css" rel="stylesheet">
+<link href="../static/css/bootstrap.min.css" rel="stylesheet">
+<link href="../static/css/datepicker3.css" rel="stylesheet">
+<link href="../static/css/styles.css" rel="stylesheet">
+<link href="../static/css/bootstrap-table.css" rel="stylesheet">
+
+<link href="../static/css/font-awesome.css" rel="stylesheet">
+<link href="../static/css/bootstrap-social.css" rel="stylesheet">
+<link href="../static/css/paymentfont.min.css" rel="stylesheet">
 
 <!--Icons-->
 <script src="../../static/js/lumino.glyphs.js"></script>
@@ -109,33 +114,37 @@
 		</div><!--/.row-->
 
 		<p>
-		<h3>Transactions as Buyer</h3>
+		<h3>Transactions Waiting Review</h3>
 		<p>
-		<table data-toggle="table" data-url="/transaction/list?dataType=buyer"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+		<table data-toggle="table" data-url="https://transafe.rafaelferreira.pt/transaction/list_rating?dataType=buyer"  data-show-refresh="false" data-show-toggle="false" data-show-columns="false" data-search="false" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 			<thead>
 			<tr>
 				<th data-field="state" data-sortable="true">State</th>
 				<th data-field="seller" data-sortable="true">Seller</th>
 
 				<th data-field="url">URL</th>
+				<th data-field="rate">Rate</th>
 
 
 			</tr>
 			</thead>
 		</table>
-		
+
 
 	</div>	<!--/.main-->
 
-
-	<script src="../../static/js/jquery-1.11.1.min.js"></script>
-	<script src="../../static/js/bootstrap.min.js"></script>
-	<script src="../../static/js/chart.min.js"></script>
-	<script src="../../static/js/chart-data.js"></script>
-	<script src="../../static/js/easypiechart.js"></script>
-	<script src="../../static/js/easypiechart-data.js"></script>
-	<script src="../../static/js/bootstrap-datepicker.js"></script>
+	<script src="../static/js/jquery-1.11.1.min.js"></script>
+	<script src="../static/js/bootstrap.min.js"></script>
+	<script src="../static/js/chart.min.js"></script>
+	<script src="../static/js/chart-data.js"></script>
+	<script src="../static/js/easypiechart.js"></script>
+	<script src="../static/js/easypiechart-data.js"></script>
+	<script src="../static/js/bootstrap-datepicker.js"></script>
+	<script src="../static/js/bootstrap-table.js"></script>
 	<script>
+		$('#calendar').datepicker({
+		});
+
 		!function ($) {
 		    $(document).on("click","ul.nav li.parent > a > span.icon", function(){
 		        $(this).find('em:first').toggleClass("glyphicon-minus");
@@ -149,7 +158,10 @@
 		$(window).on('resize', function () {
 		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
 		})
-		$("#page_rating").addClass("active");
+
+        w3IncludeHTML();
+
+        $("#page_rating").addClass("active");
 	</script>
 </body>
 

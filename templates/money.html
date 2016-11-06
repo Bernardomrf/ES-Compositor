@@ -8,6 +8,9 @@
 	<link href="../static/css/bootstrap.min.css" rel="stylesheet">
 	<link href="../static/css/datepicker3.css" rel="stylesheet">
 	<link href="../static/css/styles.css" rel="stylesheet">
+	<link href="../static/css/font-awesome.css" rel="stylesheet">
+	<link href="../static/css/bootstrap-social.css" rel="stylesheet">
+	<link href="../static/css/paymentfont.min.css" rel="stylesheet">
 	<link href="../static/css/bootstrap-table.css" rel="stylesheet">
 
 	<!--Icons-->
@@ -76,23 +79,23 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<p>
-						<h3>Payment Methods</h3>
+						<h3>Manage Payment Methods</h3>
 						<p>
-
+							<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
 							<form role="form">
 								<fieldset>
 									<div class="form-group">
 										<a class="btn btn-block btn-social btn-pinterest" onClick="manage()">
 									    <span class="fa fa-money"></span> Manage TranSafe-Pay
 									  </a>
-		                <a class="btn btn-block btn-social btn-dropbox" href="http://www.paypal.com">
+		                <a class="btn btn-block btn-social btn-dropbox" onClick="managePayPal()">
 									    <span class="fa fa-paypal"></span> Manage PayPal
 									  </a>
 									</div>
 								</fieldset>
 							</form>
-						<button class="btn btn-info" href="#" onClick="manage()"><i class="fa fa-credit-card"></i> Manage Cards</button>
-
+						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -100,7 +103,16 @@
 	</div>
 	<script>
 	function manage(){
-		MyWindow=window.open('{{url}}','MyWindow',width=600,height=300);
+		MyWindow=window.open('{{url}}','TranSafe-Pay',width=600,height=300);
+
+		MyWindow.onbeforeunload= function(){
+			console.log("sadabs");
+			location.reload();
+		}
+		return false;
+	}
+	function managePayPal(){
+		MyWindow=window.open('http://www.paypal.com','PayPal',width=600,height=300);
 
 		MyWindow.onbeforeunload= function(){
 			console.log("sadabs");

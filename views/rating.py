@@ -43,6 +43,32 @@ def home():
 
     return render_template('rating.html', user=user, name=name, image=image)
 
+@rating.route("/rate", methods = ['GET'])
+def rate():
+
+    token = request.cookies.get('Access-Token')
+
+    if token == None:
+        return redirect(LOGIN_PAGE_URL, code=302)
+
+    # ---validate user---
+    valid_user(token)
+
+    # ---get user mail---
+    headers = {"Access-Token": token}
+    response = requests.get(IAM_USER, headers=headers)
+
+    if response.status_code != 200:
+        return "Invalid Access Token", 400
+
+    user = response.json()['data']['email']
+    name = response.json()['data']['name']
+    image = response.json()['data']['picture_url']
+
+    return render_template('add_rating.html', user=user, name=name, image=image)
+
+
+
 def valid_user(token):
 
     # ---validate user---

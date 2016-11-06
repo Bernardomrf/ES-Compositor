@@ -198,6 +198,52 @@ def list_transactions():
 
     return jsonify(response)
 
+@transaction.route("/list_rating", methods = ['GET'])
+def list_rating():
+
+    dataType = request.args.get('dataType')
+    token = request.cookies.get('Access-Token')
+
+    if token == None:
+        return redirect(LOGIN_PAGE_URL, code=302)
+
+    # ---validate user---
+    valid_user(token)
+
+    # ---get user id---
+    headers = {"Access-Token": token}
+    response = requests.get(IAM_USER, headers=headers)
+
+    if response.status_code != 200:
+        return "Invalid Access Token", 400
+
+    user_id = response.json()['data']['uid']
+
+    # ---get transaction list---
+    response = requests.get(TRANSACTIONS_LIST.format(user_id))
+    info = response.json()
+
+    if response.status_code != 200:
+        return "Error retrieving transactions list", 400
+
+    response = []
+    if dataType == "buyer":
+        for trans in info['from_uuid']:
+
+            resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'])
+            if resp.status_code != 200:
+                return "ID not found", 400
+            if trans['state'] == "COMPLETED":
+
+                response.append({'state': transformState(trans['state']),
+                            'seller' : json.loads(resp.text)['data']['email'],
+                            'url' : trans['object']['url'],
+                            'rate' : "<a href=\"/rating/rate?id="+ trans['from_uuid'] +" \" class=\"btn btn-primary\">Add Review</a>"
+                            })
+
+    return jsonify(response)
+
+
 def valid_user(token):
 
     # ---validate user---
