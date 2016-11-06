@@ -105,7 +105,7 @@ def transafe():
     data = {'user_id1': info['from_uuid'], 'user_id2': info['to_uuid'], 'transaction_id': trans_id, 'amount': info['price'],
             'description': info['object']['name'], 'callback': PAY_GATEWAY_CALLBACK_URL + "?id="+trans_id}
 
-    return redirect(requests.post(PAY_SERVICE_CREATE_PAYMENT, data=data).url, 302)
+    return redirect(requests.post(PAY_SERVICE_CREATE_PAYMENT, data=data, headers={'token_ID': PAY_SERVICE_TOKEN_ID}).url, 302)
 
 
 @pay_gateway.route("/callback", methods = ['GET'])
@@ -155,7 +155,7 @@ def complete():
 
     data = {'transaction_id': trans_id}
 
-    response = requests.post(PAY_SERVICE_COMPLETE_PAYMENT, data=data)
+    response = requests.post(PAY_SERVICE_COMPLETE_PAYMENT, data=data, headers={'token_ID': PAY_SERVICE_TOKEN_ID})
 
     if response.status_code != 200:
         return "Error completing payment", 400
