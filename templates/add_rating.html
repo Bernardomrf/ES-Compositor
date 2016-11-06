@@ -53,6 +53,7 @@
 			<li id="page_rating"><a href="/rating"><svg class="glyph stroked star"><use xlink:href="#stroked-star"/></svg>Rating</a></li>
 			<li id="page_transaction"><a href="/transaction"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg> Transactions</a></li>
 			<li id="page_money"><a href="/money"><svg class="glyph stroked key "><use xlink:href="#stroked-key"/></svg>Payment Methods</a></li>
+
 			<li role="presentation" class="divider"></li>
 			<li id="page_add_transaction"><a href="/add_transaction"><svg class="glyph stroked plus sign"><use xlink:href="#stroked-plus-sign"/></svg>Create transaction</a></li>
 		</ul>
@@ -72,48 +73,39 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<form action="/transaction/new" method="POST">
-							<fieldset>
+						<form action="/tracking/submit?id={{id}}" method="POST">
+							<fieldset class="rating">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Rating</label>
+								    <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
+								    <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+								    <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
+								    <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+								    <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label>Comentary</label>
+									<input type="text" name="tracking" placeholder="Tracking Number" class="form-control">
+								</div>
+								<div class="col-md-6">
+									<input type="submit" id="save_state" class="btn btn-primary" value="Submit Tracking Number">
+								</div>
+							</fieldset>
+
+							<!-- <fieldset>
 						<div class="col-md-6">
-
 									<div class="form-group">
-										<label>Seller</label>
-										<input type="text" name="seller_email" placeholder="E-MAIL@" class="form-control">
+										<label>Tracking Number</label>
+										<input type="text" name="tracking" placeholder="Tracking Number" class="form-control">
 									</div>
-
-									<div class="form-group">
-										<label>URL</label>
-										<input type="text" name="url" placeholder="URL" class="form-control">
-									</div>
-
-									<div class="form-group">
-										<label>Price</label>
-										<input type="text" name="price" placeholder="€€€" class="form-control">
-									</div>
-
-									<div class="form-group">
-										<label>Description</label>
-										<input type="text" name="description" placeholder="Description" class="form-control">
-									</div>
-
 							</div>
 							<div class="col-md-6">
-
-								<div class="form-group">
-									<label>State</label>
-									<!-- ONLY ONE CHANGE IN EACH ITERATION, THIS IS ONLY FOR OUTPUT THE STATES -->
-									<select class="form-control" disabled="disabled">
-										<option value="AWAITING_CONFIRMATION">Awaiting confirmation</option>
-										<option value="AWAITING_PAYMENT">Awaiting payment</option>
-										<option value="AWAITING_SHIPPING">Awaiting shipping</option>
-										<option value="SHIPPED">Shipped</option>
-										<option value="REFUND">Refund</option>
-										<option value="COMPLETED">Completed</option>
-									</select>
-								</div>
-								<input type="submit" id="save_state" class="btn btn-primary" value="Create transaction">
+								<input type="submit" id="save_state" class="btn btn-primary" value="Submit Tracking Number">
 							</div>
-							</fieldset>
+						</fieldset>-->
+
 						</form>
 					</div>
 				</div>
@@ -149,6 +141,50 @@
 			window.location.href = "/transaction";
 		});
 	</script>
+	<style>
+		@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+		fieldset, label { margin: 0; padding: 0; }
+		body{ margin: 20px; }
+		h1 { font-size: 1.5em; margin: 10px; }
+
+		/****** Style Star Rating Widget *****/
+
+		.rating {
+		border: none;
+		float: left;
+		}
+
+		.rating > input { display: none; }
+		.rating > label:before {
+		margin: 5px;
+		font-size: 1.25em;
+		font-family: FontAwesome;
+		display: inline-block;
+		content: "\f005";
+		}
+
+		.rating > .half:before {
+		content: "\f089";
+		position: absolute;
+		}
+
+		.rating > label {
+		color: #ddd;
+		float: right;
+		}
+
+		/***** CSS Magic to Highlight Stars on Hover *****/
+
+		.rating > input:checked ~ label, /* show gold star when clicked */
+		.rating:not(:checked) > label:hover, /* hover current star */
+		.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+		.rating > input:checked + label:hover, /* hover current star when changing rating */
+		.rating > input:checked ~ label:hover,
+		.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+		.rating > input:checked ~ label:hover ~ label { color: #FFED85;  }
+	</style>
 </body>
 
 </html>
