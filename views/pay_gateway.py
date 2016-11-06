@@ -171,7 +171,8 @@ def complete():
 
     data = {'transaction_id': trans_id}
 
-    response = requests.post(PAY_SERVICE_COMPLETE_PAYMENT, data=data, headers={'token_ID': PAY_SERVICE_TOKEN_ID})
+    headers={'Access-Token': PAY_SERVICE_TOKEN_ID}
+    response = requests.post(PAY_SERVICE_COMPLETE_PAYMENT, data=data, headers=headers)
 
     if response.status_code != 200:
         return "Error completing payment", 400
