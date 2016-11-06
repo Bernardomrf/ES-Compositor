@@ -127,8 +127,18 @@ def callback():
     if response.status_code != 200:
         return "Error changing transaction state", 400
 
-    data = {'email': 'bernardomrf@gmail.com',
-            'message': 'AWAITING_SHIPPING'}
+    resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
+    if resp.status_code != 200:
+        return "ID not found", 400
+    info = resp.json()
+
+    resp = requests.get(IAM_USER + "?id=" + info['to_uuid'])
+    if resp.status_code != 200:
+        return "ID not found", 400
+    to_email = json.loads(resp.text)['data']['email']
+
+    data = {'email': to_email, 'message': 'The transaction for this item: '+info['object']['url']+' has been payed. Proceed to ship the item.'}
+
     response = requests.post(NOTIFICATION_EMAIL, data=data)
 
     response = redirect(PAY_GATEWAY_CONFIRMED_URL, code=302)
@@ -167,8 +177,18 @@ def complete():
     if response.status_code != 200:
         return "Error changing transaction state", 400
 
-    data = {'email': 'bernardomrf@gmail.com',
-            'message': 'AWAITING_SHIPPING'}
+    resp = requests.get(TRANSACTIONS_DETAILS + trans_id + "/")
+    if resp.status_code != 200:
+        return "ID not found", 400
+    info = resp.json()
+
+    resp = requests.get(IAM_USER + "?id=" + info['to_uuid'])
+    if resp.status_code != 200:
+        return "ID not found", 400
+    to_email = json.loads(resp.text)['data']['email']
+
+    data = {'email': to_email, 'message': 'The transaction for this item: '+info['object']['url']+' has been completed. The money has been transfered for your account'}
+
     response = requests.post(NOTIFICATION_EMAIL, data=data)
 
     response = redirect(TRANSACTIONS_URL, code=302)

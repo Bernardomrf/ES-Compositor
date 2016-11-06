@@ -33,6 +33,11 @@ def home():
     # ---validate user---
     valid_user(token)
 
+    resp = requests.get(TRANSACTIONS_DETAILS + transaction_id + "/")
+    if resp.status_code != 200:
+        return "ID not found", 400
+    info = resp.json()
+
     data = {'transaction_id': transaction_id,
             'state': state}
     response = requests.post(TRANSACTIONS_UPDATE, data=data)
@@ -40,14 +45,27 @@ def home():
     if response.status_code != 200:
         return "Error changing transaction state", 400
 
-    data = {'email': 'bernardomrf@gmail.com',
-            'message': state}
+    data = get_message(state, info['from_uuid'], info['object']['url'])
+
     response = requests.post(NOTIFICATION_EMAIL, data=data)
 
     response = redirect(TRANSACTIONS_URL, code=302)
     response.headers['Access-Control-Allow-Origin'] = '*'
 
     return response
+
+def get_message(state, from_uuid, url):
+
+    resp = requests.get(IAM_USER + "?id=" + from_uuid)
+    if resp.status_code != 200:
+        return "ID not found", 400
+    from_email = json.loads(resp.text)['data']['email']
+
+    if state == 'AWAITING_PAYMENT':
+        return {'email': from_email, 'message': 'The transaction for this item: '+url+' has been confirmed and is waiting for your payment.'}
+    if state == 'SHIPPED':
+        return {'email': from_email, 'message': 'The item you orded: '+url+' has been sended. Complete the transaction on the platform as soon as the item arrives.'}
+
 
 def valid_user(token):
 

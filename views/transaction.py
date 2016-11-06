@@ -101,9 +101,24 @@ def new_transaction():
             'state': "AWAITING_CONFIRMATION"}
 
     response = requests.post(TRANSACTIONS_NEW, data=data)
+    info = response.json()
 
     if response.status_code != 201:
         return "Error creating transaction", 400
+
+    resp = requests.get(TRANSACTIONS_DETAILS + info['id'] + "/")
+    if resp.status_code != 200:
+        return "ID not found", 400
+    info = resp.json()
+
+    resp = requests.get(IAM_USER + "?id=" + info['to_uuid'])
+    if resp.status_code != 200:
+        return "ID not found", 400
+    to_email = json.loads(resp.text)['data']['email']
+
+    data = {'email': to_email, 'message': 'There is a new transaction waiting confirmation for this item:' + info['object']['url']}
+
+    response = requests.post(NOTIFICATION_EMAIL, data=data)
 
     response = redirect(TRANSACTIONS_URL, code=302)
     response.headers['Access-Control-Allow-Origin'] = '*'
@@ -146,13 +161,11 @@ def list_transactions():
             if resp.status_code != 200:
                 return "ID not found", 400
 
-
-
-            if trans['tracking_code'] == "":
-                tracking = "None"
-
-            elif trans['state'] == 'SHIPPED' and trans['tracking_code'] == "":
+            if trans['state'] == 'SHIPPED' and trans['tracking_code'] == "":
                 tracking = "<a href=\"/tracking?id="+ trans['id'] +"\" class=\"btn btn-info\">Add Tracking N.</a>"
+
+            elif trans['tracking_code'] == "":
+                tracking = "None"
 
             else:
                 tracking = "<a href=\"http://www.17track.net/pt/track?nums="+trans['tracking_code']+"\"><span class=\"badge\">"+trans['tracking_code']+"</span></a><br>"
