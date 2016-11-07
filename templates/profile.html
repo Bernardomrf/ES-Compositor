@@ -72,7 +72,7 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-body">
-							<div class="col-md-6">
+							<div class="col-md-5">
 
 									<div class="form-group">
 										<label>Name: </label>
@@ -115,7 +115,7 @@
 												<input  type="submit" class="btn btn-success" value="Save">
 											</fieldset>
 										</form>
-										<textarea form="formaddress" id="address_input" name="address">{{ address }}</textarea>
+										<textarea style="display: none" form="formaddress" id="address_input" name="address">{{ address }}</textarea>
 									</div>
 
 
@@ -138,6 +138,7 @@
 	function editAddress(){
 		document.getElementById("divaddress").style.display = "none";
 		document.getElementById("formaddress").style.display = "block";
+		document.getElementById("address_input").style.display = "block";
 	}
 	function editPhone(){
 		document.getElementById("divphone").style.display = "none";
