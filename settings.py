@@ -55,5 +55,7 @@ PAY_GATEWAY_CONFIRMED_URL = "https://transafe.rafaelferreira.pt/pay_gateway/paym
 NOTIFICATION_EMAIL = "http://10.0.11.14/api/v1/notification/email/"
 NOTIFICATION_MESSENGER = "http://10.0.11.14/api/v1/notification/messenger/"
 
+RATING_RATE = "http://10.0.11.16/api/v1/rating/"
+
 PAYPAL_CLIENT_ID = "AW3iw3rOWtZt_VrhggnaNYl1_7FJ6lAf04SwAXAFfHmVUAkXX6bz55pSBnemeJ3z-Vytymv1FP7mVWBt"
 PAYPAL_CLIENT_SECRET = "ENqKPCSabqwaDsLKncTGjeXDLlYyIEALMg9yiRdZG8BS7TvqLPINd303YhMvmLCJptEeRRHhUSS0JM6T"

@@ -43,8 +43,8 @@ def home():
 
     return render_template('rating.html', user=user, name=name, image=image)
 
-@rating.route("/rate", methods = ['GET'])
-def rate():
+@rating.route("/review", methods = ['GET'])
+def review():
 
     token = request.cookies.get('Access-Token')
 
@@ -67,7 +67,9 @@ def rate():
 
     return render_template('add_rating.html', user=user, name=name, image=image)
 
-
+@rating.route("/rate", methods = ['POST'])
+def rate():
+    pass
 
 def valid_user(token):
 
