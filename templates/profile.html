@@ -97,7 +97,7 @@
 										</div>
 										<form style="display: none" id="formphone" class="form-horizontal" id="form" method="post" action="/profile/editPhone">
 											<fieldset>
-												<input type="text" id="phone_input" name="phone" class="input-xlarge">
+												<input type="text" id="phone_input" name="phone" class="input-xlarge" value="{{ phone }}">
 												<input  type="submit" class="btn btn-success" value="Save">
 											</fieldset>
 										</form>
@@ -115,6 +115,7 @@
 												<input  type="submit" class="btn btn-success" value="Save">
 											</fieldset>
 										</form>
+										<textarea form="formaddress" id="address_input" name="address">{{ address }}</textarea>
 									</div>
 
 
