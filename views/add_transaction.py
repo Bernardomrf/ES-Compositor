@@ -31,7 +31,8 @@ def home():
     valid_user(token)
 
     # ---get user mail---
-    headers = {"Access-Token": token}
+    headers = {"Access-Token" : token,
+                "API-Token" : IAM_CLIENT_SECRET}
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
@@ -46,7 +47,8 @@ def home():
 def valid_user(token):
 
     # ---validate user---
-    headers = {"Access-Token": token}
+    headers = {"Access-Token": token,
+                "API-Token" : IAM_CLIENT_SECRET}
     response = requests.post(IAM_VALIDATE, headers=headers)
 
     if response.status_code != 200:

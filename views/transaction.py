@@ -31,7 +31,7 @@ def home():
     valid_user(token)
 
     # ---get user mail---
-    headers = {"Access-Token": token}
+    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
@@ -60,7 +60,7 @@ def new_transaction():
     valid_user(token)
 
     # ---get user id---
-    headers = {"Access-Token": token}
+    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
@@ -70,7 +70,7 @@ def new_transaction():
 
     # ---get seller id---
     #headers = {"Access-Token": token} FALAR COM O BRUNO
-    headers = {}
+    headers = {"API-Token" : IAM_CLIENT_SECRET}
     response = requests.get(IAM_USER + "?email=" + seller_email, headers=headers)
 
     if response.status_code != 200:
@@ -111,7 +111,8 @@ def new_transaction():
         return "ID not found", 400
     info = resp.json()
 
-    resp = requests.get(IAM_USER + "?id=" + info['to_uuid'])
+    headers = {"API-Token" : IAM_CLIENT_SECRET}
+    resp = requests.get(IAM_USER + "?id=" + info['to_uuid'], headers=headers)
     if resp.status_code != 200:
         return "ID not found", 400
     to_email = json.loads(resp.text)['data']['email']
@@ -138,7 +139,7 @@ def list_transactions():
     valid_user(token)
 
     # ---get user id---
-    headers = {"Access-Token": token}
+    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
@@ -157,7 +158,8 @@ def list_transactions():
     if dataType == "seller":
         for trans in info['to_uuid']:
 
-            resp = requests.get(IAM_USER + "?id=" + trans['from_uuid'])
+            headers = {"API-Token" : IAM_CLIENT_SECRET}
+            resp = requests.get(IAM_USER + "?id=" + trans['from_uuid'], headers=headers)
             if resp.status_code != 200:
                 return "ID not found", 400
 
@@ -180,7 +182,8 @@ def list_transactions():
     elif dataType == "buyer":
         for trans in info['from_uuid']:
 
-            resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'])
+            headers = {"API-Token" : IAM_CLIENT_SECRET}
+            resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'], headers=headers)
             if resp.status_code != 200:
                 return "ID not found", 400
 
@@ -196,41 +199,11 @@ def list_transactions():
                             'actions': action(dataType  , trans['state'], trans['id'])
                             })
 
-    return jsonify(response)
+    elif dataType == "rating":
 
-@transaction.route("/list_rating", methods = ['GET'])
-def list_rating():
-
-    dataType = request.args.get('dataType')
-    token = request.cookies.get('Access-Token')
-
-    if token == None:
-        return redirect(LOGIN_PAGE_URL, code=302)
-
-    # ---validate user---
-    valid_user(token)
-
-    # ---get user id---
-    headers = {"Access-Token": token}
-    response = requests.get(IAM_USER, headers=headers)
-
-    if response.status_code != 200:
-        return "Invalid Access Token", 400
-
-    user_id = response.json()['data']['uid']
-
-    # ---get transaction list---
-    response = requests.get(TRANSACTIONS_LIST.format(user_id))
-    info = response.json()
-
-    if response.status_code != 200:
-        return "Error retrieving transactions list", 400
-
-    response = []
-    if dataType == "buyer":
         for trans in info['from_uuid']:
-
-            resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'])
+            headers = {"API-Token" : IAM_CLIENT_SECRET}
+            resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'], headers=headers)
             if resp.status_code != 200:
                 return "ID not found", 400
             if trans['state'] == "COMPLETED":
@@ -247,7 +220,7 @@ def list_rating():
 def valid_user(token):
 
     # ---validate user---
-    headers = {"Access-Token": token}
+    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
     response = requests.post(IAM_VALIDATE, headers=headers)
 
     if response.status_code != 200:

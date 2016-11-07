@@ -133,8 +133,8 @@ def callback():
     if resp.status_code != 200:
         return "ID not found", 400
     info = resp.json()
-
-    resp = requests.get(IAM_USER + "?id=" + info['to_uuid'])
+    headers = {"API-Token" : IAM_CLIENT_SECRET}
+    resp = requests.get(IAM_USER + "?id=" + info['to_uuid'], headers=headers)
     if resp.status_code != 200:
         return "ID not found", 400
     to_email = json.loads(resp.text)['data']['email']
@@ -185,7 +185,8 @@ def complete():
         return "ID not found", 400
     info = resp.json()
 
-    resp = requests.get(IAM_USER + "?id=" + info['to_uuid'])
+    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
+    resp = requests.get(IAM_USER + "?id=" + info['to_uuid'], headers=headers)
     if resp.status_code != 200:
         return "ID not found", 400
     to_email = json.loads(resp.text)['data']['email']
@@ -203,7 +204,7 @@ def complete():
 def valid_user(token):
 
     # ---validate user---
-    headers = {"Access-Token": token}
+    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
     response = requests.post(IAM_VALIDATE, headers=headers)
 
     if response.status_code != 200:
