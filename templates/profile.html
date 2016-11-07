@@ -92,9 +92,33 @@
 									</div>
 
 									<div class="form-group">
-										<label>Address: </label>
-                    {{address}}
+										<label>Phone Number: </label>
+										<div id="divphone">
+	                    <p id="phone">{{phone}}</p>
+											<button id="editphone" type="onclick" class="btn btn-info">Add/Edit Phone Number</button>
+										</div>
+										<form style="display: none" id="formphone" class="form-horizontal" id="form" method="post" action="/profile/editPhone">
+											<fieldset>
+												<input type="text" id="phone_input" name="phone" class="input-xlarge">
+												<input  type="submit" class="btn btn-success" value="Save">
+											</fieldset>
+										</form>
 									</div>
+
+									<div class="form-group">
+										<label>Address: </label>
+										<div id="divaddress">
+	                    <p id="address">{{address}}</p>
+											<button id="editaddress" type="onclick" class="btn btn-info">Add/Edit Address</button>
+										</div>
+										<form style="display: none" id="formaddress" class="form-horizontal" id="form" method="post" action="/profile/editAddress">
+											<fieldset>
+												<input type="text" id="address_input" name="address" class="input-xlarge">
+												<input  type="submit" class="btn btn-success" value="Save">
+											</fieldset>
+										</form>
+									</div>
+
 
 							</div>
 							<div class="col-md-6">
@@ -134,12 +158,20 @@
 		$(window).on('resize', function () {
 		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
 		});
-
+		$("#editaddress").click(function() {
+			document.getElementById("divaddress").style.display = "none";
+			document.getElementById("formaddress").style.display = "block";
+		});
+		$("#editphone").click(function() {
+			document.getElementById("divphone").style.display = "none";
+			document.getElementById("formphone").style.display = "block";
+		});
 		//$("#page_add_transaction").addClass("active");
 		$("#save_state").click(function () {
 			window.location.href = "/transaction";
 		});
 	</script>
+
 </body>
 
 </html>

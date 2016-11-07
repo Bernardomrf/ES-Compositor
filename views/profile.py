@@ -43,9 +43,59 @@ def home():
     name = response.json()['data']['name']
     image = response.json()['data']['picture_url']
     address = response.json()['data']['address']
+    phone = response.json()['data']['phone']
+
 
 
     return render_template('profile.html', name=name, email=email, id=uid, image=image, address=address)
+
+@profile.route("/editAddress", methods = ['POST'])
+def submit():
+
+    token = request.cookies.get('Access-Token')
+
+    if token == None:
+        return redirect(LOGIN_PAGE_URL, code=302)
+
+    address = request.form["address"]
+
+    # ---validate user---
+    valid_user(token)
+
+    # ---add user info---
+
+    headers = {"Access-Token": token}
+    data = {"address": address}
+    response = requests.post(IAM_USER_DATA, data=data, headers=headers)
+
+    if response.status_code != 200:
+        return "Invalid Access Token", 400
+
+    return redirect("/profile", code=302, Response=None)
+
+@profile.route("/editPhone", methods = ['POST'])
+def submit():
+
+    token = request.cookies.get('Access-Token')
+
+    if token == None:
+        return redirect(LOGIN_PAGE_URL, code=302)
+
+    phone = request.form["phone"]
+
+    # ---validate user---
+    valid_user(token)
+
+    # ---add user info---
+
+    headers = {"Access-Token": token}
+    data = {"phone": phone}
+    response = requests.post(IAM_USER_DATA, data=data, headers=headers)
+
+    if response.status_code != 200:
+        return "Invalid Access Token", 400
+
+    return redirect("/profile", code=302, Response=None)
 
 def valid_user(token):
 

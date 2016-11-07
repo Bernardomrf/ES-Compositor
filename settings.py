@@ -11,6 +11,7 @@ __APP_NAME__ = "TranSafe"
 HOST = "localhost"
 
 IAM_USER = "https://im.transafe.rafaelferreira.pt/user"
+IAM_USER_DATA = "https://im.transafe.rafaelferreira.pt/user/add_user_data"
 IAM_VALIDATE = "https://im.transafe.rafaelferreira.pt/validate"
 IAM_SIGNUP = "https://im.transafe.rafaelferreira.pt/login"
 IAM_LOGOUT = "https://im.transafe.rafaelferreira.pt/logout"
