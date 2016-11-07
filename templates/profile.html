@@ -95,7 +95,7 @@
 										<label>Phone Number: </label>
 										<div id="divphone">
 	                    <p id="phone">{{phone}}</p>
-											<button id="editphone" type="onclick" class="btn btn-info">Add/Edit Phone Number</button>
+											<button id="editphone" onclick="editPhone()" class="btn btn-info">Add/Edit Phone Number</button>
 										</div>
 										<form style="display: none" id="formphone" class="form-horizontal" id="form" method="post" action="/profile/editPhone">
 											<fieldset>
@@ -109,7 +109,7 @@
 										<label>Address: </label>
 										<div id="divaddress">
 	                    <p id="address">{{address}}</p>
-											<button id="editaddress" type="onclick" class="btn btn-info">Add/Edit Address</button>
+											<button id="editaddress" onclick="editAddress()" class="btn btn-info">Add/Edit Address</button>
 										</div>
 										<form style="display: none" id="formaddress" class="form-horizontal" id="form" method="post" action="/profile/editAddress">
 											<fieldset>
@@ -137,6 +137,17 @@
 
 	</div><!--/.main-->
 
+	<script>
+	function editAddress(){
+		document.getElementById("divaddress").style.display = "none";
+		document.getElementById("formaddress").style.display = "block";
+	}
+	function editPhone(){
+		document.getElementById("divphone").style.display = "none";
+		document.getElementById("formphone").style.display = "block";
+	}
+	</script>
+
 	<script src="../static/js/jquery-1.11.1.min.js"></script>
 	<script src="../static/js/bootstrap.min.js"></script>
 	<script src="../static/js/chart.min.js"></script>
@@ -158,14 +169,7 @@
 		$(window).on('resize', function () {
 		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
 		});
-		$("#editaddress").click(function() {
-			document.getElementById("divaddress").style.display = "none";
-			document.getElementById("formaddress").style.display = "block";
-		});
-		$("#editphone").click(function() {
-			document.getElementById("divphone").style.display = "none";
-			document.getElementById("formphone").style.display = "block";
-		});
+
 		//$("#page_add_transaction").addClass("active");
 		$("#save_state").click(function () {
 			window.location.href = "/transaction";
