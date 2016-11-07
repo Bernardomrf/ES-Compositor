@@ -47,7 +47,7 @@ def home():
 
 
 
-    return render_template('profile.html', name=name, email=email, id=uid, image=image, address=address)
+    return render_template('profile.html', name=name, email=email, id=uid, image=image, address=address, phone=phone)
 
 @profile.route("/editAddress", methods = ['POST'])
 def editAddress():
