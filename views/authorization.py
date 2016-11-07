@@ -28,9 +28,6 @@ def signup():
 
     response = redirect(url+'?referer='+AUTH_CALLBACK_URL + "&api_token=" + IAM_CLIENT_SECRET, code=302)
     response.set_cookie('Access-Token', '', expires=0)
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.referrer = AUTH_CALLBACK_URL
-    response.headers['Referer'] = AUTH_CALLBACK_URL
 
     return response
 
@@ -48,6 +45,6 @@ def logout():
 
     token = request.cookies.get('Access-Token')
 
-    response = redirect(IAM_LOGOUT+ "?" +urllib.urlencode({"redirect_url": LOGIN_PAGE_URL,"access_token": token, "api_oken" : IAM_CLIENT_SECRET}), 302)
+    response = redirect(IAM_LOGOUT+ "?" +urllib.urlencode({"redirect_url": LOGIN_PAGE_URL,"access_token": token, "api_token" : IAM_CLIENT_SECRET}), 302)
 
     return response
