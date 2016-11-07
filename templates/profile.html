@@ -91,9 +91,13 @@
 
 									<div class="form-group">
 										<label>Phone Number: </label>
-										<div class="col-md-6" id="divphone">
-	                    <p id="phone">{{phone}}</p>
-											<button id="editphone" onclick="editPhone()" class="btn btn-info">Add/Edit Phone Number</button>
+										<div id="divphone">
+											<div class="col-md-2">
+		                    <p id="phone">{{phone}}</p>
+											</div>
+											<div class="col-md-2">
+												<button id="editphone" onclick="editPhone()" class="btn btn-info">Add/Edit Phone Number</button>
+											</div>
 										</div>
 										<form style="display: none" id="formphone" class="form-horizontal" id="form" method="post" action="/profile/editPhone">
 											<fieldset>
