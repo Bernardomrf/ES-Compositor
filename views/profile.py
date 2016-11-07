@@ -64,7 +64,7 @@ def editAddress():
 
     # ---add user info---
 
-    headers = {"Access-Token": token}
+    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
     data = {"address": address}
     response = requests.post(IAM_USER_DATA, data=data, headers=headers)
 
@@ -88,7 +88,7 @@ def editPhone():
 
     # ---add user info---
 
-    headers = {"Access-Token": token}
+    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
     data = {"phone": phone}
     response = requests.post(IAM_USER_DATA, data=data, headers=headers)
 
