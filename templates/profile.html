@@ -92,17 +92,13 @@
 									<div class="form-group">
 										<label>Phone Number: </label>
 										<div id="divphone">
-											<div class="col-md-2">
-		                    <p id="phone">{{phone}}</p>
-											</div>
-											<div class="col-md-2">
-												<button id="editphone" onclick="editPhone()" class="btn btn-info">Add/Edit Phone Number</button>
-											</div>
+		                  <p id="phone">{{phone}}</p>
+											<button id="editphone" onclick="editPhone()" class="btn btn-info">Add/Edit Phone Number</button>
 										</div>
 										<form style="display: none" id="formphone" class="form-horizontal" id="form" method="post" action="/profile/editPhone">
 											<fieldset>
 												<input type="text" id="phone_input" name="phone" class="input-xlarge" value="{{ phone }}">
-												<input  type="submit" class="btn btn-success" value="Save">
+												<input type="submit" class="btn btn-success" value="Save">
 											</fieldset>
 										</form>
 									</div>
