@@ -50,7 +50,7 @@ def home():
     return render_template('profile.html', name=name, email=email, id=uid, image=image, address=address)
 
 @profile.route("/editAddress", methods = ['POST'])
-def submit():
+def editAddress():
 
     token = request.cookies.get('Access-Token')
 
@@ -74,7 +74,7 @@ def submit():
     return redirect("/profile", code=302, Response=None)
 
 @profile.route("/editPhone", methods = ['POST'])
-def submit():
+def editPhone():
 
     token = request.cookies.get('Access-Token')
 
