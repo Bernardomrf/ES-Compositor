@@ -172,13 +172,13 @@ def list_transactions():
             else:
                 tracking = "<a href=\"http://www.17track.net/pt/track?nums=" + trans[
                     'tracking_code'] + "\"><span class=\"badge\">" + trans['tracking_code'] + "</span></a><br>"
-
+            address = json.loads(resp.text)['data']['address'].encode("utf-8")
             response.append({'state': transformState(trans['state']),
                              'buyer': json.loads(resp.text)['data']['email'],
                              'price': trans['price'],
                              'url': trans['object']['url'],
                              'tracking': tracking,
-                             'actions': action(dataType, trans['state'], trans['id'], json.loads(resp.text)['data']['address'].encode("utf-8"))
+                             'actions': action(dataType, trans['state'], trans['id'], address)
                              })
     elif dataType == "buyer":
         for trans in info['from_uuid']:
@@ -242,7 +242,7 @@ def transformState(state):
         return "<span class=\"label label-danger\">Refund</span>"
 
 
-def action(dataType, state, id, address):
+def action(dataType, state, id, address=""):
     if dataType == "buyer":
         if state == "AWAITING_PAYMENT":
             return "<a onClick=\"pay('" + id + "')\" class=\"btn btn-success\">Pay</a>"
@@ -266,7 +266,7 @@ def action(dataType, state, id, address):
             <h4 class=\"modal-title\">Buyer Address</h4> \
             </div> \
             <div class=\"modal-body\"> \
-            <p>" + address + "</p> \
+            <p>" + address.decode("utf-8") + "</p> \
             </div> \
             <div class=\"modal-footer\"> \
             <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button> \
