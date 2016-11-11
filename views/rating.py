@@ -84,7 +84,7 @@ def user_rating(email):
         return "Email not found", 400
     else:
         user_id = json.loads(response.text)['data']['uid']
-        response = requests.get(RATING_RATE + "/" + user_id + "/")
+        response = requests.get(RATING_RATE + user_id + "/")
         return response.text
 
 
