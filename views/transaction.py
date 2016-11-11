@@ -172,7 +172,7 @@ def list_transactions():
             else:
                 tracking = "<a href=\"http://www.17track.net/pt/track?nums=" + trans[
                     'tracking_code'] + "\"><span class=\"badge\">" + trans['tracking_code'] + "</span></a><br>"
-
+            print json.loads(resp.text)['data']['address']
             response.append({'state': transformState(trans['state']),
                              'buyer': json.loads(resp.text)['data']['email'],
                              'price': trans['price'],
@@ -187,8 +187,6 @@ def list_transactions():
             resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'], headers=headers)
             if resp.status_code != 200:
                 return "ID not found", 400
-            email = resp.json()['data']['email']
-            print email
             if trans['tracking_code'] == "":
                 tracking = "None"
             else:
