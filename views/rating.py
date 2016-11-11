@@ -67,7 +67,7 @@ def review():
     return render_template('add_rating.html', user=user, name=name, image=image)
 
 
-@transaction.route("/user_rating")  # ?email=<email>
+@rating.route("/user_rating")  # ?email=<email>
 def user_rating():
     token = request.cookies.get('Access-Token')
 
