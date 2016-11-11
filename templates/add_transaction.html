@@ -157,12 +157,9 @@
 
 		$(document).ready(function () {
 			var last_email = "";
-			var block = false;
 
 			$("#seller_email").keyup(function () {
-				if(!block && isEmail($(this).val()) && last_email!=$(this).val()){
-					block = true;
-
+				if(isEmail($(this).val()) && last_email!=$(this).val()){
 					last_email = $(this).val();
 					console.log(last_email);
 
@@ -170,15 +167,9 @@
 						$("#seller_email_group").removeClass("has-error");
 
 						console.log(data);
-
-						block = false;
 					})
 					.error(function(jqXHR, textStatus, errorThrown) {
-						block = false;
 						$("#seller_email_group").addClass("has-error");
-
-						console.log("error " + textStatus);
-						console.log("incoming Text " + jqXHR.responseText);
 					});
 				}
 			});
