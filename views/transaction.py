@@ -187,7 +187,8 @@ def list_transactions():
             resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'], headers=headers)
             if resp.status_code != 200:
                 return "ID not found", 400
-
+            email = resp.json()['data']['email']
+            print email
             if trans['tracking_code'] == "":
                 tracking = "None"
             else:
@@ -255,7 +256,8 @@ def action(dataType, state, id):
         if state == "AWAITING_CONFIRMATION":
             return "<a href=\"/change_state?id=" + id + "&state=AWAITING_PAYMENT\" class=\"btn btn-primary\">Confirm</a>"
         elif state == "AWAITING_SHIPPING":
-            return "<a href=\"/change_state?id=" + id + "&state=SHIPPED\" class=\"btn btn-primary\">Sended</a>" + "<button type=\"button\" class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#myModal\">Open Modal</button> \
+
+            return "<button type=\"button\" class=\"btn btn-warning btn-xs\" data-toggle=\"modal\" data-target=\"#myModal\">Open Modal</button> \
             <!-- Modal --> \
             <div class=\"modal fade\" id=\"myModal\" role=\"dialog\"> \
             <div class=\"modal-dialog\"> \
@@ -273,6 +275,6 @@ def action(dataType, state, id):
             </div> \
             </div> \
             </div> \
-            </div>"
+            </div>" + "<a href=\"/change_state?id=" + id + "&state=SHIPPED\" class=\"btn btn-primary btn-sm\">Sent</a>"
         else:
             return "None"
