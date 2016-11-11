@@ -1,180 +1,232 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TranSafe - Create transaction</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TranSafe - Create transaction</title>
 
-<link href="../static/css/bootstrap.min.css" rel="stylesheet">
-<link href="../static/css/datepicker3.css" rel="stylesheet">
-<link href="../static/css/styles.css" rel="stylesheet">
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/datepicker3.css" rel="stylesheet">
+    <link href="../static/css/styles.css" rel="stylesheet">
 
-<!--Icons-->
-<script src="../static/js/lumino.glyphs.js"></script>
+    <!--Icons-->
+    <script src="../static/js/lumino.glyphs.js"></script>
 
-<!--[if lt IE 9]>
-<script src="../static/js/html5shiv.js"></script>
-<script src="../static/js/respond.min.js"></script>
-<![endif]-->
+    <!--[if lt IE 9]>
+    <script src="../static/js/html5shiv.js"></script>
+    <script src="../static/js/respond.min.js"></script>
+    <![endif]-->
 
 </head>
 
 <body>
-	<!-- NAVBAR -->
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/dashboard"><span>Tran</span>Safe</a>
-				<ul class="user-menu">
-					<li class="dropdown pull-right">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="{{image}}" class="img-circle" alt="picture" style="max-width: 22%; position: absolute; left: -35px;" > {{name}} <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="/profile"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
-							<li><a href="/authorize/logout"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
+<!-- NAVBAR -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/dashboard"><span>Tran</span>Safe</a>
+            <ul class="user-menu">
+                <li class="dropdown pull-right">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="{{image}}" class="img-circle"
+                                                                                     alt="picture"
+                                                                                     style="max-width: 22%; position: absolute; left: -35px;">
+                        {{name}} <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/profile">
+                            <svg class="glyph stroked male-user">
+                                <use xlink:href="#stroked-male-user"></use>
+                            </svg>
+                            Profile</a></li>
+                        <li><a href="/authorize/logout">
+                            <svg class="glyph stroked cancel">
+                                <use xlink:href="#stroked-cancel"></use>
+                            </svg>
+                            Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
 
-		</div><!-- /.container-fluid -->
-	</nav>
-	<!-- END NAVBAR -->
+    </div><!-- /.container-fluid -->
+</nav>
+<!-- END NAVBAR -->
 
-	<!-- SIDEBAR -->
-	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-		<ul class="nav menu">
-			<li id="page_home"><a href="/dashboard"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
-			<li id="page_rating"><a href="/rating"><svg class="glyph stroked star"><use xlink:href="#stroked-star"/></svg>Rating</a></li>
-			<li id="page_transaction"><a href="/transaction"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg> Transactions</a></li>
-			<li id="page_money"><a href="/money"><svg class="glyph stroked key "><use xlink:href="#stroked-key"/></svg>Payment Methods</a></li>
-			<li role="presentation" class="divider"></li>
-			<li id="page_add_transaction"><a href="/add_transaction"><svg class="glyph stroked plus sign"><use xlink:href="#stroked-plus-sign"/></svg>Create transaction</a></li>
-		</ul>
+<!-- SIDEBAR -->
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+    <ul class="nav menu">
+        <li id="page_home"><a href="/dashboard">
+            <svg class="glyph stroked dashboard-dial">
+                <use xlink:href="#stroked-dashboard-dial"></use>
+            </svg>
+            Dashboard</a></li>
+        <li id="page_rating"><a href="/rating">
+            <svg class="glyph stroked star">
+                <use xlink:href="#stroked-star"/>
+            </svg>
+            Rating</a></li>
+        <li id="page_transaction"><a href="/transaction">
+            <svg class="glyph stroked table">
+                <use xlink:href="#stroked-table"></use>
+            </svg>
+            Transactions</a></li>
+        <li id="page_money"><a href="/money">
+            <svg class="glyph stroked key ">
+                <use xlink:href="#stroked-key"/>
+            </svg>
+            Payment Methods</a></li>
+        <li role="presentation" class="divider"></li>
+        <li id="page_add_transaction"><a href="/add_transaction">
+            <svg class="glyph stroked plus sign">
+                <use xlink:href="#stroked-plus-sign"/>
+            </svg>
+            Create transaction</a></li>
+    </ul>
 
-	</div><!--/.sidebar-->
-	<!-- END SIDEBAR -->
+</div><!--/.sidebar-->
+<!-- END SIDEBAR -->
 
-	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-		<div class="row">
-			<ol class="breadcrumb">
-				<li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
-				<li class="active">Create transaction</li>
-			</ol>
-		</div><!--/.row-->
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">
+                <svg class="glyph stroked home">
+                    <use xlink:href="#stroked-home"></use>
+                </svg>
+            </a></li>
+            <li class="active">Create transaction</li>
+        </ol>
+    </div><!--/.row-->
 
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<form action="/transaction/new" method="POST">
-							<fieldset>
-						<div class="col-md-6">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="/transaction/new" method="POST">
+                        <fieldset>
+                            <div class="col-md-6">
 
-									<div class="form-group" id="seller_email_group">
-										<label>Seller</label>
-										<input type="text" name="seller_email" id="seller_email" placeholder="E-MAIL@" class="form-control">
-									</div>
+                                <div class="form-group" id="seller_email_group">
+                                    <label>Seller</label>
+                                    <input type="text" name="seller_email" id="seller_email" placeholder="mail@email.com"
+                                           class="form-control">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="rating-block">
+                                            <h4>Average user rating received</h4>
+                                            <h2 class="bold padding-bottom-7">4.3
+                                                <small>/ 5</small>
+                                            </h2>
+                                            <button type="button" class="btn btn-warning btn-sm"
+                                                    aria-label="Left Align">
+                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-sm"
+                                                    aria-label="Left Align">
+                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-sm"
+                                                    aria-label="Left Align">
+                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-grey btn-sm"
+                                                    aria-label="Left Align">
+                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-grey btn-sm"
+                                                    aria-label="Left Align">
+                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Price</label>
+                                    <input type="text" name="price" placeholder="€" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>URL</label>
+                                    <input type="text" name="url" placeholder="http://..." class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea class="form-control" name="description" placeholder="Description" rows="3"></textarea>
+                                </div>
+                                <input type="submit" id="save_state" class="btn btn-primary" disabled="disabled"
+                                       value="Create transaction">
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div><!-- /.col-->
+    </div><!-- /.row -->
 
-									<div class="form-group">
-										<label>URL</label>
-										<input type="text" name="url" placeholder="URL" class="form-control">
-									</div>
+</div><!--/.main-->
 
-									<div class="form-group">
-										<label>Price</label>
-										<input type="text" name="price" placeholder="€€€" class="form-control">
-									</div>
+<script src="../static/js/jquery-1.11.1.min.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/chart.min.js"></script>
+<script src="../static/js/chart-data.js"></script>
+<script src="../static/js/easypiechart.js"></script>
+<script src="../static/js/easypiechart-data.js"></script>
+<script src="../static/js/bootstrap-datepicker.js"></script>
+<script>
+    !function ($) {
+        $(document).on("click", "ul.nav li.parent > a > span.icon", function () {
+            $(this).find('em:first').toggleClass("glyphicon-minus");
+        });
+        $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+    }(window.jQuery);
 
-									<div class="form-group">
-										<label>Description</label>
-										<input type="text" name="description" placeholder="Description" class="form-control">
-									</div>
+    $(window).on('resize', function () {
+        if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+    })
+    $(window).on('resize', function () {
+        if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+    });
 
-							</div>
-							<div class="col-md-6">
+    $("#page_add_transaction").addClass("active");
+    $("#save_state").click(function () {
+        window.location.href = "/transaction";
+    });
+</script>
+<script>
+    function isEmail(email) {
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+    }
 
-								<div class="form-group">
-									<label>State</label>
-									<!-- ONLY ONE CHANGE IN EACH ITERATION, THIS IS ONLY FOR OUTPUT THE STATES -->
-									<select class="form-control" disabled="disabled">
-										<option value="AWAITING_CONFIRMATION">Awaiting confirmation</option>
-										<option value="AWAITING_PAYMENT">Awaiting payment</option>
-										<option value="AWAITING_SHIPPING">Awaiting shipping</option>
-										<option value="SHIPPED">Shipped</option>
-										<option value="REFUND">Refund</option>
-										<option value="COMPLETED">Completed</option>
-									</select>
-								</div>
-								<input type="submit" id="save_state" class="btn btn-primary" disabled="disabled" value="Create transaction">
-							</div>
-							</fieldset>
-						</form>
-					</div>
-				</div>
-			</div><!-- /.col-->
-		</div><!-- /.row -->
+    $(document).ready(function () {
+        var last_email = "";
 
-	</div><!--/.main-->
+        $("#seller_email").keyup(function () {
+            if (isEmail($(this).val()) && last_email != $(this).val()) {
+                last_email = $(this).val();
+                console.log(last_email);
 
-	<script src="../static/js/jquery-1.11.1.min.js"></script>
-	<script src="../static/js/bootstrap.min.js"></script>
-	<script src="../static/js/chart.min.js"></script>
-	<script src="../static/js/chart-data.js"></script>
-	<script src="../static/js/easypiechart.js"></script>
-	<script src="../static/js/easypiechart-data.js"></script>
-	<script src="../static/js/bootstrap-datepicker.js"></script>
-	<script>
-		!function ($) {
-			$(document).on("click","ul.nav li.parent > a > span.icon", function(){
-				$(this).find('em:first').toggleClass("glyphicon-minus");
-			});
-			$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-		}(window.jQuery);
-
-		$(window).on('resize', function () {
-		  if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
-		})
-		$(window).on('resize', function () {
-		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
-		});
-
-		$("#page_add_transaction").addClass("active");
-		$("#save_state").click(function () {
-			window.location.href = "/transaction";
-		});
-	</script>
-	<script>
-		function isEmail(email) {
-		  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-		  return regex.test(email);
-		}
-
-		$(document).ready(function () {
-			var last_email = "";
-
-			$("#seller_email").keyup(function () {
-				if(isEmail($(this).val()) && last_email!=$(this).val()){
-					last_email = $(this).val();
-					console.log(last_email);
-
-					$.getJSON("/rating/user_rating/"+last_email+"/", function (data) {
-						$("#seller_email_group").removeClass("has-error");
-
-						console.log(data);
-					})
-					.error(function(jqXHR, textStatus, errorThrown) {
-						$("#seller_email_group").addClass("has-error");
-					});
-				}
-			});
-		});
-	</script>
+                $.getJSON("/rating/user_rating/" + last_email + "/", function (data) {
+                    $("#seller_email_group").removeClass("has-error");
+                    $("#save_state").prop("disabled", false);
+                    console.log(data);
+                })
+                .error(function (jqXHR, textStatus, errorThrown) {
+                    $("#seller_email_group").addClass("has-error");
+                    $("#save_state").prop("disabled", true);
+                });
+            }
+        });
+    });
+</script>
 </body>
 
 </html>
