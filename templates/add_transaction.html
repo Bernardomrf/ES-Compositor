@@ -230,6 +230,10 @@
                     if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty(rating_given)){
                         $("#rating_given_count").html(((data.rating.data.rating_given*5)/100).toFixed(2));
                     }
+                    if(data.hasOwnProperty("user") && data.user.hasOwnProperty("data") && data.user.data.hasOwnProperty("picture_url")){
+                        $("#profile_picture").attr("src", data.user.data.picture_url);
+                        $("#profile_picture").show();
+                    }
 
                     console.log(data);
                 })
@@ -238,6 +242,7 @@
                     $("#save_state").prop("disabled", true);
                     $("#rating_given_count").html("0");
                     $("#rating_given_count").html("0");
+                    $("#profile_picture").hide();
                 });
             }
         });
