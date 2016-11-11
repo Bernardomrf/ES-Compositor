@@ -85,8 +85,12 @@ def user_rating(email):
     else:
         user_id = json.loads(response_iam.text)['data']['uid']
         response_iam_details = requests.get(IAM_USER + "?id=" + user_id, headers=headers)
-        response = requests.get(RATING_RATE + user_id + "/")
-        return jsonify({"user": json.loads(response_iam_details.text), "rating": json.loads(response.text)})
+        
+        try:
+            response = requests.get(RATING_RATE + user_id + "/")
+            return jsonify({"user": json.loads(response_iam_details.text), "rating": json.loads(response.text)})
+        except requests.exceptions.ConnectionError:
+            return jsonify({"user": json.loads(response_iam_details.text), "rating": "Rating service is down!"})
 
 
 @rating.route("/rate", methods=['POST'])
