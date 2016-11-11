@@ -147,17 +147,14 @@
                                                 <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                                             </button>
                                         </div>
+                                        <br/>
+                                        <button type="button" class="btn btn-info" data-toggle="modal"  style="display: none" id="view_received_reviews" data-target="#myModal">View received reviews <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                                     </div>
                                     <div class="col-md-6 text-center">
+                                        <br/><br/>
                                         <img id="profile_picture" alt="profile_picture" class="img-thumbnail" style="max-width: 60%; height: auto; display: none">
                                         <br/>
                                         <h5 id="name"></h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <br/>
-                                        <button type="button" class="btn btn-info" data-toggle="modal"  style="display: none" id="view_received_reviews" data-target="#myModal">View received reviews <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -253,6 +250,9 @@
 
                     if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_received_count")){
                         $("#rating_received_count").html(data.rating.data.rating_received_count);
+                        if(data.rating.data.rating_received_count>0){
+                            $("#view_received_reviews").show();
+                        }
                     }
                     if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_received")){
                         var rating = (data.rating.data.rating_received*5)/100;
@@ -274,7 +274,6 @@
                         $("#name").html(data.user.data.name);
                         $("#name").show();
                     }
-                    $("#view_received_reviews").show();
                 })
                 .error(function (jqXHR, textStatus, errorThrown) {
                     $("#seller_email_group").addClass("has-error");
