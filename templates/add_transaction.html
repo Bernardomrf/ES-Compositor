@@ -121,10 +121,10 @@
                                     <div class="col-md-6">
                                         <div class="rating-block">
                                             <h4>Average user rating received</h4>
-                                            <h2 class="bold padding-bottom-7"><span id="rating_given">0</span>
+                                            <h2 class="bold padding-bottom-7"><span id="rating_received">0</span>
                                                 <small>/ 5</small>
                                             </h2>
-                                            <h6 id="number_reviews_received"><span id="rating_given_count">0</span> reviews received.</h6>
+                                            <h6 id="number_reviews_received"><span id="rating_received_count">0</span> reviews received.</h6>
                                             <button type="button" class="btn btn-default btn-sm" style="pointer-events: none;"
                                                     aria-label="Left Align">
                                                 <span class="glyphicon glyphicon-star" id="star1" aria-hidden="true"></span>
@@ -224,11 +224,11 @@
                     $("#seller_email_group").removeClass("has-error");
                     $("#save_state").prop("disabled", false);
 
-                    if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_given_count")){
-                        $("#rating_given_count").html(data.rating.data.rating_given_count);
+                    if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_received_count")){
+                        $("#rating_received_count").html(data.rating.data.rating_received_count);
                     }
-                    if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_given")){
-                        var rating = (data.rating.data.rating_given*5)/100;
+                    if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_received")){
+                        var rating = (data.rating.data.rating_received*5)/100;
                         for (var i=1; i<=Math.floor(rating); i++){
                             $("#star"+i).removeClass("btn-default")
                                         .addClass("btn-warning");
@@ -237,7 +237,7 @@
                             $("#star"+i).removeClass("btn-warning")
                                         .addClass("btn-default");
                         }
-                        $("#rating_given").html(rating.toFixed(2));
+                        $("#rating_received").html(rating.toFixed(2));
                     }
                     if(data.hasOwnProperty("user") && data.user.hasOwnProperty("data") && data.user.data.hasOwnProperty("picture_url")){
                         $("#profile_picture").attr("src", data.user.data.picture_url);
@@ -249,8 +249,8 @@
                 .error(function (jqXHR, textStatus, errorThrown) {
                     $("#seller_email_group").addClass("has-error");
                     $("#save_state").prop("disabled", true);
-                    $("#rating_given_count").html("0");
-                    $("#rating_given_count").html("0");
+                    $("#rating_received_count").html("0");
+                    $("#rating_received_count").html("0");
                     $("#profile_picture").hide();
                 });
             }
