@@ -87,9 +87,9 @@ def user_rating(email):
         response_iam_details = requests.get(IAM_USER + "?id=" + user_id, headers=headers)
         
         try:
-            response = requests.get(RATING_RATE + user_id + "/")
+            response = requests.get(RATING_RATE + user_id + "/", timeout=0.3)
             return jsonify({"user": json.loads(response_iam_details.text), "rating": json.loads(response.text)})
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError, requests.exceptions.Timeout:
             return jsonify({"user": json.loads(response_iam_details.text), "rating": "Rating service is down!"})
 
 
@@ -110,9 +110,6 @@ def rate():
 
     log.debug(rate)
     log.debug(description)
-
-
-
 
 
 def valid_user(token):
