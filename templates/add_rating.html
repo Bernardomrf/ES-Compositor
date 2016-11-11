@@ -9,6 +9,7 @@
 <link href="../static/css/datepicker3.css" rel="stylesheet">
 <link href="../static/css/styles.css" rel="stylesheet">
 
+
 <!--Icons-->
 <script src="../static/js/lumino.glyphs.js"></script>
 
@@ -74,34 +75,33 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<p>
-						<h3>Submit your Review</h3>
+						<h3>Submit your Review for this Transaction</h3>
 						<p>
 						<form action="/tracking/submit?id={{id}}" method="POST">
 							<fieldset class="rating">
 								<div class="col-lg-6">
 									<div class="form-group">
-										<h4>Rate the seller</h4>
 										<h2 class="bold padding-bottom-7"><span id="rating_numbers">0</span>
 												<small>/ 5</small>
 										</h2>
 
-										<button type="button" class="btn btn-default btn-sm" style="pointer-events: none;"
+										<button type="button" class="btn btn-default btn-sm"
 														aria-label="Left Align">
 												<span class="glyphicon glyphicon-star" id="star1" aria-hidden="true"></span>
 										</button>
-										<button type="button" class="btn btn-default btn-sm" style="pointer-events: none;"
+										<button type="button" class="btn btn-default btn-sm"
 														aria-label="Left Align">
 												<span class="glyphicon glyphicon-star" id="star2" aria-hidden="true"></span>
 										</button>
-										<button type="button" class="btn btn-default btn-sm" style="pointer-events: none;"
+										<button type="button" class="btn btn-default btn-sm"
 														aria-label="Left Align">
 												<span class="glyphicon glyphicon-star" id="star3" aria-hidden="true"></span>
 										</button>
-										<button type="button" class="btn btn-default btn-sm" style="pointer-events: none;"
+										<button type="button" class="btn btn-default btn-grey btn-sm"
 														aria-label="Left Align">
 												<span class="glyphicon glyphicon-star" id="star4" aria-hidden="true"></span>
 										</button>
-										<button type="button" class="btn btn-default btn-sm" style="pointer-events: none;"
+										<button type="button" class="btn btn-default btn-grey btn-sm"
 														aria-label="Left Align">
 												<span class="glyphicon glyphicon-star" id="star5" aria-hidden="true"></span>
 										</button>
@@ -163,6 +163,7 @@
 			window.location.href = "/transaction";
 		});
 	</script>
+	<link href="../static/css/star.css" rel="stylesheet">
 </body>
 
 
