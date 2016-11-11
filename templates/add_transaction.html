@@ -76,7 +76,7 @@
 							<fieldset>
 						<div class="col-md-6">
 
-									<div class="form-group">
+									<div class="form-group" id="seller_email_group">
 										<label>Seller</label>
 										<input type="text" name="seller_email" id="seller_email" placeholder="E-MAIL@" class="form-control">
 									</div>
@@ -167,11 +167,16 @@
 					console.log(last_email);
 
 					$.getJSON("/rating/user_rating/"+last_email+"/", function (data) {
+						$("#seller_email_group").removeClass("has-error");
+
 						console.log(data);
+
 						block = false;
 					})
 					.error(function(jqXHR, textStatus, errorThrown) {
 						block = false;
+						$("#seller_email_group").addClass("has-error");
+
 						console.log("error " + textStatus);
 						console.log("incoming Text " + jqXHR.responseText);
 					});
