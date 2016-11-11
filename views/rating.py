@@ -78,14 +78,14 @@ def user_rating(email):
     valid_user(token)
 
     headers = {"API-Token": IAM_CLIENT_SECRET}
-    response = requests.get(IAM_USER + "?email=" + email, headers=headers)
+    response_iam = requests.get(IAM_USER + "?email=" + email, headers=headers)
 
-    if response.status_code != 200:
+    if response_iam.status_code != 200:
         return "Email not found", 400
     else:
-        user_id = json.loads(response.text)['data']['uid']
+        user_id = json.loads(response_iam.text)['data']['uid']
         response = requests.get(RATING_RATE + user_id + "/")
-        return response.text
+        return jsonify({"user": response_iam, "rating": response.text})
 
 
 @rating.route("/rate", methods=['POST'])

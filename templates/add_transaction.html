@@ -114,48 +114,55 @@
 
                                 <div class="form-group" id="seller_email_group">
                                     <label>Seller</label>
-                                    <input type="text" name="seller_email" id="seller_email" placeholder="mail@email.com"
+                                    <input type="text" name="seller_email" id="seller_email" placeholder="The seller e-mail"
                                            class="form-control">
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="rating-block">
                                             <h4>Average user rating received</h4>
-                                            <h2 class="bold padding-bottom-7">4.3
+                                            <h2 class="bold padding-bottom-7"><span id="rating_numbers">0</span>
                                                 <small>/ 5</small>
                                             </h2>
-                                            <button type="button" class="btn btn-warning btn-sm"
+                                            <h6 id="number_reviews_received">235 reviews received.</h6>
+                                            <button type="button" class="btn btn-default btn-sm"
                                                     aria-label="Left Align">
-                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                                <span class="glyphicon glyphicon-star" id="star1" aria-hidden="true"></span>
                                             </button>
-                                            <button type="button" class="btn btn-warning btn-sm"
+                                            <button type="button" class="btn btn-default btn-sm"
                                                     aria-label="Left Align">
-                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                                <span class="glyphicon glyphicon-star" id="star2" aria-hidden="true"></span>
                                             </button>
-                                            <button type="button" class="btn btn-warning btn-sm"
+                                            <button type="button" class="btn btn-default btn-sm"
                                                     aria-label="Left Align">
-                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                                            </button>
-                                            <button type="button" class="btn btn-default btn-grey btn-sm"
-                                                    aria-label="Left Align">
-                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                                <span class="glyphicon glyphicon-star" id="star3" aria-hidden="true"></span>
                                             </button>
                                             <button type="button" class="btn btn-default btn-grey btn-sm"
                                                     aria-label="Left Align">
-                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                                <span class="glyphicon glyphicon-star" id="star4" aria-hidden="true"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-grey btn-sm"
+                                                    aria-label="Left Align">
+                                                <span class="glyphicon glyphicon-star" id="star5" aria-hidden="true"></span>
                                             </button>
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img id="profile_picture" alt="profile_picture" class="img-thumbnail" style="max-width: 60%; height: auto;">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Price</label>
-                                    <input type="text" name="price" placeholder="€" class="form-control">
+                                    <div class="input-group">
+                                      <div class="input-group-addon">€</div>
+                                      <input type="text" class="form-control" name="price" id="price" placeholder="Amount">
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>URL</label>
-                                    <input type="text" name="url" placeholder="http://..." class="form-control">
+                                    <input type="text" name="url" placeholder="The URL of the product that you want to buy" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label>Description</label>
@@ -217,6 +224,7 @@
                 $.getJSON("/rating/user_rating/" + last_email + "/", function (data) {
                     $("#seller_email_group").removeClass("has-error");
                     $("#save_state").prop("disabled", false);
+
                     console.log(data);
                 })
                 .error(function (jqXHR, textStatus, errorThrown) {
