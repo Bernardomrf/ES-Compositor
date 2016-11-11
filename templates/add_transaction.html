@@ -150,11 +150,27 @@
 		});
 	</script>
 	<script>
+		function isEmail(email) {
+		  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		  return regex.test(email);
+		}
+
 		$(document).ready(function () {
 			var last_email = "";
+			var block = false;
 
-			$("#seller_email").change(function () {
-				console.log($(this).val());
+			$("#seller_email").keyup(function () {
+				if(!block && isEmail($(this).val()) && last_email!=$(this).val()){
+					block = true;
+
+					last_email = $(this).val();
+					console.log(last_email);
+
+					$.getJSON("/rating/user_rating/?email="+last_email, function (data) {
+						console.log(data);
+						block = false;
+					});
+				}
 			});
 		});
 	</script>
