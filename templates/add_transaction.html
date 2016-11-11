@@ -224,10 +224,10 @@
                     $("#seller_email_group").removeClass("has-error");
                     $("#save_state").prop("disabled", false);
 
-                    if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty(rating_given_count)){
+                    if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_given_count")){
                         $("#rating_given_count").html(data.rating.data.rating_given_count);
                     }
-                    if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty(rating_given)){
+                    if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_given")){
                         var rating = (data.rating.data.rating_given*5)/100;
                         for (var i=1; i<=Math.floor(rating); i++){
                             console.log("positive"+i);
