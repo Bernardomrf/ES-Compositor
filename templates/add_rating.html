@@ -9,7 +9,6 @@
 <link href="../static/css/datepicker3.css" rel="stylesheet">
 <link href="../static/css/styles.css" rel="stylesheet">
 
-
 <!--Icons-->
 <script src="../static/js/lumino.glyphs.js"></script>
 
@@ -79,30 +78,30 @@
 						<p>
 						<form action="/tracking/submit?id={{id}}" method="POST">
 							<fieldset class="rating">
-								<div class="col-lg-4">
+								<div class="col-lg-6">
 									<div class="form-group">
 										<h4>Rate the seller</h4>
 										<h2 class="bold padding-bottom-7"><span id="rating_numbers">0</span>
 												<small>/ 5</small>
 										</h2>
 
-										<button type="button" class="btn btn-default btn-sm"
+										<button type="button" class="btn btn-default btn-sm" style="pointer-events: none;"
 														aria-label="Left Align">
 												<span class="glyphicon glyphicon-star" id="star1" aria-hidden="true"></span>
 										</button>
-										<button type="button" class="btn btn-default btn-sm"
+										<button type="button" class="btn btn-default btn-sm" style="pointer-events: none;"
 														aria-label="Left Align">
 												<span class="glyphicon glyphicon-star" id="star2" aria-hidden="true"></span>
 										</button>
-										<button type="button" class="btn btn-default btn-sm"
+										<button type="button" class="btn btn-default btn-sm" style="pointer-events: none;"
 														aria-label="Left Align">
 												<span class="glyphicon glyphicon-star" id="star3" aria-hidden="true"></span>
 										</button>
-										<button type="button" class="btn btn-default btn-grey btn-sm"
+										<button type="button" class="btn btn-default btn-sm" style="pointer-events: none;"
 														aria-label="Left Align">
 												<span class="glyphicon glyphicon-star" id="star4" aria-hidden="true"></span>
 										</button>
-										<button type="button" class="btn btn-default btn-grey btn-sm"
+										<button type="button" class="btn btn-default btn-sm" style="pointer-events: none;"
 														aria-label="Left Align">
 												<span class="glyphicon glyphicon-star" id="star5" aria-hidden="true"></span>
 										</button>
@@ -110,11 +109,11 @@
 								</div>
 								<div class="col-lg-6">
 									<label>Comentary</label>
-									<input type="text" name="tracking" placeholder="Review" class="form-control">
-								</div>
-								<div class="col-lg-2">
+									<textarea class="form-control" name="description" placeholder="Description" rows="3"></textarea>
 									<input type="submit" id="save_state" class="btn btn-primary" value="Submit Review">
+
 								</div>
+
 							</fieldset>
 
 							<!-- <fieldset>
@@ -164,7 +163,6 @@
 			window.location.href = "/transaction";
 		});
 	</script>
-	<link href="../static/css/star.css" rel="stylesheet">
 </body>
 
 
