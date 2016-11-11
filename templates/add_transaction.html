@@ -153,8 +153,11 @@
                                         <h5 id="name"></h5>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <button type="button" class="btn btn-info">View received reviews <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></button>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <br/><br/>
+                                        <button type="button" class="btn btn-info">View received reviews <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -248,6 +251,10 @@
                         $("#profile_picture").attr("src", data.user.data.picture_url);
                         $("#profile_picture").show();
                     }
+                    if(data.hasOwnProperty("user") && data.user.hasOwnProperty("data") && data.user.data.hasOwnProperty("name")){
+                        $("#name").html(data.user.data.name);
+                        $("#name").show();
+                    }
                 })
                 .error(function (jqXHR, textStatus, errorThrown) {
                     $("#seller_email_group").addClass("has-error");
@@ -255,6 +262,7 @@
                     $("#rating_received_count").html("0");
                     $("#rating_received_count").html("0");
                     $("#profile_picture").hide();
+                    $("#name").hide();
                 });
             }
         });
