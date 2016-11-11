@@ -166,7 +166,7 @@
 					last_email = $(this).val();
 					console.log(last_email);
 
-					$.getJSON("/rating/user_rating/?email="+last_email, function (data) {
+					$.getJSON("/rating/user_rating/"+last_email+"/", function (data) {
 						console.log(data);
 						block = false;
 					})

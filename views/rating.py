@@ -67,8 +67,8 @@ def review():
     return render_template('add_rating.html', user=user, name=name, image=image)
 
 
-@rating.route("/user_rating")  # ?email=<email>
-def user_rating():
+@rating.route("/user_rating/<email>/", methods=["GET"])
+def user_rating(email):
     token = request.cookies.get('Access-Token')
 
     if token is None:
@@ -77,20 +77,15 @@ def user_rating():
     # ---validate user---
     valid_user(token)
 
-    if 'email' in request.args:
-        email = request.args.get('email')
+    headers = {"API-Token": IAM_CLIENT_SECRET}
+    response = requests.get(IAM_USER + "?email=" + email, headers=headers)
 
-        headers = {"API-Token": IAM_CLIENT_SECRET}
-        response = requests.get(IAM_USER + "?email=" + email, headers=headers)
-
-        if response.status_code != 200:
-            return "Email not found", 400
-        else:
-            user_id = json.loads(response.text)['data']['uid']
-            response = requests.get(RATING_RATE + "/" + user_id + "/")
-            return response.text
+    if response.status_code != 200:
+        return "Email not found", 400
     else:
-        return "Invalid parameter", 400
+        user_id = json.loads(response.text)['data']['uid']
+        response = requests.get(RATING_RATE + "/" + user_id + "/")
+        return response.text
 
 
 @rating.route("/rate", methods=['POST'])
