@@ -84,8 +84,9 @@ def user_rating(email):
         return "Email not found", 400
     else:
         user_id = json.loads(response_iam.text)['data']['uid']
+        response_iam_details = requests.get(IAM_USER + "?id=" + user_id, headers=headers)
         response = requests.get(RATING_RATE + user_id + "/")
-        return jsonify({"user": json.loads(response_iam.text), "rating": json.loads(response.text)})
+        return jsonify({"user": json.loads(response_iam_details.text), "rating": json.loads(response.text)})
 
 
 @rating.route("/rate", methods=['POST'])
