@@ -91,7 +91,24 @@ def user_rating(email):
 
 @rating.route("/rate", methods=['POST'])
 def rate():
-    pass
+    trans_id = request.args.get('id')
+
+    token = request.cookies.get('Access-Token')
+
+    if token == None:
+        return redirect(LOGIN_PAGE_URL, code=302)
+        
+    # ---validate user---
+    valid_user(token)
+
+    rate = request.form['rate']
+    description = request.form['description']
+
+    log.debug(rate)
+    log.debug(description)
+
+
+
 
 
 def valid_user(token):
