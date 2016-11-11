@@ -121,10 +121,10 @@
                                     <div class="col-md-6">
                                         <div class="rating-block">
                                             <h4>Average user rating received</h4>
-                                            <h2 class="bold padding-bottom-7"><span id="rating_numbers">0</span>
+                                            <h2 class="bold padding-bottom-7"><span id="rating_given">0</span>
                                                 <small>/ 5</small>
                                             </h2>
-                                            <h6 id="number_reviews_received">235 reviews received.</h6>
+                                            <h6 id="number_reviews_received"><span id="rating_given_count">0</span> reviews received.</h6>
                                             <button type="button" class="btn btn-default btn-sm" style="pointer-events: none;"
                                                     aria-label="Left Align">
                                                 <span class="glyphicon glyphicon-star" id="star1" aria-hidden="true"></span>
@@ -219,17 +219,25 @@
         $("#seller_email").keyup(function () {
             if (isEmail($(this).val()) && last_email != $(this).val()) {
                 last_email = $(this).val();
-                console.log(last_email);
 
                 $.getJSON("/rating/user_rating/" + last_email + "/", function (data) {
                     $("#seller_email_group").removeClass("has-error");
                     $("#save_state").prop("disabled", false);
+
+                    if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty(rating_given_count)){
+                        $("#rating_given_count").html(data.rating.data.rating_given_count);
+                    }
+                    if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty(rating_given)){
+                        $("#rating_given_count").html(((data.rating.data.rating_given*5)/100).toFixed(2));
+                    }
 
                     console.log(data);
                 })
                 .error(function (jqXHR, textStatus, errorThrown) {
                     $("#seller_email_group").addClass("has-error");
                     $("#save_state").prop("disabled", true);
+                    $("#rating_given_count").html("0");
+                    $("#rating_given_count").html("0");
                 });
             }
         });
