@@ -172,7 +172,7 @@ def list_transactions():
             else:
                 tracking = "<a href=\"http://www.17track.net/pt/track?nums=" + trans[
                     'tracking_code'] + "\"><span class=\"badge\">" + trans['tracking_code'] + "</span></a><br>"
-            print json.loads(resp.text)['data']['address']
+            print json.loads(resp.text)['data']['address'].encode("utf-8")
             response.append({'state': transformState(trans['state']),
                              'buyer': json.loads(resp.text)['data']['email'],
                              'price': trans['price'],
