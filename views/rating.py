@@ -85,7 +85,7 @@ def user_rating(email):
     else:
         user_id = json.loads(response_iam.text)['data']['uid']
         response = requests.get(RATING_RATE + user_id + "/")
-        return jsonify({"user": response_iam, "rating": response.text})
+        return jsonify({"user": json.loads(response_iam.text), "rating": json.loads(response.text)})
 
 
 @rating.route("/rate", methods=['POST'])
