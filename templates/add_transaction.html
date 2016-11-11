@@ -230,12 +230,14 @@
                     if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_given")){
                         var rating = (data.rating.data.rating_given*5)/100;
                         for (var i=1; i<=Math.floor(rating); i++){
-                            console.log("positive"+i);
+                            $("#star"+i).removeClass("btn-default")
+                                        .addClass("btn-warning");
                         }
                         for(i=Math.floor(rating)+1; i<=5; i++){
-                            console.log("negative"+i);
+                            $("#star"+i).removeClass("btn-warning")
+                                        .addClass("btn-default");
                         }
-                        $("#rating_given_count").html(rating.toFixed(2));
+                        $("#rating_given").html(rating.toFixed(2));
                     }
                     if(data.hasOwnProperty("user") && data.user.hasOwnProperty("data") && data.user.data.hasOwnProperty("picture_url")){
                         $("#profile_picture").attr("src", data.user.data.picture_url);
