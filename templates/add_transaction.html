@@ -252,6 +252,8 @@
                         $("#rating_received_count").html(data.rating.data.rating_received_count);
                         if(data.rating.data.rating_received_count>0){
                             $("#view_received_reviews").show();
+                        }else{
+                            $("#view_received_reviews").hide();
                         }
                     }
                     if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_received")){
