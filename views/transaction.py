@@ -255,6 +255,6 @@ def action(dataType, state, id):
         if state == "AWAITING_CONFIRMATION":
             return "<a href=\"/change_state?id=" + id + "&state=AWAITING_PAYMENT\" class=\"btn btn-primary\">Confirm</a>"
         elif state == "AWAITING_SHIPPING":
-            return "<a href=\"/change_state?id=" + id + "&state=SHIPPED\" class=\"btn btn-primary\">Sended</a>"
+            return "<a href=\"/change_state?id=" + id + "&state=SHIPPED\" class=\"btn btn-primary\">Sended</a>" + "<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#myModal\">See Address</button>
         else:
             return "None"
