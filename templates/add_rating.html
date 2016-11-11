@@ -106,6 +106,7 @@
 														aria-label="Left Align">
 												<span class="glyphicon glyphicon-star" id="star5" aria-hidden="true"></span>
 										</button>
+										<input type="text" id="rate" name="rate" placeholder="rate" class="form-control" value="5" hidden>
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -165,7 +166,51 @@
 			window.location.href = "/transaction";
 		});
 	</script>
-	<link href="../static/css/star.css" rel="stylesheet">
+	<script>
+		$(document).ready(function () {
+
+			$( "#star1" ).click(function() {
+				$("#star1").removeClass("btn-default").addClass("btn-warning");
+				$("#star2").addClass("btn-warning").removeClass("btn-default");
+				$("#star3").addClass("btn-warning").removeClass("btn-default");
+				$("#star4").addClass("btn-warning").removeClass("btn-default");
+				$("#star5").addClass("btn-warning").removeClass("btn-default");
+				$("#rate").val('1');
+			});
+			$( "#star2" ).click(function() {
+				$("#star1").removeClass("btn-default").addClass("btn-warning");
+				$("#star2").removeClass("btn-default").addClass("btn-warning");
+				$("#star3").addClass("btn-warning").removeClass("btn-default");
+				$("#star4").addClass("btn-warning").removeClass("btn-default");
+				$("#star5").addClass("btn-warning").removeClass("btn-default");
+				$("#rate").val('2');
+			});
+			$( "#star3" ).click(function() {
+				$("#star1").removeClass("btn-default").addClass("btn-warning");
+				$("#star2").removeClass("btn-default").addClass("btn-warning");
+				$("#star3").removeClass("btn-default").addClass("btn-warning");
+				$("#star4").addClass("btn-warning").removeClass("btn-default");
+				$("#star5").addClass("btn-warning").removeClass("btn-default");
+				$("#rate").val('3');
+			});
+			$( "#star4" ).click(function() {
+				$("#star1").removeClass("btn-default").addClass("btn-warning");
+				$("#star2").removeClass("btn-default").addClass("btn-warning");
+				$("#star3").removeClass("btn-default").addClass("btn-warning");
+				$("#star4").removeClass("btn-default").addClass("btn-warning");
+				$("#star5").addClass("btn-warning").removeClass("btn-default");
+				$("#rate").val('4');
+			});
+			$( "#star5" ).click(function() {
+				$("#star1").removeClass("btn-default").addClass("btn-warning");
+				$("#star2").removeClass("btn-default").addClass("btn-warning");
+				$("#star3").removeClass("btn-default").addClass("btn-warning");
+				$("#star4").removeClass("btn-default").addClass("btn-warning");
+				$("#star5").removeClass("btn-default").addClass("btn-warning");
+				$("#rate").val('5');
+			});
+		});
+	</script>
 </body>
 
 
