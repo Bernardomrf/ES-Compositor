@@ -149,7 +149,12 @@
                                     </div>
                                     <div class="col-md-6 text-center">
                                         <img id="profile_picture" alt="profile_picture" class="img-thumbnail" style="max-width: 60%; height: auto; display: none">
+                                        <br/><br/>
+                                        <h5 id="name"></h5>
                                     </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-info">View last reviews</button>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -243,8 +248,6 @@
                         $("#profile_picture").attr("src", data.user.data.picture_url);
                         $("#profile_picture").show();
                     }
-
-                    console.log(data);
                 })
                 .error(function (jqXHR, textStatus, errorThrown) {
                     $("#seller_email_group").addClass("has-error");
