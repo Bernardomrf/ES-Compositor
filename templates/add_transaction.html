@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TranSafe - Create transaction</title>
 
+    <link href="../static/css/font-awesome.css" rel="stylesheet">
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/css/datepicker3.css" rel="stylesheet">
     <link href="../static/css/styles.css" rel="stylesheet">
@@ -156,7 +157,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <br/>
-                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">View received reviews <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-info" data-toggle="modal"  style="display: none" id="view_received_reviews" data-target="#myModal">View received reviews <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -273,6 +274,7 @@
                         $("#name").html(data.user.data.name);
                         $("#name").show();
                     }
+                    $("#view_received_reviews").show();
                 })
                 .error(function (jqXHR, textStatus, errorThrown) {
                     $("#seller_email_group").addClass("has-error");
@@ -281,6 +283,7 @@
                     $("#rating_received_count").html("0");
                     $("#profile_picture").hide();
                     $("#name").hide();
+                    $("#view_received_reviews").hide();
                 });
             }
         });
