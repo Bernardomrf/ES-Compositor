@@ -1,4 +1,3 @@
-
 import sys
 import os
 import requests
@@ -19,9 +18,9 @@ logging.basicConfig(stream=sys.stderr)
 logging.getLogger().setLevel(logging.DEBUG)
 log = logging.getLogger()
 
-@rating.route("/", methods = ['GET'])
-def home():
 
+@rating.route("/", methods=['GET'])
+def home():
     token = request.cookies.get('Access-Token')
 
     if token == None:
@@ -31,7 +30,7 @@ def home():
     valid_user(token)
 
     # ---get user mail---
-    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
+    headers = {"Access-Token": token, "API-Token": IAM_CLIENT_SECRET}
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
@@ -43,9 +42,9 @@ def home():
 
     return render_template('rating.html', user=user, name=name, image=image)
 
-@rating.route("/review", methods = ['GET'])
-def review():
 
+@rating.route("/review", methods=['GET'])
+def review():
     token = request.cookies.get('Access-Token')
 
     if token == None:
@@ -55,7 +54,7 @@ def review():
     valid_user(token)
 
     # ---get user mail---
-    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
+    headers = {"Access-Token": token, "API-Token": IAM_CLIENT_SECRET}
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
@@ -67,14 +66,41 @@ def review():
 
     return render_template('add_rating.html', user=user, name=name, image=image)
 
-@rating.route("/rate", methods = ['POST'])
+
+@transaction.route("/user_rating")  # ?email=<email>
+def user_rating():
+    token = request.cookies.get('Access-Token')
+
+    if token is None:
+        return redirect(LOGIN_PAGE_URL, code=302)
+
+    # ---validate user---
+    valid_user(token)
+
+    if 'email' in request.args:
+        email = request.args.get('email')
+
+        headers = {"API-Token": IAM_CLIENT_SECRET}
+        response = requests.get(IAM_USER + "?email=" + email, headers=headers)
+
+        if response.status_code != 200:
+            return "Email not found", 400
+        else:
+            user_id = json.loads(response.text)['data']['uid']
+            response = requests.get(RATING_RATE + "/" + user_id + "/")
+            return response.text
+    else:
+        return "Invalid parameter", 400
+
+
+@rating.route("/rate", methods=['POST'])
 def rate():
     pass
 
-def valid_user(token):
 
+def valid_user(token):
     # ---validate user---
-    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
+    headers = {"Access-Token": token, "API-Token": IAM_CLIENT_SECRET}
     response = requests.post(IAM_VALIDATE, headers=headers)
 
     if response.status_code != 200:

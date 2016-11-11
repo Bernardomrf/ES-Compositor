@@ -1,4 +1,3 @@
-
 import sys
 import os
 import requests
@@ -20,7 +19,8 @@ logging.basicConfig(stream=sys.stderr)
 logging.getLogger().setLevel(logging.DEBUG)
 log = logging.getLogger()
 
-@transaction.route("/", methods = ['GET'])
+
+@transaction.route("/", methods=['GET'])
 def home():
     token = request.cookies.get('Access-Token')
 
@@ -31,7 +31,7 @@ def home():
     valid_user(token)
 
     # ---get user mail---
-    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
+    headers = {"Access-Token": token, "API-Token": IAM_CLIENT_SECRET}
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
@@ -44,8 +44,7 @@ def home():
     return render_template('transaction.html', user=user, image=image, name=name)
 
 
-
-@transaction.route("/new", methods = ['POST'])
+@transaction.route("/new", methods=['POST'])
 def new_transaction():
     token = request.cookies.get('Access-Token')
     price = request.form['price']
@@ -60,7 +59,7 @@ def new_transaction():
     valid_user(token)
 
     # ---get user id---
-    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
+    headers = {"Access-Token": token, "API-Token": IAM_CLIENT_SECRET}
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
@@ -69,8 +68,8 @@ def new_transaction():
     user_id = response.json()['data']['uid']
 
     # ---get seller id---
-    #headers = {"Access-Token": token} FALAR COM O BRUNO
-    headers = {"API-Token" : IAM_CLIENT_SECRET}
+    # headers = {"Access-Token": token} FALAR COM O BRUNO
+    headers = {"API-Token": IAM_CLIENT_SECRET}
     response = requests.get(IAM_USER + "?email=" + seller_email, headers=headers)
 
     if response.status_code != 200:
@@ -82,7 +81,7 @@ def new_transaction():
     # ---create object---
     data = {'name': description,
             'url': url,
-            'identifier' : user_id
+            'identifier': user_id
             }
     response = requests.post(TRANSACTIONS_NEW_OBJECT, data=data)
 
@@ -111,13 +110,14 @@ def new_transaction():
         return "ID not found", 400
     info = resp.json()
 
-    headers = {"API-Token" : IAM_CLIENT_SECRET}
+    headers = {"API-Token": IAM_CLIENT_SECRET}
     resp = requests.get(IAM_USER + "?id=" + info['to_uuid'], headers=headers)
     if resp.status_code != 200:
         return "ID not found", 400
     to_email = json.loads(resp.text)['data']['email']
 
-    data = {'email': to_email, 'message': 'There is a new transaction waiting confirmation for this item:' + info['object']['url']}
+    data = {'email': to_email,
+            'message': 'There is a new transaction waiting confirmation for this item:' + info['object']['url']}
 
     response = requests.post(NOTIFICATION_EMAIL, data=data)
 
@@ -126,9 +126,9 @@ def new_transaction():
 
     return response
 
-@transaction.route("/list", methods = ['GET'])
-def list_transactions():
 
+@transaction.route("/list", methods=['GET'])
+def list_transactions():
     dataType = request.args.get('dataType')
     token = request.cookies.get('Access-Token')
 
@@ -139,7 +139,7 @@ def list_transactions():
     valid_user(token)
 
     # ---get user id---
-    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
+    headers = {"Access-Token": token, "API-Token": IAM_CLIENT_SECRET}
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
@@ -158,31 +158,32 @@ def list_transactions():
     if dataType == "seller":
         for trans in info['to_uuid']:
 
-            headers = {"API-Token" : IAM_CLIENT_SECRET}
+            headers = {"API-Token": IAM_CLIENT_SECRET}
             resp = requests.get(IAM_USER + "?id=" + trans['from_uuid'], headers=headers)
             if resp.status_code != 200:
                 return "ID not found", 400
 
             if trans['state'] == 'SHIPPED' and trans['tracking_code'] == "":
-                tracking = "<a href=\"/tracking?id="+ trans['id'] +"\" class=\"btn btn-info\">Add Tracking N.</a>"
+                tracking = "<a href=\"/tracking?id=" + trans['id'] + "\" class=\"btn btn-info\">Add Tracking N.</a>"
 
             elif trans['tracking_code'] == "":
                 tracking = "None"
 
             else:
-                tracking = "<a href=\"http://www.17track.net/pt/track?nums="+trans['tracking_code']+"\"><span class=\"badge\">"+trans['tracking_code']+"</span></a><br>"
+                tracking = "<a href=\"http://www.17track.net/pt/track?nums=" + trans[
+                    'tracking_code'] + "\"><span class=\"badge\">" + trans['tracking_code'] + "</span></a><br>"
 
             response.append({'state': transformState(trans['state']),
-                            'buyer' : json.loads(resp.text)['data']['email'],
-                            'price' : trans['price'],
-                            'url' : trans['object']['url'],
-                            'tracking' : tracking,
-                            'actions': action(dataType, trans['state'], trans['id'])
-                            })
+                             'buyer': json.loads(resp.text)['data']['email'],
+                             'price': trans['price'],
+                             'url': trans['object']['url'],
+                             'tracking': tracking,
+                             'actions': action(dataType, trans['state'], trans['id'])
+                             })
     elif dataType == "buyer":
         for trans in info['from_uuid']:
 
-            headers = {"API-Token" : IAM_CLIENT_SECRET}
+            headers = {"API-Token": IAM_CLIENT_SECRET}
             resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'], headers=headers)
             if resp.status_code != 200:
                 return "ID not found", 400
@@ -190,41 +191,42 @@ def list_transactions():
             if trans['tracking_code'] == "":
                 tracking = "None"
             else:
-                tracking = "<a href=\"http://www.17track.net/pt/track?nums="+trans['tracking_code']+"\"><span class=\"badge\">"+trans['tracking_code']+"</span></a><br>"
+                tracking = "<a href=\"http://www.17track.net/pt/track?nums=" + trans[
+                    'tracking_code'] + "\"><span class=\"badge\">" + trans['tracking_code'] + "</span></a><br>"
             response.append({'state': transformState(trans['state']),
-                            'seller' : json.loads(resp.text)['data']['email'],
-                            'price' : trans['price'],
-                            'url' : trans['object']['url'],
-                            'tracking' : tracking,
-                            'actions': action(dataType  , trans['state'], trans['id'])
-                            })
+                             'seller': json.loads(resp.text)['data']['email'],
+                             'price': trans['price'],
+                             'url': trans['object']['url'],
+                             'tracking': tracking,
+                             'actions': action(dataType, trans['state'], trans['id'])
+                             })
 
     elif dataType == "rating":
 
         for trans in info['from_uuid']:
-            headers = {"API-Token" : IAM_CLIENT_SECRET}
+            headers = {"API-Token": IAM_CLIENT_SECRET}
             resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'], headers=headers)
             if resp.status_code != 200:
                 return "ID not found", 400
             if trans['state'] == "COMPLETED":
-
                 response.append({'state': transformState(trans['state']),
-                            'seller' : json.loads(resp.text)['data']['email'],
-                            'url' : trans['object']['url'],
-                            'rate' : "<a href=\"/rating/review?id="+ trans['from_uuid'] +" \" class=\"btn btn-primary\">Add Review</a>"
-                            })
+                                 'seller': json.loads(resp.text)['data']['email'],
+                                 'url': trans['object']['url'],
+                                 'rate': "<a href=\"/rating/review?id=" + trans[
+                                     'from_uuid'] + " \" class=\"btn btn-primary\">Add Review</a>"
+                                 })
 
     return jsonify(response)
 
 
 def valid_user(token):
-
     # ---validate user---
-    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
+    headers = {"Access-Token": token, "API-Token": IAM_CLIENT_SECRET}
     response = requests.post(IAM_VALIDATE, headers=headers)
 
     if response.status_code != 200:
         return redirect(LOGIN_PAGE_URL, code=302)
+
 
 def transformState(state):
     if state == "AWAITING_CONFIRMATION":
@@ -240,19 +242,19 @@ def transformState(state):
     elif state == "REFUND":
         return "<span class=\"label label-danger\">Refund</span>"
 
-def action(dataType, state, id):
 
+def action(dataType, state, id):
     if dataType == "buyer":
         if state == "AWAITING_PAYMENT":
-            return "<a onClick=\"pay('"+id+"')\" class=\"btn btn-success\">Pay</a>"
+            return "<a onClick=\"pay('" + id + "')\" class=\"btn btn-success\">Pay</a>"
         elif state == "SHIPPED":
-            return "<a href=\"/pay_gateway/complete?id="+ id +"\" class=\"btn btn-primary\">Received</a>"
+            return "<a href=\"/pay_gateway/complete?id=" + id + "\" class=\"btn btn-primary\">Received</a>"
         else:
             return "None"
     elif dataType == "seller":
         if state == "AWAITING_CONFIRMATION":
-            return "<a href=\"/change_state?id="+ id +"&state=AWAITING_PAYMENT\" class=\"btn btn-primary\">Confirm</a>"
+            return "<a href=\"/change_state?id=" + id + "&state=AWAITING_PAYMENT\" class=\"btn btn-primary\">Confirm</a>"
         elif state == "AWAITING_SHIPPING":
-            return "<a href=\"/change_state?id="+ id +"&state=SHIPPED\" class=\"btn btn-primary\">Sended</a>"
+            return "<a href=\"/change_state?id=" + id + "&state=SHIPPED\" class=\"btn btn-primary\">Sended</a>"
         else:
             return "None"
