@@ -32,8 +32,9 @@ def home():
 
         return response
 
-
-    return render_template('login.html', users=10, transactions=100, amount=500, success_rate=100)
+    response = requests.get(IAM_USERS_COUNT + "?api_token=" + IAM_CLIENT_SECRET)
+    user_count = response.json()["data"]
+    return render_template('login.html', users=user_count, transactions=100, amount=500, success_rate=100)
 
 def valid_user(token):
 

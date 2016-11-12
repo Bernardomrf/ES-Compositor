@@ -15,6 +15,7 @@ IAM_USER_DATA = "https://im.transafe.rafaelferreira.pt/user/add_user_data"
 IAM_VALIDATE = "https://im.transafe.rafaelferreira.pt/validate"
 IAM_SIGNUP = "https://im.transafe.rafaelferreira.pt/login"
 IAM_LOGOUT = "https://im.transafe.rafaelferreira.pt/logout"
+IAM_USERS_COUNT = "https://im.transafe.rafaelferreira.pt/user/count"
 
 PAY_SERVICE_TOKEN_ID = "d457f395-a7f7-4dde-a2e2-3fa626c05f90"
 PAY_SERVICE_MYCARDS = "https://payments.transafe.rafaelferreira.pt/api/v1/cards/mycards/"
