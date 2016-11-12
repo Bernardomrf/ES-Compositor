@@ -9,7 +9,7 @@ import datetime
 import json
 import base64
 from flask_restful import reqparse, abort, Api, Resource
-from flask import request, render_template, redirect, make_response
+from flask import request, render_template, redirect, make_response, url_for
 from flask import jsonify
 from flask import Blueprint
 
@@ -33,7 +33,7 @@ def home():
         return response
 
 
-    return render_template('login.html')
+    return render_template('login.html', users=10, transactions=100, amount=500, success_rate=100)
 
 def valid_user(token):
 

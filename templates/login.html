@@ -1,70 +1,117 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TranSafe</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Transafe website">
+	<title>TranSafe</title>
 
-<link href="static/css/bootstrap.min.css" rel="stylesheet">
-<link href="static/css/datepicker3.css" rel="stylesheet">
-<link href="static/css/styles.css" rel="stylesheet">
-<link href="static/css/font-awesome.css" rel="stylesheet">
-<link href="static/css/bootstrap-social.css" rel="stylesheet">
-
-
-<!--[if lt IE 9]>
-<script src="../static/js/html5shiv.js"></script>
-<script src="../static/js/respond.min.js"></script>
-<![endif]-->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/layouts/pure-min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/layouts/grids-responsive-min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/layouts/marketing.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/datepicker3.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
 </head>
 
 <body>
 
-	<div class="row">
-		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-			<div class="login-panel panel panel-default">
-				<div class="panel-heading">
-					Transafe
+	<div class="splash-container">
+		<div class="splash">
+			<h1 class="splash-head">Transafe</h1>
+			<p class="splash-subhead">
+				Your transactions done safe
+			</p>
+			<p>
+				<a href="/authorize/signup" class="pure-button pure-button-primary">Log in</a>
+			</p>
+		</div>
+	</div>
+
+	<div class="content-wrapper">
+
+		<div class="ribbon l-box-lrg pure-g">
+
+			<div class="pure-u-1 pure-u-md-1-1 pure-u-lg-1-1">
+				<center>
+					<h2 class="content-head content-head-ribbon">How does Transafe works?</h2>
+				</center>
+				<ul>
+					<li> Transafe sits in the middle of your transactions, between you and the seller.</li>
+					<li> When you buy something you pay us and the money is not immediatly sent to the seller</li>
+					<li> The seller is now assured of his money and then dispatches the item providing the tracking number.</li>
+					<li> When you receive the package you go to Transafe to confirm everything went well and provide the seller with feedback, at this point the seller receives the money for the product.</li>
+					<li> If something didn´t went as planned transafe will resolve the issue.</li>
+
+				</ul>
+
+
+
+			</div>
+		</div>
+
+		<div class="content">
+			<h2 class="content-head is-center">Platform Statistics</h2>
+
+			<div class="pure-g">
+				<div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+
+					<h3 class="content-subhead">
+                    	<i class="fa fa-users" aria-hidden="true"></i>
+                    	Number of users
+                	</h3>
+					<div class="easypiechart" id="easypiechart-blue" data-percent="100"><span class="percent">{{users}}</span></div>
 				</div>
-				<div class="panel-body">
-					<form role="form">
-						<fieldset>
-							<div class="form-group">
-								<a class="btn btn-block btn-social btn-twitter" href="/authorize/signup">
-							    <span class="fa fa-sign-in"></span> Sign in with Google or Facebook
-							  </a>
-							</div>
-						</fieldset>
-					</form>
+				<div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+					<h3 class="content-subhead">
+                    	<i class="fa fa-exchange" aria-hidden="true"></i>
+                    	Number of transactions
+                	</h3>
+					<div class="easypiechart" id="easypiechart-orange" data-percent="100"><span class="percent">{{transactions}}</span></div>
+				</div>
+				<div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+					<h3 class="content-subhead">
+                    	<i class="fa fa-eur" aria-hidden="true"></i>
+                    	Amount in sales
+                	</h3>
+					<div class="easypiechart" id="easypiechart-red" data-percent="100"><span class="percent">{{amount}}<i class="fa fa-eur" aria-hidden="true"></i></span></div>
+				</div>
+				<div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+					<h3 class="content-subhead">
+                    	<i class="fa fa-star" aria-hidden="true"></i>
+                    	Success rate
+                	</h3>
+					<div class="easypiechart" id="easypiechart-teal" data-percent="100"><span class="percent">{{success_rate}}%</span></div>
 				</div>
 			</div>
-		</div><!-- /.col-->
-	</div><!-- /.row -->
+		</div>
+		<div class="footer l-box is-center">Transafe &copy; 2016</div>
+	</div>
 
 
 
-	<script src="static/js/jquery-1.11.1.min.js"></script>
-	<script src="static/js/bootstrap.min.js"></script>
-	<script src="static/js/chart.min.js"></script>
-	<script src="static/js/chart-data.js"></script>
-	<script src="static/js/easypiechart.js"></script>
-	<script src="static/js/easypiechart-data.js"></script>
-	<script src="static/js/bootstrap-datepicker.js"></script>
-	
+	<script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/easypiechart.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/easypiechart-data.js') }}"></script>
+
+
 	<script>
-		!function ($) {
-			$(document).on("click","ul.nav li.parent > a > span.icon", function(){
+		! function($) {
+			$(document).on("click", "ul.nav li.parent > a > span.icon", function() {
 				$(this).find('em:first').toggleClass("glyphicon-minus");
 			});
 			$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
 		}(window.jQuery);
 
-		$(window).on('resize', function () {
-		  if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+		$(window).on('resize', function() {
+			if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
 		})
-		$(window).on('resize', function () {
-		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+		$(window).on('resize', function() {
+			if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
 		})
 	</script>
 </body>
