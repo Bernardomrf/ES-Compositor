@@ -85,7 +85,7 @@ def user_rating(email):
     else:
         user_id = json.loads(response_iam.text)['data']['uid']
         response_iam_details = requests.get(IAM_USER + "?id=" + user_id, headers=headers)
-        
+
         try:
             response = requests.get(RATING_RATE + user_id + "/", timeout=0.3)
             return jsonify({"user": json.loads(response_iam_details.text), "rating": json.loads(response.text)})
@@ -101,13 +101,18 @@ def rate():
 
     if token == None:
         return redirect(LOGIN_PAGE_URL, code=302)
-        
+
     # ---validate user---
     valid_user(token)
 
     rate = request.form['rate']
     description = request.form['description']
 
+    resp = requests.get(TRANSACTIONS_DETAILS.format(trans_id))
+    if resp.status_code != 200:
+        return "ID not found", 400
+    info = resp.json()
+    log.debug(info['to_uuid'])
     log.debug(rate)
     log.debug(description)
 
