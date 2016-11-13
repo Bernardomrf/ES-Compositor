@@ -209,8 +209,8 @@ def list_transactions():
                 return "ID not found", 400
 
             if trans['state'] == "COMPLETED":
-                resp = requests.get(RATING_TRANSACTIONS + trans['id'])
-                if resp.status_code != 200:
+                resp_rate = requests.get(RATING_TRANSACTIONS + trans['id'])
+                if resp_rate.status_code != 200:
 
                     response.append({'state': transformState(trans['state']),
                                  'seller': json.loads(resp.text)['data']['email'],
