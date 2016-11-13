@@ -115,10 +115,24 @@ def rate():
         return "ID not found", 400
 
     info = resp.json()
+
+
     log.debug(info['to_uuid'])
     log.debug(info['from_uuid'])
-    log.debug(rate)
-    log.debug(description)
+
+    data = {'dest_id': info['to_uuid'],
+            'source_id': info['from_uuid'],
+            'transaction_id': trans_id,
+            'rating': rate,
+            'message': description}
+
+    response = requests.post(RATING_RATE, data=data)
+
+    if response.status_code != 200:
+        return "Error rating", 400
+
+
+    return render_template('rating.html', user=user, name=name, image=image)
 
 
 def valid_user(token):
