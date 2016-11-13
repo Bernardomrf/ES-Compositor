@@ -22,7 +22,7 @@ PAY_SERVICE_MYCARDS = "https://payments.transafe.rafaelferreira.pt/api/v1/cards/
 PAY_SERVICE_CREATE_CARD = "https://payments.transafe.rafaelferreira.pt/api/v1/cards/create/"
 PAY_SERVICE_CREATE_PAYMENT = "https://payments.transafe.rafaelferreira.pt/api/v1/payments/create/"
 PAY_SERVICE_COMPLETE_PAYMENT = "https://payments.transafe.rafaelferreira.pt/api/v1/payments/complete/"
-
+PAY_SERVICE_REFUND_PAYMENT = "https://payments.transafe.rafaelferreira.pt/api/v1/payments/refund/"
 __TRANSACTIONS_TOKEN__ = None
 
 

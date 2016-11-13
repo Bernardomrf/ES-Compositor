@@ -200,6 +200,53 @@ def complete():
 
     return response
 
+@pay_gateway.route("/refund", methods = ['GET'])
+def refund():
+    trans_id=request.args.get('id')
+
+    token = request.cookies.get('Access-Token')
+
+    if token == None:
+        return redirect(LOGIN_PAGE_URL, code=302)
+
+    # ---validate user---
+    valid_user(token)
+
+    data = {'transaction_id': trans_id}
+
+    headers={'Access-Token': PAY_SERVICE_TOKEN_ID}
+    response = requests.post(PAY_SERVICE_REFUND_PAYMENT, data=data, headers=headers)
+
+    if response.status_code != 200:
+        return "Error completing payment", 400
+
+    data = {'transaction_id': trans_id,
+            'state': 'REFUND'}
+    response = requests.post(TRANSACTIONS_UPDATE, data=data)
+
+    if response.status_code != 200:
+        return "Error changing transaction state", 400
+
+    resp = requests.get(TRANSACTIONS_DETAILS.format(trans_id))
+    if resp.status_code != 200:
+        return "ID not found", 400
+    info = resp.json()
+
+    headers = {"Access-Token": token, "API-Token" : IAM_CLIENT_SECRET}
+    resp = requests.get(IAM_USER + "?id=" + info['to_uuid'], headers=headers)
+    if resp.status_code != 200:
+        return "ID not found", 400
+    to_email = json.loads(resp.text)['data']['email']
+
+    data = {'email': to_email, 'message': 'The transaction for this item: '+info['object']['url']+' has been refunded. The money has not been transfered for your account'}
+
+    response = requests.post(NOTIFICATION_EMAIL, data=data)
+
+    response = redirect(TRANSACTIONS_URL, code=302)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+
+    return response
+
 
 def valid_user(token):
 

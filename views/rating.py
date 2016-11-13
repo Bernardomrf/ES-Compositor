@@ -132,7 +132,7 @@ def rate():
         return "Error rating", 400
 
 
-    return requests.get(DASHBOARD_URL)
+    return redirect(DASHBOARD_URL, code=302)
 
 
 def valid_user(token):

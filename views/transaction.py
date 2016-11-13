@@ -208,7 +208,7 @@ def list_transactions():
             if resp.status_code != 200:
                 return "ID not found", 400
 
-            if trans['state'] == "COMPLETED":
+            if (trans['state'] == "COMPLETED") or (trans['state'] == "REFUND"):
                 resp_rate = requests.get(RATING_TRANSACTIONS + trans['id'])
                 if resp_rate.status_code != 200:
 
@@ -250,7 +250,7 @@ def action(dataType, state, id, address=""):
         if state == "AWAITING_PAYMENT":
             return "<a onClick=\"pay('" + id + "')\" class=\"btn btn-success\">Pay</a>"
         elif state == "SHIPPED":
-            return "<a href=\"/pay_gateway/complete?id=" + id + "\" class=\"btn btn-primary\">Received</a>"
+            return "<a href=\"/pay_gateway/complete?id=" + id + "\" class=\"btn btn-primary\">Received</a>" + "<a href=\"/pay_gateway/refund?id=" + id + "\" class=\"btn btn-warning\">Refund</a>"
         else:
             return "None"
     elif dataType == "seller":
