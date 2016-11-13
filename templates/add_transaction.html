@@ -285,6 +285,11 @@
                     $("#profile_picture").hide();
                     $("#name").hide();
                     $("#view_received_reviews").hide();
+                    for(var i=1; i<=5; i++){
+                        $("#star"+i).removeClass("btn-warning")
+                                    .addClass("btn-default");
+                    }
+                    $("#rating_received").html(0);
                 });
             }
         });
