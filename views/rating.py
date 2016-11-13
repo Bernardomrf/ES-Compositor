@@ -111,8 +111,10 @@ def rate():
     resp = requests.get(TRANSACTIONS_DETAILS.format(trans_id))
     if resp.status_code != 200:
         return "ID not found", 400
+
     info = resp.json()
     log.debug(info['to_uuid'])
+    log.debug(info['from_uuid'])
     log.debug(rate)
     log.debug(description)
 

@@ -211,8 +211,7 @@ def list_transactions():
                 response.append({'state': transformState(trans['state']),
                                  'seller': json.loads(resp.text)['data']['email'],
                                  'url': trans['object']['url'],
-                                 'rate': "<a href=\"/rating/review?id=" + trans[
-                                     'from_uuid'] + " \" class=\"btn btn-primary\">Add Review</a>"
+                                 'rate': "<a href=\"/rating/review?id=" + trans['id'] + " \" class=\"btn btn-primary\">Add Review</a>"
                                  })
 
     return jsonify(response)
