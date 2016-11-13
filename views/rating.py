@@ -46,6 +46,7 @@ def home():
 @rating.route("/review", methods=['GET'])
 def review():
     token = request.cookies.get('Access-Token')
+    trans_id = request.args.get('id')
 
     if token == None:
         return redirect(LOGIN_PAGE_URL, code=302)
@@ -64,7 +65,7 @@ def review():
     name = response.json()['data']['name']
     image = response.json()['data']['picture_url']
 
-    return render_template('add_rating.html', user=user, name=name, image=image)
+    return render_template('add_rating.html', user=user, name=name, image=image, trans_id=trans_id)
 
 
 @rating.route("/user_rating/<email>/", methods=["GET"])
