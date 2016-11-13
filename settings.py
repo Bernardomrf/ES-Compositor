@@ -44,6 +44,7 @@ TRANSACTIONS_UPDATE = (__TRANSACTIONS_BASE__ + "transaction/state/?token=%s" % t
 TRANSACTIONS_LIST = (__TRANSACTIONS_BASE__ + "transaction/history/{0}/?token=%s" % transactions_token())
 TRANSACTIONS_DETAILS = (__TRANSACTIONS_BASE__ + "transaction/details/{0}/?token=%s" % transactions_token())
 TRANSACTIONS_TRACKING = (__TRANSACTIONS_BASE__ + "transaction/tracking_code/?token=%s" % transactions_token())
+TRANSACTIONS_STATS = (__TRANSACTIONS_BASE__ + "transaction/stats/?token=%s" % transactions_token())
 
 AUTH_CALLBACK_URL = "https://transafe.rafaelferreira.pt/authorize/signup_callback"
 TRANSACTIONS_URL = "https://transafe.rafaelferreira.pt/transaction"

@@ -32,9 +32,15 @@ def home():
 
         return response
 
-    response = requests.get(IAM_USERS_COUNT + "?api_token=" + IAM_CLIENT_SECRET)
+    headers = {"API-Token": IAM_CLIENT_SECRET}
+    response = requests.get(IAM_USERS_COUNT, headers=headers)
     user_count = response.json()["data"]
-    return render_template('login.html', users=user_count, transactions=100, amount=500, success_rate=100)
+
+    response = requests.get(TRANSACTIONS_STATS)
+    number_transactions = response.json()["number_of_transactions"]
+    total_amount = response.json()["total_value"]["price__sum"]
+    success_rate = int(float((number_transactions-response.json()["number_of_refunded"])/number_transactions)*100)
+    return render_template('login.html', users=user_count, transactions=number_transactions, amount=total_amount, success_rate=success_rate)
 
 def valid_user(token):
 
