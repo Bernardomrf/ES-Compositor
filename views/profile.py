@@ -35,7 +35,7 @@ def home():
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
-        return "Invalid Access Token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
 
     email = response.json()['data']['email']
@@ -69,7 +69,7 @@ def editAddress():
     response = requests.post(IAM_USER_DATA, data=data, headers=headers)
 
     if response.status_code != 200:
-        return "Invalid Access Token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     return redirect("/profile", code=302, Response=None)
 
@@ -93,8 +93,8 @@ def editPhone():
     response = requests.post(IAM_USER_DATA, data=data, headers=headers)
 
     if response.status_code != 200:
-        return "Invalid Access Token", 400
-
+        return redirect(LOGIN_PAGE_URL, code=302)
+        
     return redirect("/profile", code=302, Response=None)
 
 def valid_user(token):

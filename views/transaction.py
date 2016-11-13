@@ -35,7 +35,7 @@ def home():
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
-        return "Invalid Access Token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     user = response.json()['data']['email']
     name = response.json()['data']['name']
@@ -63,7 +63,7 @@ def new_transaction():
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
-        return "Invalid Access Token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     user_id = response.json()['data']['uid']
 
@@ -143,7 +143,7 @@ def list_transactions():
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
-        return "Invalid Access Token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     user_id = response.json()['data']['uid']
 
@@ -207,8 +207,12 @@ def list_transactions():
             resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'], headers=headers)
             if resp.status_code != 200:
                 return "ID not found", 400
+
             if trans['state'] == "COMPLETED":
-                response.append({'state': transformState(trans['state']),
+                resp = requests.get(RATING_TRANSACTIONS + trans['id'])
+                if resp.status_code != 200:
+
+                    response.append({'state': transformState(trans['state']),
                                  'seller': json.loads(resp.text)['data']['email'],
                                  'url': trans['object']['url'],
                                  'rate': "<a href=\"/rating/review?id=" + trans['id'] + " \" class=\"btn btn-primary\">Add Review</a>"

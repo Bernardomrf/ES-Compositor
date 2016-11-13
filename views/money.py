@@ -34,7 +34,7 @@ def home():
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
-        return "Invalid Access Token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     user = response.json()['data']['email']
     user_id = response.json()['data']['uid']
@@ -58,7 +58,7 @@ def list():
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
-        return "Invalid Access Token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     user_id = response.json()['data']['uid']
     headers = {'Accept': 'application/json'}

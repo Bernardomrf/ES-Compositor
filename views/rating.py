@@ -34,7 +34,7 @@ def home():
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
-        return "Invalid Access Token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     user = response.json()['data']['email']
     name = response.json()['data']['name']
@@ -59,7 +59,7 @@ def review():
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
-        return "Invalid Access Token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     user = response.json()['data']['email']
     name = response.json()['data']['name']
@@ -132,7 +132,7 @@ def rate():
         return "Error rating", 400
 
 
-    return render_template('rating.html', user=user, name=name, image=image)
+    return requests.get(DASHBOARD_URL)
 
 
 def valid_user(token):

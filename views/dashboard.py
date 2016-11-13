@@ -37,7 +37,7 @@ def home():
     response = requests.get(IAM_USER, headers=headers)
 
     if response.status_code != 200:
-        return "Invalid Access Token", 400
+        return redirect(LOGIN_PAGE_URL, code=302)
 
     name = response.json()['data']['name']
     user_id = response.json()['data']['uid']
