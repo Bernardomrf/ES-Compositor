@@ -106,7 +106,13 @@ def user_rating(email, size, search_for):
                 if rate_received["user_id_source"] not in user_sources:
                     user_sources[rate_received["user_id_source"]] = json.loads(response_iam_rec_details.text)["data"]
 
-                if search_for is not None and search_for in rate_received["message"]:
+                if search_for is None:
+                    rates_parsed += [{
+                        "message": rate_received["message"],
+                        "rating": rate_received["rating"],
+                        "user": user_sources[rate_received["user_id_source"]]
+                    }]
+                elif search_for is not None and search_for in rate_received["message"]:
                     rates_parsed += [{
                         "message": rate_received["message"],
                         "rating": rate_received["rating"],
