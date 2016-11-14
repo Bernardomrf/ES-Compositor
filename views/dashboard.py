@@ -56,7 +56,14 @@ def home():
         if (trans['state'] != "COMPLETED") and (trans['state'] != "REFUND"):
             pending += 1
 
-    return render_template('index.html', name=name, total_trans=total_trans, pending=pending, image=image)
+    response = requests.get(RATING_RATE + user_id)
+    info = response.json()
+
+    rating = info['rating_received']
+    rating = (rating*5)/100
+    log.debug(rating)
+
+    return render_template('index.html', name=name, total_trans=total_trans, pending=pending, image=image, rating=round(rating,1))
 
 
 def valid_user(token):
