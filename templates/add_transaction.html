@@ -259,7 +259,15 @@
         var size = 5;
 
         function searchFor(){
-            $.getJSON("/rating/user_rating/" + last_email + "/"+size+"/", function (data) {
+            var search_for_url = "";
+
+            if(search_for.length!=0){
+                    search_for_url = encodeURI(search_for) + "/";
+            }else{
+                search_for_url = "";
+            }
+
+            $.getJSON("/rating/user_rating/" + last_email + "/"+size+"/"+search_for_url, function (data) {
                 $("#seller_email_group").removeClass("has-error");
                 $("#save_state").prop("disabled", false);
 
@@ -295,7 +303,7 @@
                     var html_ratings = "";
 
                     for (var j=0; j<data.rating.data.ratings.length; j++){
-                        html_ratings += '<div class="row"><div class="col-sm-3"><img style="width: 60px; height: 60px" src="'+data.rating.data.ratings[j]["user"]["picture_url"]+'" class="img-rounded"><div class="review-block-name"><a href="#">'+data.rating.data.ratings[j]["user"]["name"]+'</a></div></div><div class="col-sm-9">';
+                        html_ratings += '<div class="row"><div class="col-sm-3"><img style="width: 60px; height: 60px" src="'+data.rating.data.ratings[j]["user"]["picture_url"]+'" class="img-rounded"><div class="review-block-name">'+data.rating.data.ratings[j]["user"]["name"]+'</div></div><div class="col-sm-9">';
                         html_ratings += '<div class="review-block-rate">';
 
                         for (var k=1; i<=data.rating.data.ratings[j]["message"]; k++){
