@@ -115,7 +115,9 @@ def user_rating(email, size, search_for):
                     "user": user_sources[rate_received["user_id_source"]]
                 }]
 
-            return jsonify({"user": json.loads(response_iam_details.text), "rating": rates_parsed})
+            rating_received["data"]["ratings"] = rates_parsed
+
+            return jsonify({"user": json.loads(response_iam_details.text), "rating": rating_received})
         except requests.exceptions.ConnectionError, requests.exceptions.Timeout:
             return jsonify({"user": json.loads(response_iam_details.text), "rating": "Rating service is down!"})
 
