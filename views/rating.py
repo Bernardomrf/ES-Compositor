@@ -103,11 +103,11 @@ def user_rating(email, size, search_for):
             rates_parsed = []
 
             for rate_received in rating_received["data"]["ratings"]:
-                user_id = rate_received["user_id_source"]
-                response_iam_details = requests.get(IAM_USER + "?id=" + user_id, headers=headers)
+                user_id_received = rate_received["user_id_source"]
+                response_iam_rec_details = requests.get(IAM_USER + "?id=" + user_id_received, headers=headers)
 
                 if rate_received["user_id_source"] not in user_sources:
-                    user_sources[rate_received["user_id_source"]] = json.loads(response_iam_details.text)["data"]
+                    user_sources[rate_received["user_id_source"]] = json.loads(response_iam_rec_details.text)["data"]
 
                 rates_parsed += [{
                     "message": rate_received["message"],
