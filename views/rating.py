@@ -68,8 +68,8 @@ def review():
     return render_template('add_rating.html', user=user, name=name, image=image, trans_id=trans_id)
 
 
-@rating.route("/user_rating/<email>/", methods=["GET"])
-def user_rating(email):
+@rating.route("/user_rating/<email>/<size>/", methods=["GET"])
+def user_rating(email, size):
     token = request.cookies.get('Access-Token')
 
     if token is None:
@@ -88,7 +88,8 @@ def user_rating(email):
         response_iam_details = requests.get(IAM_USER + "?id=" + user_id, headers=headers)
 
         try:
-            response = requests.get(RATING_RATE + user_id + "/", timeout=0.3)
+            response = requests.get(RATING_RATE + user_id + "/?size="+size+"&fields=rating,source_id,dest_id,message",
+                                    timeout=0.3)
             return jsonify({"user": json.loads(response_iam_details.text), "rating": json.loads(response.text)})
         except requests.exceptions.ConnectionError, requests.exceptions.Timeout:
             return jsonify({"user": json.loads(response_iam_details.text), "rating": "Rating service is down!"})
