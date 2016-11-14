@@ -196,10 +196,7 @@
       </div>
       <div class="modal-body">
           <div class="row">
-              <div class="col-md-3">
-                  Number items:
-              </div>
-              <div class="col-md-3">
+              <div class="col-md-6">
                   <select class="form-control">
                       <option>5</option>
                       <option>10</option>
@@ -208,7 +205,7 @@
                   </select>
               </div>
               <div class="col-md-6">
-
+                <input type="text" class="form-control" id="searchFor" placeholder="Search for...">
               </div>
           </div>
             <div class="review-block">
@@ -342,6 +339,14 @@
 
     $(document).ready(function () {
         var last_email = "";
+        var search_for = "";
+
+        $("#search_for").keyup(function () {
+            if(search_for != $(this).val()){
+                search_for = $(this).val();
+                
+            }
+        });
 
         $("#seller_email").keyup(function () {
             if (isEmail($(this).val()) && last_email != $(this).val()) {
