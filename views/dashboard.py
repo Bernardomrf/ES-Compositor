@@ -58,11 +58,11 @@ def home():
 
     response = requests.get(RATING_RATE + user_id)
     info = response.json()
-
-    rating = info['rating_received']
-    rating = (rating*5)/100
-    log.debug(rating)
-
+    log.debug(info)
+    #rating = info['rating_received']
+    #rating = (rating*5)/100
+    #log.debug(rating)
+    rating =1.122
     return render_template('index.html', name=name, total_trans=total_trans, pending=pending, image=image, rating=round(rating,1))
 
 
