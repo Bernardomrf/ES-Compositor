@@ -50,10 +50,10 @@ def home():
 
     pending = 0
     for trans in info['to_uuid']:
-        if (trans['state'] != "COMPLETED") or (trans['state'] != "REFUND"):
+        if (trans['state'] != "COMPLETED") and (trans['state'] != "REFUND"):
             pending += 1
     for trans in info['from_uuid']:
-        if (trans['state'] != "COMPLETED") or (trans['state'] != "REFUND"):
+        if (trans['state'] != "COMPLETED") and (trans['state'] != "REFUND"):
             pending += 1
 
     return render_template('index.html', name=name, total_trans=total_trans, pending=pending, image=image)
