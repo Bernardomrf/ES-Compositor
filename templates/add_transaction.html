@@ -197,7 +197,7 @@
       <div class="modal-body">
           <div class="row">
               <div class="col-md-6">
-                  <select class="form-control">
+                  <select id="size_ratings" class="form-control">
                       <option>5</option>
                       <option>10</option>
                       <option>15</option>
@@ -340,65 +340,74 @@
     $(document).ready(function () {
         var last_email = "";
         var search_for = "";
+        var size = 5;
+
+        function searchFor(){
+            $.getJSON("/rating/user_rating/" + last_email + "/"+size+"/", function (data) {
+                $("#seller_email_group").removeClass("has-error");
+                $("#save_state").prop("disabled", false);
+
+                if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_received_count")){
+                    $("#rating_received_count").html(data.rating.data.rating_received_count);
+                    if(data.rating.data.rating_received_count>0){
+                        $("#view_received_reviews").show();
+                    }else{
+                        $("#view_received_reviews").hide();
+                    }
+                }
+                if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_received")){
+                    var rating = (data.rating.data.rating_received*5)/100;
+                    for (var i=1; i<=Math.floor(rating); i++){
+                        $("#star"+i).removeClass("btn-default")
+                                    .addClass("btn-warning");
+                    }
+                    for(i=Math.floor(rating)+1; i<=5; i++){
+                        $("#star"+i).removeClass("btn-warning")
+                                    .addClass("btn-default");
+                    }
+                    $("#rating_received").html(rating.toFixed(2));
+                }
+                if(data.hasOwnProperty("user") && data.user.hasOwnProperty("data") && data.user.data.hasOwnProperty("picture_url")){
+                    $("#profile_picture").attr("src", data.user.data.picture_url);
+                    $("#profile_picture").show();
+                }
+                if(data.hasOwnProperty("user") && data.user.hasOwnProperty("data") && data.user.data.hasOwnProperty("name")){
+                    $("#name").html(data.user.data.name);
+                    $("#name").show();
+                }
+            })
+            .error(function (jqXHR, textStatus, errorThrown) {
+                $("#seller_email_group").addClass("has-error");
+                $("#save_state").prop("disabled", true);
+                $("#rating_received_count").html("0");
+                $("#rating_received_count").html("0");
+                $("#profile_picture").hide();
+                $("#name").hide();
+                $("#view_received_reviews").hide();
+                for(var i=1; i<=5; i++){
+                    $("#star"+i).removeClass("btn-warning")
+                                .addClass("btn-default");
+                }
+                $("#rating_received").html(0);
+            });
+        }
+
+        $("#size_ratings").on('change', function() {
+            var size = $("#size_ratings").val();
+            console.log(size);
+        });
 
         $("#search_for").keyup(function () {
             if(search_for != $(this).val()){
                 search_for = $(this).val();
-                
+                searchFor();
             }
         });
 
         $("#seller_email").keyup(function () {
             if (isEmail($(this).val()) && last_email != $(this).val()) {
                 last_email = $(this).val();
-
-                $.getJSON("/rating/user_rating/" + last_email + "/5/", function (data) {
-                    $("#seller_email_group").removeClass("has-error");
-                    $("#save_state").prop("disabled", false);
-
-                    if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_received_count")){
-                        $("#rating_received_count").html(data.rating.data.rating_received_count);
-                        if(data.rating.data.rating_received_count>0){
-                            $("#view_received_reviews").show();
-                        }else{
-                            $("#view_received_reviews").hide();
-                        }
-                    }
-                    if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_received")){
-                        var rating = (data.rating.data.rating_received*5)/100;
-                        for (var i=1; i<=Math.floor(rating); i++){
-                            $("#star"+i).removeClass("btn-default")
-                                        .addClass("btn-warning");
-                        }
-                        for(i=Math.floor(rating)+1; i<=5; i++){
-                            $("#star"+i).removeClass("btn-warning")
-                                        .addClass("btn-default");
-                        }
-                        $("#rating_received").html(rating.toFixed(2));
-                    }
-                    if(data.hasOwnProperty("user") && data.user.hasOwnProperty("data") && data.user.data.hasOwnProperty("picture_url")){
-                        $("#profile_picture").attr("src", data.user.data.picture_url);
-                        $("#profile_picture").show();
-                    }
-                    if(data.hasOwnProperty("user") && data.user.hasOwnProperty("data") && data.user.data.hasOwnProperty("name")){
-                        $("#name").html(data.user.data.name);
-                        $("#name").show();
-                    }
-                })
-                .error(function (jqXHR, textStatus, errorThrown) {
-                    $("#seller_email_group").addClass("has-error");
-                    $("#save_state").prop("disabled", true);
-                    $("#rating_received_count").html("0");
-                    $("#rating_received_count").html("0");
-                    $("#profile_picture").hide();
-                    $("#name").hide();
-                    $("#view_received_reviews").hide();
-                    for(var i=1; i<=5; i++){
-                        $("#star"+i).removeClass("btn-warning")
-                                    .addClass("btn-default");
-                    }
-                    $("#rating_received").html(0);
-                });
+                searchFor();
             }
         });
     });
