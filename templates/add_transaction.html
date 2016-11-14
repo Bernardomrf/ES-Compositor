@@ -306,15 +306,17 @@
                         html_ratings += '<div class="row"><div class="col-sm-3"><img style="width: 60px; height: 60px" src="'+data.rating.data.ratings[j]["user"]["picture_url"]+'" class="img-rounded"><div class="review-block-name">'+data.rating.data.ratings[j]["user"]["name"]+'</div></div><div class="col-sm-9">';
                         html_ratings += '<div class="review-block-rate">';
 
-                        for (var k=1; i<=data.rating.data.ratings[j]["message"]; k++){
+                        for (var k=1; i<=data.rating.data.ratings[j]["rating"]; k++){
                             html_ratings += '<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align"><span class="glyphicon glyphicon-star" style="pointer-events: none;" aria-hidden="true"></span></button>';
                         }
-                        for(k=data.rating.data.ratings[j]["message"]+1; i<=5; i++){
+                        for(k=data.rating.data.ratings[j]["rating"]+1; i<=5; i++){
                             html_ratings += '<button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align"><span class="glyphicon glyphicon-star" style="pointer-events: none;" aria-hidden="true"></span></button>';
                         }
 
-                        html_ratings += '</div><div class="review-block-description">'+data.rating.data.ratings[j]["message"]+'</div></div></div>';
+                        html_ratings += '</div><div class="review-block-description">'+data.rating.data.ratings[j]["message"]+'</div></div></div><hr/>';
                     }
+
+                    html_ratings.substring(0, html_ratings.length - 5);
                     
                     $("#review_block").html(html_ratings);
                 }
