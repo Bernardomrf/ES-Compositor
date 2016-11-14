@@ -68,8 +68,9 @@ def review():
     return render_template('add_rating.html', user=user, name=name, image=image, trans_id=trans_id)
 
 
-@rating.route("/user_rating/<email>/<size>/", methods=["GET"])
-def user_rating(email, size):
+@rating.route("/user_rating/<email>/<size>/", defaults={'search_for': None}, methods=["GET"])
+@rating.route("/user_rating/<email>/<size>/<search_for>/")
+def user_rating(email, size, search_for):
     token = request.cookies.get('Access-Token')
 
     if token is None:
@@ -90,7 +91,31 @@ def user_rating(email, size):
         try:
             response = requests.get(RATING_RATE + user_id + "/?fields=rating,user_id_source,user_id_destination,message&size="+size,
                                     timeout=0.3)
-            return jsonify({"user": json.loads(response_iam_details.text), "rating": json.loads(response.text)})
+
+            # if search_for is None:
+            #   return
+
+            rating_received = json.loads(response.text)
+
+            # it's only received rating, so the user_id_source it's what matter
+
+            user_sources = {}
+            rates_parsed = []
+
+            for rate_received in rating_received["data"]["ratings"]:
+                user_id = rate_received["user_id_source"]
+                response_iam_details = requests.get(IAM_USER + "?id=" + user_id, headers=headers)
+
+                if rate_received["user_id_source"] not in user_sources:
+                    user_sources[rate_received["user_id_source"]] = json.loads(response_iam_details.text)["data"]
+
+                rates_parsed += [{
+                    "message": rate_received["message"],
+                    "rating": rate_received["rating"],
+                    "user": user_sources[rate_received["user_id_source"]]
+                }]
+
+            return jsonify({"user": json.loads(response_iam_details.text), "rating": rates_parsed})
         except requests.exceptions.ConnectionError, requests.exceptions.Timeout:
             return jsonify({"user": json.loads(response_iam_details.text), "rating": "Rating service is down!"})
 
