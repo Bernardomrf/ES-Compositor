@@ -88,7 +88,7 @@ def user_rating(email, size):
         response_iam_details = requests.get(IAM_USER + "?id=" + user_id, headers=headers)
 
         try:
-            response = requests.get(RATING_RATE + user_id + "/?size="+size+"&fields=rating,source_id,dest_id,message",
+            response = requests.get(RATING_RATE + user_id + "/?size="+size+"&fields=rating,user_id_source,user_id_destination,message",
                                     timeout=0.3)
             return jsonify({"user": json.loads(response_iam_details.text), "rating": json.loads(response.text)})
         except requests.exceptions.ConnectionError, requests.exceptions.Timeout:
