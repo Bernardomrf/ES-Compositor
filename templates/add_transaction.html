@@ -295,7 +295,7 @@
                     var html_ratings = "";
 
                     for (var j=0; j<data.rating.data.ratings.length; j++){
-                        html_ratings += '<div class="row"><div class="col-sm-3"><img src="'+data.rating.data.ratings[j]["user"]["picture_url"]+'" class="img-rounded"><div class="review-block-name"><a href="#">'+data.rating.data.ratings[j]["user"]["name"]+'</a></div></div><div class="col-sm-9">';
+                        html_ratings += '<div class="row"><div class="col-sm-3"><img style="width: 60px; height: 60px" src="'+data.rating.data.ratings[j]["user"]["picture_url"]+'" class="img-rounded"><div class="review-block-name"><a href="#">'+data.rating.data.ratings[j]["user"]["name"]+'</a></div></div><div class="col-sm-9">';
                         html_ratings += '<div class="review-block-rate">';
 
                         for (var k=1; i<=data.rating.data.ratings[j]["message"]; k++){
