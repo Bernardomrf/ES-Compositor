@@ -96,7 +96,7 @@
 							<svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg>
 						</div>
 						<div class="col-sm-9 col-lg-7 widget-right">
-							<div class="large">52</div>
+							<div id="ratings" class="large">52</div>
 							<div class="text-muted">Messages</div>
 						</div>
 					</div>
@@ -187,6 +187,22 @@
 
         $("#page_home").addClass("active");
 	</script>
+  <script type="text/javascript">
+      $(document).ready(function () {
+        var url = "/transaction/list?dataType=rating";
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onreadystatechange = processRequest;
+
+        function processRequest(e) {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+             var response = JSON.parse(xhr.responseText);
+             console.log(response);
+          }
+        }
+
+      });
+  </script>
 </body>
 
 </html>
