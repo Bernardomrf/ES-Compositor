@@ -195,7 +195,7 @@
 			window.location.href = "/transaction";
 		});
 	</script>
-	
+
 	<script>
 	function editAddress(){
 		document.getElementById("divaddress").style.display = "none";
@@ -290,10 +290,8 @@
 	            }
 	        });
 
-	        $("#seller_email").keyup(function () {
-	            if (isEmail($(this).val()) && last_email != $(this).val()) {
-	                last_email = $(this).val();
-	                searchFor();
+	        $(last_email).keyup(function () {
+	              searchFor();
 	            }
 	        });
 	    });
