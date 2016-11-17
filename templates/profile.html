@@ -240,6 +240,18 @@
 	                        $("#view_received_reviews").hide();
 	                    }
 	                }
+									if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("rating_received")){
+	                    var rating = (data.rating.data.rating_received*5)/100;
+	                    for (var i=1; i<=Math.floor(rating); i++){
+	                        $("#star"+i).removeClass("btn-default")
+	                                    .addClass("btn-warning");
+	                    }
+	                    for(i=Math.floor(rating)+1; i<=5; i++){
+	                        $("#star"+i).removeClass("btn-warning")
+	                                    .addClass("btn-default");
+	                    }
+	                    $("#rating_received").html(rating.toFixed(2));
+	                }
 	                if(data.hasOwnProperty("rating") && data.rating.hasOwnProperty("data") && data.rating.data.hasOwnProperty("ratings")){
 	                    var html_ratings = "";
 
