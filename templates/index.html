@@ -96,8 +96,8 @@
 							<svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg>
 						</div>
 						<div class="col-sm-9 col-lg-7 widget-right">
-							<div id="ratings" class="large">52</div>
-							<div class="text-muted">Messages</div>
+							<div id="ratings" class="large"></div>
+							<div class="text-muted">Ratings to do</div>
 						</div>
 					</div>
 				</div>
@@ -193,11 +193,11 @@
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url, true);
         xhr.onreadystatechange = processRequest;
-
+        xhr.send();
         function processRequest(e) {
           if (xhr.readyState == 4 && xhr.status == 200) {
              var response = JSON.parse(xhr.responseText);
-             console.log(response);
+             document.getElementById("ratings").value=response.length
           }
         }
 
