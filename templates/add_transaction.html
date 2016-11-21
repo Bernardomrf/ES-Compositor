@@ -306,13 +306,15 @@
                         html_ratings += '<div class="row"><div class="col-sm-3"><img style="width: 60px; height: 60px" src="'+data.rating.data.ratings[j]["user"]["picture_url"]+'" class="img-rounded"><div class="review-block-name">'+data.rating.data.ratings[j]["user"]["name"]+'</div></div><div class="col-sm-9">';
                         html_ratings += '<div class="review-block-rate">';
 
-                        console.log(data.rating.data.ratings[j]["rating"]);
+                        var rate = parseInt(data.rating.data.ratings[j]["rating"]);
+                        console.log(rate);
 
-                        for (var k=1; i<=data.rating.data.ratings[j]["rating"]; k++){
-                            console.log("enter");
+                        for (var k=1; i<=rate; k++){
+                            console.log("enter1");
                             html_ratings += '<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align"><span class="glyphicon glyphicon-star" style="pointer-events: none;" aria-hidden="true"></span></button>';
                         }
-                        for(k=data.rating.data.ratings[j]["rating"]+1; i<=5; i++){
+                        for(k=rate+1; i<=5; i++){
+                            console.log("enter2");
                             html_ratings += '<button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align"><span class="glyphicon glyphicon-star" style="pointer-events: none;" aria-hidden="true"></span></button>';
                         }
 
