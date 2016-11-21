@@ -307,14 +307,11 @@
                         html_ratings += '<div class="review-block-rate">';
 
                         var rate = parseInt(data.rating.data.ratings[j]["rating"]);
-                        console.log(rate);
 
-                        for (var k=1; i<=rate; k++){
-                            console.log("enter1");
+                        for (var k=1; k<=rate; k++){
                             html_ratings += '<button type="button" class="btn btn-warning btn-xs" aria-label="Left Align"><span class="glyphicon glyphicon-star" style="pointer-events: none;" aria-hidden="true"></span></button>';
                         }
-                        for(k=rate+1; i<=5; i++){
-                            console.log("enter2");
+                        for(k=rate+1; k<=5; k++){
                             html_ratings += '<button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align"><span class="glyphicon glyphicon-star" style="pointer-events: none;" aria-hidden="true"></span></button>';
                         }
 
