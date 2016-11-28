@@ -40,7 +40,10 @@ def home():
     number_transactions = response.json()["number_of_transactions"]
     total_amount = response.json()["total_value"]["price__sum"]
 
-    success_rate = int((float((number_transactions-response.json()["number_of_refunded"]))/float(number_transactions))*100)
+    if number_transactions == 0:
+        success_rate = 0
+    else:
+        success_rate = int((float((number_transactions-response.json()["number_of_refunded"]))/float(number_transactions))*100)
     return render_template('login.html', users=user_count, transactions=number_transactions, amount=total_amount, success_rate=success_rate)
 
 def valid_user(token):
