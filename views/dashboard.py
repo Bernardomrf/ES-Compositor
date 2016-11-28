@@ -49,6 +49,7 @@ def home():
     total_trans = len(info['to_uuid']) + len(info['from_uuid'])
 
     pending = 0
+    ratings = 0
     for trans in info['to_uuid']:
         if (trans['state'] != "COMPLETED") and (trans['state'] != "REFUND"):
             pending += 1
@@ -56,13 +57,24 @@ def home():
         if (trans['state'] != "COMPLETED") and (trans['state'] != "REFUND"):
             pending += 1
 
+    for trans in info['from_uuid']:
+        headers = {"API-Token": IAM_CLIENT_SECRET}
+        resp = requests.get(IAM_USER + "?id=" + trans['to_uuid'], headers=headers)
+        if resp.status_code != 200:
+            return "ID not found", 400
+
+        if (trans['state'] == "COMPLETED") or (trans['state'] == "REFUND"):
+            resp_rate = requests.get(RATING_TRANSACTIONS + trans['id'])
+            if resp_rate.status_code != 200:
+                ratings += 1
+
     response = requests.get(RATING_RATE + user_id)
     info = response.json()
     rating = info['data']['rating_received']
     rating = (rating*5)/100
     log.debug(rating)
 
-    return render_template('index.html', name=name, total_trans=total_trans, pending=pending, image=image, rating=round(rating,1))
+    return render_template('index.html', name=name, total_trans=total_trans, pending=pending, image=image, rating=round(rating,1), ratings=ratings)
 
 
 def valid_user(token):
