@@ -170,7 +170,8 @@ def list_transactions():
                 tracking = "None"
 
             else:
-                tracking = "<a href=\"http://pkt-tracker.ddns.net/?tracking_nr=" + trans[
+
+                tracking = "<a href=\"https://pkt-tracker.ddns.net/search.php?track=&tracking_nr=" + trans[
                     'tracking_code'] + "&carrier=CTT\"><span class=\"badge\">" + trans['tracking_code'] + "</span></a><br>"
             address = json.loads(resp.text)['data']['address'].encode("utf-8")
             response.append({'state': transformState(trans['state']),
@@ -190,7 +191,7 @@ def list_transactions():
             if trans['tracking_code'] == "":
                 tracking = "None"
             else:
-                tracking = "<a href=\"http://pkt-tracker.ddns.net/?tracking_nr=" + trans[
+                tracking = "<a href=\"https://pkt-tracker.ddns.net/search.php?track=&tracking_nr=" + trans[
                     'tracking_code'] + "&carrier=CTT\"><span class=\"badge\">" + trans['tracking_code'] + "</span></a><br>"
             response.append({'state': transformState(trans['state']),
                              'seller': json.loads(resp.text)['data']['email'],
